@@ -40,6 +40,9 @@ function initMobileMenu() {
       // アクセシビリティ対応
       const isExpanded = navMenu.classList.contains('active');
       menuToggle.setAttribute('aria-expanded', isExpanded);
+
+      // メニュー展開時は背景スクロールを無効化
+      document.body.style.overflow = isExpanded ? 'hidden' : '';
     });
 
     // メニューリンクをクリックしたらメニューを閉じる
@@ -48,6 +51,7 @@ function initMobileMenu() {
       link.addEventListener('click', function() {
         navMenu.classList.remove('active');
         menuToggle.classList.remove('active');
+        document.body.style.overflow = '';
       });
     });
 
@@ -56,6 +60,7 @@ function initMobileMenu() {
       if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
         navMenu.classList.remove('active');
         menuToggle.classList.remove('active');
+        document.body.style.overflow = '';
       }
     });
   }
