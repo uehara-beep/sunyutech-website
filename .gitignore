@@ -1,2 +1,5 @@
 .DS_Store
 .superpowers/
+astro/node_modules/
+astro/dist/
+astro/.astro/
