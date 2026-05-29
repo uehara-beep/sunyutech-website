@@ -1,5 +1,6 @@
 :root {
   /* colors */
+  --color-navy-950: #060F1C;
   --color-navy-900: #0B2545;
   --color-navy-800: #13315C;
   --color-navy-700: #1E3A5F;
@@ -33,7 +34,10 @@
   --fs-3xl: 2rem;
   --fs-4xl: 2.5rem;
   --fs-5xl: 3rem;
-  --lh-tight: 1.2;
+  --fs-6xl: 3.75rem;
+  --fs-7xl: 4.5rem;
+  --lh-tight: 1.15;
+  --lh-snug: 1.25;
   --lh-normal: 1.5;
   --lh-relaxed: 1.7;
 
@@ -60,6 +64,7 @@
   --shadow-sm: 0 1px 2px rgba(11, 37, 69, 0.05);
   --shadow-md: 0 4px 8px rgba(11, 37, 69, 0.08);
   --shadow-lg: 0 12px 24px rgba(11, 37, 69, 0.12);
+  --shadow-xl: 0 24px 48px rgba(11, 37, 69, 0.16);
 
   /* layout */
   --wrapper-max: 1200px;
@@ -67,9 +72,9 @@
   --gutter-desktop: 32px;
   --gutter-tablet: 24px;
   --gutter-mobile: 16px;
-  --section-py-desktop: 96px;
-  --section-py-tablet: 64px;
-  --section-py-mobile: 48px;
+  --section-py-desktop: 144px;
+  --section-py-tablet: 96px;
+  --section-py-mobile: 64px;
 
   /* z-index */
   --z-base: 0;
