@@ -31,9 +31,13 @@ const { number, title, description, image, link } = Astro.props;
     padding: var(--sp-6);
     display: flex;
     flex-direction: column;
-    transition: box-shadow 0.2s;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
-  .feature-card:hover { box-shadow: var(--shadow-md); }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-300);
+  }
   .image { margin: calc(-1 * var(--sp-6)) calc(-1 * var(--sp-6)) var(--sp-4); }
   .image img { width: 100%; height: auto; border-radius: var(--radius-md) var(--radius-md) 0 0; aspect-ratio: 4/3; object-fit: cover; }
   .number {
@@ -62,6 +66,11 @@ const { number, title, description, image, link } = Astro.props;
     color: var(--color-navy-900);
     font-weight: var(--fw-semibold);
     font-size: var(--fs-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    transition: gap 0.2s ease;
   }
-  .more span { color: var(--color-orange-600); margin-left: var(--sp-1); }
+  .feature-card:hover .more { gap: var(--sp-3); }
+  .more span { color: var(--color-orange-600); }
 </style>

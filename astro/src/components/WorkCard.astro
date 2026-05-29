@@ -31,8 +31,21 @@ const { image, methodChip, title, location, method, scale, client } = Astro.prop
     border: 1px solid var(--color-gray-200);
     border-radius: var(--radius-md);
     overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
-  .image img { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+  .work-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-300);
+  }
+  .image { overflow: hidden; }
+  .image img {
+    width: 100%; height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .work-card:hover .image img { transform: scale(1.04); }
   .body { padding: var(--sp-4); }
   .chip {
     display: inline-block;
