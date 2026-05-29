@@ -1,0 +1,74 @@
+---
+interface Stat {
+  value: string;
+  unit?: string;
+  label: string;
+  caveat?: string;
+}
+interface Props {
+  stats: Stat[];
+}
+const { stats } = Astro.props;
+---
+<div class="stat-grid" role="list">
+  {stats.map(s => (
+    <article class="stat" role="listitem">
+      <div class="value-row">
+        <span class="value">{s.value}</span>
+        {s.unit && <span class="unit">{s.unit}</span>}
+      </div>
+      <p class="label">{s.label}</p>
+      {s.caveat && <p class="caveat">{s.caveat}</p>}
+    </article>
+  ))}
+</div>
+<style>
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+  }
+  .stat {
+    padding: var(--sp-6);
+    background: var(--color-white);
+    border-top: 3px solid var(--color-orange-600);
+    border-left: 1px solid var(--color-gray-200);
+    border-right: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--color-gray-200);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+  .value-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-3);
+  }
+  .value {
+    font-size: var(--fs-5xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-navy-900);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .unit {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy-800);
+  }
+  .label {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-gray-900);
+    margin: 0 0 var(--sp-1);
+  }
+  .caveat {
+    font-size: var(--fs-xs);
+    color: var(--color-gray-500);
+    margin: 0;
+  }
+  @media (max-width: 1023px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .value { font-size: var(--fs-4xl); }
+  }
+</style>
