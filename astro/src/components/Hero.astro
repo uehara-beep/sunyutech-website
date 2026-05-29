@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro';
+import BrandSignature from './BrandSignature.astro';
 interface Props {
   heading1: string;
   heading2: string;
@@ -8,12 +9,14 @@ interface Props {
   secondaryCta?: { label: string; href: string };
   imageSrc: string;
   imageAlt: string;
+  showSignature?: boolean;
 }
-const { heading1, heading2, sub, primaryCta, secondaryCta, imageSrc, imageAlt } = Astro.props;
+const { heading1, heading2, sub, primaryCta, secondaryCta, imageSrc, imageAlt, showSignature = true } = Astro.props;
 ---
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-text">
+      {showSignature && <BrandSignature variant="eyebrow" />}
       <h1>
         <span>{heading1}</span>
         <span>{heading2}</span>
