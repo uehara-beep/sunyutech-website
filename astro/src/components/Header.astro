@@ -50,10 +50,17 @@ const navItems = [
     max-width: var(--wrapper-max);
     margin: 0 auto;
     padding: 0 var(--gutter-desktop);
-    height: 200px;
+    height: 72px;
     display: flex;
     align-items: center;
     gap: var(--sp-6);
+    overflow: visible;
+  }
+  .logo {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    line-height: 0;
   }
   .logo img { display: block; height: 160px; width: auto; }
   .nav-desktop { flex: 1; }
@@ -78,12 +85,12 @@ const navItems = [
   .tel-hours { font-size: var(--fs-xs); color: var(--color-gray-700); }
 
   @media (max-width: 1023px) {
-    .header-inner { padding: 0 var(--gutter-tablet); height: 144px; }
+    .header-inner { padding: 0 var(--gutter-tablet); height: 72px; }
     .nav-desktop, .tel-block { display: none; }
-    .logo img { height: 112px; }
+    .logo img { height: 128px; }
   }
   @media (max-width: 480px) {
-    .header-inner { padding: 0 var(--gutter-mobile); height: 120px; }
-    .logo img { height: 88px; }
+    .header-inner { padding: 0 var(--gutter-mobile); height: 56px; }
+    .logo img { height: 96px; }
   }
 </style>
