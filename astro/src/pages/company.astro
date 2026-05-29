@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="会社概要 | サンユウテック株式会社"
+  description="サンユウテック株式会社の会社概要。福岡県大野城市を拠点に、舗装・ウォータージェット・コンクリート補修の3工法で九州の道路インフラを支えています。"
+  currentPage="company"
+  ogImage="/images/about-image.jpg"
+>
+  <section class="page-hero">
+    <div class="container">
+      <h1>現場の人間が経営する、九州の補修会社です</h1>
+    </div>
+  </section>
+
+  <section class="message">
+    <div class="container narrow">
+      <SectionTitle text="代表挨拶" />
+      <p>サンユウテック株式会社は、福岡県大野城市を拠点に、舗装工事・ウォータージェット工事・コンクリート補修工事の3工法を一社で提供する会社です。九州自動車道・長崎自動車道管内の補修案件をはじめ、NIPPO様・前田道路様をはじめとする大手道路ゼネコン各社の協力会社として、現場で必要とされる技術を磨いてきました。これからも、現場の課題に応える技術力で、九州のインフラを支える役割を担ってまいります。</p>
+    </div>
+  </section>
+
+  <section class="info">
+    <div class="container narrow">
+      <SectionTitle text="会社情報" />
+      <dl class="info-table">
+        <div><dt>社名</dt><dd>サンユウテック株式会社</dd></div>
+        <div><dt>所在地</dt><dd>福岡県大野城市</dd></div>
+        <div><dt>事業内容</dt><dd>舗装工事、ウォータージェット工事、コンクリート補修工事</dd></div>
+        <div><dt>主要取引先</dt><dd>株式会社NIPPO、前田道路株式会社、大手道路ゼネコン各社、地場ゼネコン各社</dd></div>
+        <div><dt>有資格者</dt><dd>一級土木施工管理技士 1名、二級土木施工管理技士 6名</dd></div>
+        <div><dt>保有機材</dt><dd>CONJET327 2台、NLB 35305DGF（2,400bar 46L/min）2台、SB機械 4台ほか合計24台</dd></div>
+        <div><dt>連絡先</dt><dd>TEL 092-555-9211（平日 8:00〜17:00）</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="image-band">
+    <div class="container">
+      <img src="/images/about-image.jpg" alt="サンユウテックの施工現場" width="1200" height="600" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="partners">
+    <div class="container narrow">
+      <SectionTitle text="主要取引先" />
+      <ul class="partners-list">
+        <li>株式会社NIPPO</li>
+        <li>前田道路株式会社</li>
+        <li>大手道路ゼネコン各社</li>
+        <li>地場ゼネコン各社</li>
+        <li>公的発注機関</li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand heading="協力会社のご検討・ご相談はお気軽にどうぞ。" />
+</Base>
+
+<style>
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--section-py-tablet) 0; }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .container.narrow { max-width: var(--content-max); }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-3xl); font-weight: var(--fw-extrabold); }
+
+  .message, .info, .partners { padding: var(--section-py-desktop) 0; }
+  .message { background: var(--color-white); }
+  .info { background: var(--color-gray-100); }
+  .partners { background: var(--color-white); }
+  .message p { font-size: var(--fs-base); line-height: var(--lh-relaxed); color: var(--color-gray-900); }
+
+  .info-table { display: flex; flex-direction: column; gap: 0; }
+  .info-table > div {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--sp-4);
+    padding: var(--sp-4) 0;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+  .info-table dt { color: var(--color-gray-500); font-weight: var(--fw-semibold); }
+  .info-table dd { margin: 0; color: var(--color-gray-900); }
+
+  .image-band { padding: var(--sp-8) 0; background: var(--color-white); }
+  .image-band img { width: 100%; height: auto; border-radius: var(--radius-md); aspect-ratio: 2/1; object-fit: cover; }
+
+  .partners-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+  .partners-list li {
+    background: var(--color-gray-100);
+    padding: var(--sp-4);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: var(--fw-semibold);
+    color: var(--color-navy-900);
+  }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .info-table > div { grid-template-columns: 120px 1fr; }
+    .partners-list { grid-template-columns: repeat(2, 1fr); }
+    .message, .info, .partners { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .info-table > div { grid-template-columns: 1fr; gap: var(--sp-1); }
+    .partners-list { grid-template-columns: 1fr; }
+    .message, .info, .partners { padding: var(--section-py-mobile) 0; }
+  }
+</style>
