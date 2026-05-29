@@ -7,12 +7,13 @@ const year = new Date().getFullYear();
     <div class="col col-brand">
       <BrandSignature variant="footer" />
       <p class="brand-name">株式会社サンユウテック</p>
-      <p>福岡県大野城市御笠川6-2-5</p>
-      <p>TEL 092-555-9211（平日 9:00〜17:00）</p>
-      <p>FAX 092-555-9217</p>
+      <address class="addr">
+        福岡県大野城市御笠川6-2-5<br />
+        TEL 092-555-9211（平日 9:00〜17:00）<br />
+        FAX 092-555-9217
+      </address>
     </div>
-    <nav class="col" aria-label="フッターナビゲーション">
-      <h3 class="col-title">サイトマップ</h3>
+    <nav class="col col-nav" aria-label="フッターナビゲーション">
       <ul>
         <li><a href="/service/">事業内容</a></li>
         <li><a href="/works/">施工実績</a></li>
@@ -21,52 +22,67 @@ const year = new Date().getFullYear();
         <li><a href="/contact/">お問い合わせ</a></li>
       </ul>
     </nav>
-    <div class="col">
-      <h3 class="col-title">お問い合わせ</h3>
-      <p><a href="/contact/">見積依頼・現地調査のご相談</a></p>
-    </div>
   </div>
-  <p class="copyright">© {year} 株式会社サンユウテック</p>
+  <div class="footer-bottom">
+    <p class="copyright">© {year} 株式会社サンユウテック</p>
+  </div>
 </footer>
 <style>
   .footer {
-    background: var(--color-navy-900);
+    background: var(--color-navy-950);
     color: var(--color-white);
-    padding: var(--section-py-tablet) 0 var(--sp-8);
+    padding: var(--sp-16) 0 var(--sp-6);
   }
   .footer-inner {
     max-width: var(--wrapper-max);
     margin: 0 auto;
     padding: 0 var(--gutter-desktop);
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1fr auto;
     gap: var(--sp-12);
+    align-items: start;
   }
-  .brand-name { font-size: var(--fs-lg); font-weight: var(--fw-bold); color: var(--color-white); margin: var(--sp-4) 0 var(--sp-3); }
-  .col-title {
-    color: var(--color-white);
-    font-size: var(--fs-lg);
-    font-weight: var(--fw-bold);
-    margin-bottom: var(--sp-4);
-  }
-  .footer p, .footer li { color: var(--color-gray-200); font-size: var(--fs-sm); line-height: var(--lh-relaxed); }
-  .footer a { color: var(--color-gray-200); }
-  .footer a:hover { color: var(--color-orange-600); }
-  .copyright {
-    max-width: var(--wrapper-max);
-    margin: var(--sp-12) auto 0;
-    padding: var(--sp-6) var(--gutter-desktop) 0;
-    border-top: 1px solid var(--color-navy-800);
-    text-align: center;
-    font-size: var(--fs-xs);
+  .brand-name { font-size: var(--fs-base); font-weight: var(--fw-bold); color: var(--color-white); margin: var(--sp-4) 0 var(--sp-3); letter-spacing: 0.04em; }
+  .addr {
+    font-style: normal;
     color: var(--color-gray-300);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-relaxed);
+  }
+  .col-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+  .col-nav a {
+    color: var(--color-gray-200);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .col-nav a:hover { color: var(--color-orange-600); }
+
+  .footer-bottom {
+    max-width: var(--wrapper-max);
+    margin: var(--sp-8) auto 0;
+    padding: var(--sp-4) var(--gutter-desktop) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .copyright {
+    font-size: var(--fs-xs);
+    color: var(--color-gray-500);
+    margin: 0;
+    letter-spacing: 0.04em;
   }
   @media (max-width: 1023px) {
-    .footer-inner { grid-template-columns: 1fr 1fr; padding: 0 var(--gutter-tablet); gap: var(--sp-8); }
-    .copyright { padding: var(--sp-6) var(--gutter-tablet) 0; }
+    .footer-inner { padding: 0 var(--gutter-tablet); gap: var(--sp-8); }
+    .footer-bottom { padding: var(--sp-4) var(--gutter-tablet) 0; }
   }
   @media (max-width: 480px) {
+    .footer { padding: var(--sp-12) 0 var(--sp-6); }
     .footer-inner { grid-template-columns: 1fr; padding: 0 var(--gutter-mobile); gap: var(--sp-6); }
-    .copyright { padding: var(--sp-6) var(--gutter-mobile) 0; }
+    .footer-bottom { padding: var(--sp-4) var(--gutter-mobile) 0; }
   }
 </style>

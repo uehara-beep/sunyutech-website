@@ -72,9 +72,9 @@
   --gutter-desktop: 32px;
   --gutter-tablet: 24px;
   --gutter-mobile: 16px;
-  --section-py-desktop: 144px;
-  --section-py-tablet: 96px;
-  --section-py-mobile: 64px;
+  --section-py-desktop: 112px;
+  --section-py-tablet: 80px;
+  --section-py-mobile: 56px;
 
   /* z-index */
   --z-base: 0;
