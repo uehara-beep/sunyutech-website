@@ -31,9 +31,9 @@ const navItems = [
         ))}
       </ul>
     </nav>
-    <a href="tel:0925559211" class="tel-block" aria-label="電話番号 092-555-9211 平日 8時から17時">
+    <a href="tel:0925559211" class="tel-block" aria-label="電話番号 092-555-9211 平日 9時から17時">
       <span class="tel-num">TEL 092-555-9211</span>
-      <span class="tel-hours">平日 8:00〜17:00</span>
+      <span class="tel-hours">平日 9:00〜17:00</span>
     </a>
     <MobileNav currentPage={currentPage} />
   </div>
@@ -50,12 +50,12 @@ const navItems = [
     max-width: var(--wrapper-max);
     margin: 0 auto;
     padding: 0 var(--gutter-desktop);
-    height: 88px;
+    height: 128px;
     display: flex;
     align-items: center;
     gap: var(--sp-6);
   }
-  .logo img { display: block; height: 56px; width: auto; }
+  .logo img { display: block; height: 96px; width: auto; }
   .nav-desktop { flex: 1; }
   .nav-desktop ul { display: flex; gap: var(--sp-6); justify-content: flex-end; }
   .nav-desktop a {
@@ -82,7 +82,7 @@ const navItems = [
     .nav-desktop, .tel-block { display: none; }
   }
   @media (max-width: 480px) {
-    .header-inner { padding: 0 var(--gutter-mobile); height: 56px; }
-    .logo img { height: 40px; }
+    .header-inner { padding: 0 var(--gutter-mobile); height: 80px; }
+    .logo img { height: 64px; }
   }
 </style>

@@ -5,7 +5,7 @@ import Form from '../components/Form.astro';
 ---
 <Base
   title="お問い合わせ | 株式会社サンユウテック"
-  description="見積依頼・現地調査のご相談はこちらから。原則翌営業日に一次回答します。"
+  description="株式会社サンユウテックへの見積依頼・現地調査のご相談はこちらから。お電話・フォームの両方でお問い合わせいただけます。"
   currentPage="contact"
   ogImage="/images/hero-1.jpg"
 >
@@ -13,7 +13,6 @@ import Form from '../components/Form.astro';
     <div class="container">
       <p class="brand-sig">RENEW, NOT REBUILD.</p>
       <h1>見積依頼・現地調査のご相談</h1>
-      <p class="lead">ご相談・お問い合わせには、原則翌営業日に一次回答いたします。</p>
     </div>
   </section>
 
@@ -23,9 +22,10 @@ import Form from '../components/Form.astro';
         <div class="tel-block">
           <SectionTitle text="お電話でのお問い合わせ" level={2} />
           <a href="tel:0925559211" class="tel-large">092-555-9211</a>
-          <p class="hours">平日 8:00〜17:00</p>
+          <p class="hours">平日 9:00〜17:00</p>
+          <p class="fax">FAX 092-555-9217</p>
           <h3>本社所在地</h3>
-          <p>福岡県大野城市</p>
+          <p>福岡県大野城市御笠川6-2-5</p>
         </div>
         <div class="form-block">
           <SectionTitle text="フォームでのお問い合わせ" level={2} />
@@ -61,7 +61,8 @@ import Form from '../components/Form.astro';
     color: var(--color-navy-900);
     margin-bottom: var(--sp-2);
   }
-  .hours { color: var(--color-gray-700); margin-bottom: var(--sp-8); }
+  .hours { color: var(--color-gray-700); margin-bottom: var(--sp-2); }
+  .fax { color: var(--color-gray-700); margin-bottom: var(--sp-8); font-size: var(--fs-base); }
   .tel-block h3 { font-size: var(--fs-lg); margin-bottom: var(--sp-2); color: var(--color-navy-900); }
 
   @media (max-width: 1023px) {

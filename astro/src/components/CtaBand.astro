@@ -4,19 +4,19 @@ interface Props {
   heading: string;
   sub?: string;
 }
-const { heading, sub = '原則1営業日以内に返信します。' } = Astro.props;
+const { heading, sub } = Astro.props;
 ---
 <section class="cta-band">
   <div class="cta-inner">
     <div class="text">
       <h2>{heading}</h2>
-      <p>{sub}</p>
+      {sub && <p>{sub}</p>}
     </div>
     <div class="actions">
       <Button variant="primary" href="/contact/" label="見積依頼・現地調査のご相談" />
       <a href="tel:0925559211" class="tel">
         <span class="tel-num">TEL 092-555-9211</span>
-        <span class="tel-hours">平日 8:00〜17:00</span>
+        <span class="tel-hours">平日 9:00〜17:00</span>
       </a>
     </div>
   </div>
