@@ -35,19 +35,56 @@
 
 ## Nice to Have
 
-- [ ] 採用ページ recruit.astro（本Issue外、別Issueへ）
-- [ ] hero-*.jpg の WebP 変換（本Issue外、別Issueへ）
-- [ ] 問い合わせフォーム外部サービス連携（本Issue外、別Issueへ）
+- [x] 採用ページ recruit.astro 追加（Phase 6 で本Issue内対応）
+- [ ] hero-*.jpg の WebP 変換（別Issueへ）
+- [ ] 問い合わせフォーム外部サービス連携（別Issueへ）
 
 ## ユーザー検収
 
-- [ ] ローカルプレビュー（`npm run preview` → http://localhost:4321）で 5ページ目視確認
+- [ ] ローカルプレビュー（`npm run preview` → http://localhost:4321）で 6ページ目視確認
 - [ ] 主軸ペルソナ視点で「これなら出していい」と判断
 
 ## マージ判断
 
 - Must Have 自動検査は全PASS、目視部分のみ未確認
-- マージ可否: **ユーザー判断**（Must Have の目視3点 + Should Have の Lighthouse をどう扱うか）
+- マージ可否: **ユーザー判断**
+
+---
+
+## Phase 6 ブランドリフレッシュ追記
+
+実行日: 2026-05-29
+対象コミット: `59faef1` 時点（弊社→当社置換前）
+
+### 反映内容
+- [x] BrandSignature「RENEW, NOT REBUILD.」全ページ反映（hero eyebrow + footer signature）
+- [x] Hero 全面書き換え（高速道路リニューアル専門会社ポジション）
+  - メイン: 「削る、直す、復旧する。高速道路リニューアルの専門会社。」
+- [x] 強み3カード差し替え（一社完結 / 指名継続 / 自社施工）
+- [x] 会社情報 実値化（設立2012 / 経審P732 / 大野城市御笠川6-2-5 / 社員50名 / 無事故5年以上）
+- [x] 取引先表示を「ほか」表記に統一（NIPPO・前田道路の社名は前面から除外）
+- [x] ProcessFlow セクション追加（はつり→断面修復→床版防水→舗装復旧 の4工程視覚化）
+- [x] StatGrid 数値表示（経審P732 / 無事故5年以上 / 継続指名80%超 / 社員50名 / 取引10社+ / CONJET2台）
+- [x] ScrollReveal Island 追加（fade-up 演出、prefers-reduced-motion 対応）
+- [x] 採用ページ recruit.astro 新規追加
+- [x] Header / MobileNav に「採用情報」リンク追加
+- [x] Footer 刷新（BrandSignature footer variant + 株式会社サンユウテック + 大野城市御笠川6-2-5）
+- [x] 弊社 → 当社 統一（research/04 と 05 を含む全文書）
+- [x] 全ページ heading に英語アイブロー「RENEW, NOT REBUILD.」
+
+### Phase 6 自動検査結果
+- [x] `astro build` 成功 — 6 page(s) built（index / service / works / company / contact / recruit）
+- [x] 生カラー検査: PASS（tokens.css 以外で 0 件）
+- [x] インラインスタイル検査: PASS（0件）
+- [x] img alt 検査: PASS（全件 alt 属性あり）
+- [x] sitemap-index.xml + sitemap-0.xml 生成
+- [x] 弊社残存検査: PASS（0件）
+
+### Phase 6 ユーザー検収待ち
+- [ ] プレビュー（http://localhost:4321）で6ページ目視
+- [ ] 「RENEW, NOT REBUILD.」配置の最終OK
+- [ ] ProcessFlow / StatGrid の見え方OK
+- [ ] 主軸ペルソナ視点で「高速道路リニューアル専門会社」が伝わるか
 
 ---
 
