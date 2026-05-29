@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import Form from '../components/Form.astro';
+---
+<Base
+  title="お問い合わせ | サンユウテック株式会社"
+  description="見積依頼・現地調査のご相談はこちらから。原則1営業日以内に返信します。電話 092-555-9211（平日 8:00〜17:00）も承ります。"
+  currentPage="contact"
+  ogImage="/images/hero-1.jpg"
+>
+  <section class="page-hero">
+    <div class="container">
+      <h1>見積依頼・現地調査のご相談</h1>
+      <p class="lead">原則1営業日以内に返信します。お電話でも承ります。</p>
+    </div>
+  </section>
+
+  <section class="contact-block">
+    <div class="container narrow">
+      <div class="grid-2">
+        <div class="tel-block">
+          <SectionTitle text="お電話でのお問い合わせ" level={2} />
+          <a href="tel:0925559211" class="tel-large">092-555-9211</a>
+          <p class="hours">平日 8:00〜17:00</p>
+          <h3>本社所在地</h3>
+          <p>福岡県大野城市</p>
+        </div>
+        <div class="form-block">
+          <SectionTitle text="フォームでのお問い合わせ" level={2} />
+          <Form />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--section-py-tablet) 0; }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .container.narrow { max-width: var(--content-max); }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
+  .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+
+  .contact-block { padding: var(--section-py-desktop) 0; background: var(--color-white); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1.5fr; gap: var(--sp-12); align-items: start; }
+
+  .tel-large {
+    display: block;
+    font-size: var(--fs-4xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-navy-900);
+    margin-bottom: var(--sp-2);
+  }
+  .hours { color: var(--color-gray-700); margin-bottom: var(--sp-8); }
+  .tel-block h3 { font-size: var(--fs-lg); margin-bottom: var(--sp-2); color: var(--color-navy-900); }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .grid-2 { grid-template-columns: 1fr; gap: var(--sp-8); }
+    .contact-block, .page-hero { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .page-hero h1 { font-size: var(--fs-3xl); }
+    .tel-large { font-size: var(--fs-3xl); }
+    .contact-block { padding: var(--section-py-mobile) 0; }
+  }
+</style>
