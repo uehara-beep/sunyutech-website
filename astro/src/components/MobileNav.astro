@@ -1,0 +1,74 @@
+---
+interface Props {
+  currentPage: 'index' | 'service' | 'works' | 'company' | 'contact';
+}
+
+const { currentPage } = Astro.props;
+
+const navItems = [
+  { href: '/service/', label: '事業内容', key: 'service' },
+  { href: '/works/', label: '施工実績', key: 'works' },
+  { href: '/company/', label: '会社概要', key: 'company' },
+  { href: '/contact/', label: 'お問い合わせ', key: 'contact' },
+] as const;
+---
+<details class="mobile-nav">
+  <summary aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </summary>
+  <nav aria-label="モバイルナビゲーション">
+    <ul>
+      {navItems.map(item => (
+        <li>
+          <a href={item.href} aria-current={currentPage === item.key ? 'page' : undefined}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href="tel:0925559211" class="tel">TEL 092-555-9211</a>
+      </li>
+    </ul>
+  </nav>
+</details>
+<style>
+  .mobile-nav { display: none; }
+  @media (max-width: 1023px) {
+    .mobile-nav { display: block; margin-left: auto; }
+    .mobile-nav summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: var(--sp-2);
+    }
+    .mobile-nav summary::-webkit-details-marker { display: none; }
+    .mobile-nav summary span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--color-navy-900);
+    }
+    .mobile-nav nav {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      background: var(--color-white);
+      border-top: 1px solid var(--color-gray-200);
+      box-shadow: var(--shadow-md);
+    }
+    .mobile-nav nav ul { padding: var(--sp-4); }
+    .mobile-nav nav li { border-bottom: 1px solid var(--color-gray-200); }
+    .mobile-nav nav li:last-child { border-bottom: none; }
+    .mobile-nav nav a {
+      display: block;
+      padding: var(--sp-4);
+      color: var(--color-navy-900);
+      font-weight: var(--fw-semibold);
+    }
+    .mobile-nav nav a[aria-current="page"] { color: var(--color-orange-600); }
+    .mobile-nav nav a.tel { color: var(--color-orange-600); font-weight: var(--fw-bold); }
+  }
+</style>
