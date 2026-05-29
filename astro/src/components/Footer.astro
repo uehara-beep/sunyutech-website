@@ -1,11 +1,13 @@
 ---
+import BrandSignature from './BrandSignature.astro';
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
   <div class="footer-inner">
-    <div class="col">
-      <h3 class="col-title">株式会社サンユウテック</h3>
-      <p>福岡県大野城市</p>
+    <div class="col col-brand">
+      <BrandSignature variant="footer" />
+      <p class="brand-name">株式会社サンユウテック</p>
+      <p>福岡県大野城市御笠川6-2-5</p>
       <p>TEL 092-555-9211（平日 8:00〜17:00）</p>
     </div>
     <nav class="col" aria-label="フッターナビゲーション">
@@ -13,14 +15,15 @@ const year = new Date().getFullYear();
       <ul>
         <li><a href="/service/">事業内容</a></li>
         <li><a href="/works/">施工実績</a></li>
-        <li><a href="/company/">会社概要</a></li>
+        <li><a href="/company/">会社案内</a></li>
+        <li><a href="/recruit/">採用情報</a></li>
         <li><a href="/contact/">お問い合わせ</a></li>
       </ul>
     </nav>
     <div class="col">
       <h3 class="col-title">お問い合わせ</h3>
       <p><a href="/contact/">見積依頼・現地調査のご相談</a></p>
-      <p>原則 1 営業日以内に返信します。</p>
+      <p>原則 翌営業日に一次回答します。</p>
     </div>
   </div>
   <p class="copyright">© {year} 株式会社サンユウテック</p>
@@ -36,9 +39,10 @@ const year = new Date().getFullYear();
     margin: 0 auto;
     padding: 0 var(--gutter-desktop);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: var(--sp-12);
   }
+  .brand-name { font-size: var(--fs-lg); font-weight: var(--fw-bold); color: var(--color-white); margin: var(--sp-4) 0 var(--sp-3); }
   .col-title {
     color: var(--color-white);
     font-size: var(--fs-lg);
