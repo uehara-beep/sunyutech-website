@@ -1,0 +1,80 @@
+# 20 Design Tokens
+# CSS変数として src/styles/tokens.css に展開する基準値。値直書き禁止、必ず変数経由。
+
+colors:
+  navy:
+    900: "#0B2545"   # primary
+    800: "#13315C"
+    700: "#1E3A5F"
+  orange:
+    600: "#E67E22"   # accent
+    700: "#D35400"   # hover
+    500: "#F39C12"   # subtle highlight (使う時は要相談)
+  gray:
+    900: "#1F2937"   # body text base
+    700: "#374151"
+    500: "#6B7280"
+    300: "#D1D5DB"
+    200: "#E5E7EB"   # card border
+    100: "#F4F6F9"   # soft gray section bg
+  white: "#FFFFFF"
+  status:
+    success: "#0E8A16"
+    error: "#B91C1C"
+
+typography:
+  font_family:
+    base: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif"
+    mono: "'JetBrains Mono', ui-monospace, monospace"
+  weights:
+    regular: 400
+    medium: 500
+    semibold: 600
+    bold: 700
+    extrabold: 800
+  scale:
+    xs: "0.75rem"     # 12px
+    sm: "0.875rem"    # 14px
+    base: "1rem"      # 16px
+    lg: "1.125rem"    # 18px
+    xl: "1.25rem"     # 20px
+    2xl: "1.5rem"     # 24px
+    3xl: "2rem"       # 32px
+    4xl: "2.5rem"     # 40px
+    5xl: "3rem"       # 48px
+  line_height:
+    tight: 1.2
+    normal: 1.5
+    relaxed: 1.7
+
+spacing:
+  base: 4
+  scale:
+    1: "4px"
+    2: "8px"
+    3: "12px"
+    4: "16px"
+    6: "24px"
+    8: "32px"
+    12: "48px"
+    16: "64px"
+    24: "96px"
+
+radius:
+  none: "0"
+  sm: "4px"
+  md: "8px"
+  lg: "12px"
+  full: "9999px"
+
+shadow:
+  none: "none"
+  sm: "0 1px 2px rgba(11, 37, 69, 0.05)"
+  md: "0 4px 8px rgba(11, 37, 69, 0.08)"
+  lg: "0 12px 24px rgba(11, 37, 69, 0.12)"
+
+z_index:
+  base: 0
+  dropdown: 100
+  sticky: 200
+  modal: 1000

@@ -1,0 +1,44 @@
+# 25 Layout Contract
+# 全ページ・全コンポーネントで遵守する寸法契約。
+
+wrapper:
+  max_width_px: 1200
+  centered: true
+
+content:
+  max_width_px: 880
+  centered: true
+
+gutter:
+  desktop_px: 32
+  tablet_px: 24
+  mobile_px: 16
+
+breakpoints:
+  mobile_max: 480
+  tablet_max: 1023
+  desktop_min: 1024
+
+responsive_columns:
+  desktop: 3
+  tablet: 2
+  mobile: 1
+
+full_bleed_sections:
+  - hero
+  - cta_band
+  - footer
+
+constrained_sections:
+  - why_choose_us
+  - service_overview
+  - recent_works
+  - company_intro
+  - all_other
+
+horizontal_scroll: forbidden_at_all_viewports
+
+vertical_rhythm:
+  section_padding_y_desktop_px: 96
+  section_padding_y_tablet_px: 64
+  section_padding_y_mobile_px: 48
