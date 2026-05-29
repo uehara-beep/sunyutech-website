@@ -277,4 +277,35 @@ sunyutech-website/
 
 ---
 
-**Last Updated**: 2026-05-28
+---
+
+## 12. Pivot — 2026-05-29 Claude-only 経路へ切替
+
+ヒーロー mockup を ChatGPT image2 で 1案生成し評価したが、現場でのトーンと細部統制（特に nav セパレータ・写真比率・サブテキスト密度）が要求水準に届かなかった。Phase 2 の反復で詰めるより、Claude Code 直書きのほうが速度・整合性の両面で勝ると判断。以下に切替える。
+
+### 切替内容
+
+| 項目 | 切替前 | 切替後 |
+|---|---|---|
+| Phase 2（ChatGPT image2） | mockup PNG 5枚 | **スキップ**。1案のみ参考として `projects/sunyutech-renewal/mockups/hero-final.png` に保存（任意） |
+| Phase 3（Claude Design） | handoff bundle 生成 | **スキップ**。Claude Code が `projects/sunyutech-renewal/design/handoff/` 配下に design principles / tokens / layout contract / component spec / page structure / acceptance criteria / implementation notes を直接執筆 |
+| Phase 4 / 5 | 同 | 維持（Astro実装 + QA） |
+
+### 旧成果物の扱い
+
+- `projects/sunyutech-renewal/prompts/image2-prompt.md` は試行ログとして残置（次プロジェクトのワークフロー学習用）
+- `prompts/claude-design-handoff.md` は作成しない
+- `mockups/hero-final.png` は手元保存していれば視覚参照、無ければ問題なし
+
+### 新プラン
+
+`docs/superpowers/plans/2026-05-29-sunyutech-renewal-phase-4-5-claude-only.md` で
+- design/handoff/* の Claude 直書き
+- Astro 4.x 実装（spec §8 Phase 4 の11コミット構成を維持）
+- Phase 5 QA Must Have 検証 + マージ判断
+
+を扱う。
+
+---
+
+**Last Updated**: 2026-05-29

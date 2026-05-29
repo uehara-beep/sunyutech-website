@@ -1,5 +1,8 @@
 # サンユウテック HPリニューアル Phase 0–3 実装計画
 
+> **⚠ 2026-05-29 Pivot 注記**: Task 9（Phase 2 USER CHECKPOINT）で 1案評価後に基準未達と判断、Phase 2/3 をスキップして Claude Code 直書きに切替。Task 9 は部分完了として close、Task 10/11 は中止、Task 12 は新プラン `2026-05-29-sunyutech-renewal-phase-4-5-claude-only.md` で吸収。詳細は spec §12 参照。
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** AI-LandBase 5フェーズワークフローの Phase 0（BRIEF）、Phase 1（research）、Phase 2/3 用プロンプト納品までを完了し、ユーザーが ChatGPT image2 / Claude Design を実行する準備を整える。
