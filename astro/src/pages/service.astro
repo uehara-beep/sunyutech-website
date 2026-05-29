@@ -5,14 +5,15 @@ import CtaBand from '../components/CtaBand.astro';
 ---
 <Base
   title="事業内容 | 株式会社サンユウテック"
-  description="サンユウテックは舗装工事・ウォータージェット工事・コンクリート補修工事の3工法を自社施工で提供します。最大約30,000m²規模・供用下補修にも対応します。"
+  description="舗装・ウォータージェット・コンクリート補修の3工法を一社で。高速道路リニューアル工事の中核を担う、株式会社サンユウテックの事業内容。"
   currentPage="service"
   ogImage="/images/service-paving.jpg"
 >
   <section class="page-hero">
     <div class="container">
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
       <h1>3工法を、一社で。</h1>
-      <p class="lead">舗装・ウォータージェット・コンクリート補修を自社施工で受託します。</p>
+      <p class="lead">高速道路リニューアル工事の中核を、舗装・WJ・コンクリート補修の3工法で支えます。</p>
     </div>
   </section>
 
@@ -87,6 +88,14 @@ import CtaBand from '../components/CtaBand.astro';
   .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
   .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+  .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+    text-transform: uppercase;
+  }
 
   .method-section { padding: var(--section-py-desktop) 0; background: var(--color-white); }
   .method-section.alt { background: var(--color-gray-100); }

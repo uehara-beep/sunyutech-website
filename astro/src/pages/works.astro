@@ -9,14 +9,15 @@ const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
 ---
 <Base
   title="施工実績 | 株式会社サンユウテック"
-  description="サンユウテックの施工実績一覧。舗装・ウォータージェット・コンクリート補修の3工法、九州管内の高速道路・国道・構造物の実績を掲載します。"
+  description="高速道路リニューアル工事を中心に、舗装・ウォータージェット・コンクリート補修の3工法で全国の案件を担ってきた、株式会社サンユウテックの施工実績。"
   currentPage="works"
   ogImage="/images/work-paving02.jpg"
 >
   <section class="page-hero">
     <div class="container">
-      <h1>九州一円・最大約30,000m²規模の施工実績</h1>
-      <p class="lead">舗装・ウォータージェット・コンクリート補修の3工法で、高速道路・国道・構造物の補修を担ってきました。</p>
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
+      <h1>全国の高速道路リニューアルを、九州から支える。</h1>
+      <p class="lead">舗装・ウォータージェット・コンクリート補修の3工法で、高速道路の補修施工を担ってきました。</p>
     </div>
   </section>
 
@@ -70,6 +71,14 @@ const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
   .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
   .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+  .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+    text-transform: uppercase;
+  }
 
   .works-list { padding: var(--section-py-desktop) 0; background: var(--color-white); }
   .filter { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-bottom: var(--sp-8); }

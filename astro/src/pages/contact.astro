@@ -5,14 +5,15 @@ import Form from '../components/Form.astro';
 ---
 <Base
   title="お問い合わせ | 株式会社サンユウテック"
-  description="見積依頼・現地調査のご相談はこちらから。原則1営業日以内に返信します。電話 092-555-9211（平日 8:00〜17:00）も承ります。"
+  description="見積依頼・現地調査のご相談はこちらから。原則翌営業日に一次回答します。"
   currentPage="contact"
   ogImage="/images/hero-1.jpg"
 >
   <section class="page-hero">
     <div class="container">
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
       <h1>見積依頼・現地調査のご相談</h1>
-      <p class="lead">原則1営業日以内に返信します。お電話でも承ります。</p>
+      <p class="lead">ご相談・お問い合わせには、原則翌営業日に一次回答いたします。</p>
     </div>
   </section>
 
@@ -41,6 +42,14 @@ import Form from '../components/Form.astro';
   .container.narrow { max-width: var(--content-max); }
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
   .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+  .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+    text-transform: uppercase;
+  }
 
   .contact-block { padding: var(--section-py-desktop) 0; background: var(--color-white); }
   .grid-2 { display: grid; grid-template-columns: 1fr 1.5fr; gap: var(--sp-12); align-items: start; }
