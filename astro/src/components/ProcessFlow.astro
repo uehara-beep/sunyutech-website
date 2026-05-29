@@ -1,0 +1,73 @@
+---
+const steps = [
+  { num: '01', label: '床版はつり', sub: 'CONJET ロボット' },
+  { num: '02', label: '断面修復', sub: '欠損部の再生' },
+  { num: '03', label: '床版防水', sub: '層の新設' },
+  { num: '04', label: '舗装復旧', sub: '一気に再生' },
+] as const;
+---
+<div class="process-flow" role="list" aria-label="高速道路リニューアル ワンストップ4工程">
+  {steps.map((s, i) => (
+    <>
+      <div class="step" role="listitem">
+        <div class="num">{s.num}</div>
+        <div class="text">
+          <h4>{s.label}</h4>
+          <p>{s.sub}</p>
+        </div>
+      </div>
+      {i < steps.length - 1 && <div class="arrow" aria-hidden="true">→</div>}
+    </>
+  ))}
+</div>
+<style>
+  .process-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    gap: var(--sp-3);
+    align-items: stretch;
+    padding: var(--sp-8) 0;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding: var(--sp-6);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+  }
+  .num {
+    font-family: var(--font-base);
+    font-size: var(--fs-2xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-orange-600);
+    letter-spacing: 0.05em;
+  }
+  .text h4 {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy-900);
+    margin: 0 0 var(--sp-1);
+  }
+  .text p {
+    font-size: var(--fs-xs);
+    color: var(--color-gray-700);
+    margin: 0;
+  }
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-navy-700);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+  }
+  @media (max-width: 1023px) {
+    .process-flow { grid-template-columns: 1fr 1fr; }
+    .arrow { display: none; }
+  }
+  @media (max-width: 480px) {
+    .process-flow { grid-template-columns: 1fr; }
+  }
+</style>
