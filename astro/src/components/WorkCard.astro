@@ -1,0 +1,57 @@
+---
+interface Props {
+  image: { src: string; alt: string };
+  methodChip: '舗装' | 'WJ' | 'コンクリート補修';
+  title: string;
+  location: string;
+  method: string;
+  scale: string;
+  client?: string;
+}
+const { image, methodChip, title, location, method, scale, client } = Astro.props;
+---
+<article class="work-card">
+  <div class="image">
+    <img src={image.src} alt={image.alt} width="600" height="338" loading="lazy" />
+  </div>
+  <div class="body">
+    <span class="chip">{methodChip}</span>
+    <h3>{title}</h3>
+    <dl>
+      <div><dt>場所</dt><dd>{location}</dd></div>
+      <div><dt>工法</dt><dd>{method}</dd></div>
+      <div><dt>規模</dt><dd>{scale}</dd></div>
+      {client && <div><dt>元請</dt><dd>{client}</dd></div>}
+    </dl>
+  </div>
+</article>
+<style>
+  .work-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .image img { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+  .body { padding: var(--sp-4); }
+  .chip {
+    display: inline-block;
+    background: var(--color-navy-900);
+    color: var(--color-white);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    padding: var(--sp-1) var(--sp-3);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--sp-3);
+  }
+  .work-card h3 {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy-900);
+    margin-bottom: var(--sp-3);
+  }
+  dl { font-size: var(--fs-sm); color: var(--color-gray-700); }
+  dl > div { display: flex; gap: var(--sp-3); padding: var(--sp-1) 0; }
+  dt { color: var(--color-gray-500); min-width: 48px; }
+  dd { margin: 0; color: var(--color-gray-900); }
+</style>

@@ -1,0 +1,63 @@
+---
+import Button from './Button.astro';
+interface Props {
+  heading1: string;
+  heading2: string;
+  sub: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  imageSrc: string;
+  imageAlt: string;
+}
+const { heading1, heading2, sub, primaryCta, secondaryCta, imageSrc, imageAlt } = Astro.props;
+---
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>
+        <span>{heading1}</span>
+        <span>{heading2}</span>
+      </h1>
+      <p class="hero-sub">{sub}</p>
+      <div class="hero-ctas">
+        <Button variant="primary" href={primaryCta.href} label={primaryCta.label} />
+        {secondaryCta && <Button variant="secondary" href={secondaryCta.href} label={secondaryCta.label} />}
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src={imageSrc} alt={imageAlt} width="660" height="540" loading="eager" fetchpriority="high" />
+    </div>
+  </div>
+</section>
+<style>
+  .hero { background: var(--color-white); padding: var(--section-py-desktop) 0; }
+  .hero-inner {
+    max-width: var(--wrapper-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter-desktop);
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: var(--sp-8);
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: var(--fs-5xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-navy-900);
+    line-height: var(--lh-tight);
+    margin-bottom: var(--sp-6);
+  }
+  .hero h1 span { display: block; }
+  .hero-sub { font-size: var(--fs-lg); color: var(--color-gray-900); line-height: var(--lh-relaxed); margin-bottom: var(--sp-8); }
+  .hero-ctas { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
+  .hero-image img { width: 100%; height: auto; border-radius: var(--radius-md); object-fit: cover; }
+  @media (max-width: 1023px) {
+    .hero-inner { padding: 0 var(--gutter-tablet); }
+    .hero h1 { font-size: var(--fs-4xl); }
+  }
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; padding: 0 var(--gutter-mobile); }
+    .hero h1 { font-size: var(--fs-3xl); }
+    .hero { padding: var(--section-py-mobile) 0; }
+  }
+</style>

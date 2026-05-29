@@ -1,0 +1,30 @@
+---
+interface Props {
+  text: string;
+  level?: 2 | 3;
+}
+const { text, level = 2 } = Astro.props;
+const Tag = `h${level}` as 'h2' | 'h3';
+---
+<div class="section-title">
+  <Tag>{text}</Tag>
+  <span class="accent" aria-hidden="true"></span>
+</div>
+<style>
+  .section-title { margin: 0 0 var(--sp-6); }
+  .section-title h2, .section-title h3 {
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-navy-900);
+    margin: 0 0 var(--sp-3);
+  }
+  .accent {
+    display: block;
+    width: 48px;
+    height: 4px;
+    background: var(--color-orange-600);
+  }
+  @media (max-width: 480px) {
+    .section-title h2, .section-title h3 { font-size: var(--fs-2xl); }
+  }
+</style>
