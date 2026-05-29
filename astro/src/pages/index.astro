@@ -1,10 +1,123 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import WorkCard from '../components/WorkCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Button from '../components/Button.astro';
 ---
 <Base
   title="サンユウテック株式会社 | 九州の道路補修・舗装・WJ・コンクリート補修"
-  description="サンユウテック株式会社は福岡・大野城を拠点に、舗装・ウォータージェット・コンクリート補修の3工法を一社で提供する建設会社です。"
+  description="サンユウテック株式会社は福岡・大野城を拠点に、舗装・ウォータージェット・コンクリート補修の3工法を一社で提供する建設会社です。九州自動車道・長崎自動車道管内の供用下補修に対応します。"
   currentPage="index"
 >
-  <p style="padding:96px var(--gutter-desktop);">準備中</p>
+  <Hero
+    heading1="九州の道路補修を、"
+    heading2="舗装・WJ・コンクリート補修の3工法で。"
+    sub="福岡・大野城を拠点に、九州自動車道・長崎自動車道管内の供用下補修まで対応します。"
+    primaryCta={{ label: '見積依頼・現地調査のご相談', href: '/contact/' }}
+    secondaryCta={{ label: '施工実績を見る', href: '/works/' }}
+    imageSrc="/images/hero-1.jpg"
+    imageAlt="サンユウテックの舗装施工現場"
+  />
+
+  <section class="section section-strength">
+    <div class="container">
+      <SectionTitle text="サンユウテックが選ばれる理由" />
+      <div class="grid-3">
+        <FeatureCard number="01" title="3工法を一社で完結" description="舗装・WJ・コンクリート補修を自社施工で受託します。発注側の協力会社調整工数を削減します。" />
+        <FeatureCard number="02" title="自社保有24台の機材" description="CONJET327 2台、NLB 35305DGF 2台ほか合計24台。緊急対応・夜間施工にも応えます。" />
+        <FeatureCard number="03" title="NIPPO・前田道路と継続取引" description="大手道路ゼネコン各社との協力会社として実績を重ねています。経審・安全書類対応も完備。" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-service">
+    <div class="container">
+      <SectionTitle text="事業内容" />
+      <p class="lead">3工法を、一社で。</p>
+      <div class="grid-3">
+        <FeatureCard
+          title="舗装工事"
+          description="大型物流倉庫から高速道路本線まで、最大約30,000m²規模に対応します。"
+          image={{ src: '/images/service-paving.jpg', alt: '舗装工事の現場' }}
+          link={{ href: '/service/#paving', label: '詳しく見る' }}
+        />
+        <FeatureCard
+          title="ウォータージェット工事"
+          description="振動・騒音を抑えたはつり・粗面処理で、供用下補修に対応します。"
+          image={{ src: '/images/service-waterjet.jpg', alt: 'ウォータージェット工事の現場' }}
+          link={{ href: '/service/#waterjet', label: '詳しく見る' }}
+        />
+        <FeatureCard
+          title="コンクリート補修工事"
+          description="橋梁床版・トンネルの断面修復から表面保護まで一貫して施工します。"
+          image={{ src: '/images/service-concrete.jpg', alt: 'コンクリート補修工事の現場' }}
+          link={{ href: '/service/#concrete', label: '詳しく見る' }}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-works">
+    <div class="container">
+      <SectionTitle text="直近の施工実績" />
+      <div class="grid-3">
+        <WorkCard
+          image={{ src: '/images/work-paving02.jpg', alt: '舗装打替工事' }}
+          methodChip="舗装"
+          title="九州自動車道管内 舗装打替工事"
+          location="福岡県"
+          method="舗装打替"
+          scale="約30,000m²"
+          client="NIPPO"
+        />
+        <WorkCard
+          image={{ src: '/images/work-waterjet01.jpg', alt: '橋梁床版WJ施工' }}
+          methodChip="WJ"
+          title="長崎自動車道管内 橋梁床版WJ"
+          location="長崎県"
+          method="ウォータージェット粗面処理"
+          scale="約1,800m²"
+          client="前田道路"
+        />
+        <WorkCard
+          image={{ src: '/images/work-concrete01.jpg', alt: 'コンクリート補修施工' }}
+          methodChip="コンクリート補修"
+          title="高速道路橋梁コンクリート補修"
+          location="九州管内"
+          method="断面修復・表面保護"
+          scale="約500m²"
+        />
+      </div>
+      <div class="more-cta">
+        <Button variant="tertiary" href="/works/" label="すべての施工実績を見る" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="短工期・夜間案件、まずご相談ください。" />
 </Base>
+
+<style>
+  .section { padding: var(--section-py-desktop) 0; }
+  .section-strength { background: var(--color-gray-100); }
+  .section-service { background: var(--color-white); }
+  .section-works { background: var(--color-gray-100); }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
+  .lead { font-size: var(--fs-xl); color: var(--color-navy-900); font-weight: var(--fw-semibold); margin-bottom: var(--sp-8); }
+  .more-cta { margin-top: var(--sp-8); text-align: center; }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 768px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .section { padding: var(--section-py-mobile) 0; }
+  }
+</style>
