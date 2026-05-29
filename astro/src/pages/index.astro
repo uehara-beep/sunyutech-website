@@ -6,29 +6,42 @@ import FeatureCard from '../components/FeatureCard.astro';
 import WorkCard from '../components/WorkCard.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Button from '../components/Button.astro';
+import ProcessFlow from '../components/ProcessFlow.astro';
+import StatGrid from '../components/StatGrid.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 ---
 <Base
-  title="株式会社サンユウテック | 九州の道路補修・舗装・WJ・コンクリート補修"
-  description="株式会社サンユウテックは福岡・大野城を拠点に、舗装・ウォータージェット・コンクリート補修の3工法を一社で提供する建設会社です。九州自動車道・長崎自動車道管内の供用下補修に対応します。"
+  title="株式会社サンユウテック | 高速道路リニューアルの専門会社"
+  description="株式会社サンユウテックは福岡・大野城を拠点に、高速道路の床版を「はつり→断面修復→床版防水→舗装復旧」まで一社で担う、リニューアル工事の専門会社です。"
   currentPage="index"
 >
   <Hero
-    heading1="九州の道路補修を、"
-    heading2="舗装・WJ・コンクリート補修の3工法で。"
-    sub="福岡・大野城を拠点に、九州自動車道・長崎自動車道管内の供用下補修まで対応します。"
+    heading1="削る、直す、復旧する。"
+    heading2="高速道路リニューアルの専門会社。"
+    sub="福岡・大野城を拠点に、高速道路の床版をはつりから舗装復旧まで一社で担います。"
     primaryCta={{ label: '見積依頼・現地調査のご相談', href: '/contact/' }}
     secondaryCta={{ label: '施工実績を見る', href: '/works/' }}
     imageSrc="/images/hero-1.jpg"
-    imageAlt="サンユウテックの舗装施工現場"
+    imageAlt="サンユウテックの施工現場"
   />
+
+  <section class="section section-process">
+    <div class="container">
+      <SectionTitle text="ワンストップ施工 4 工程" />
+      <p class="lead">床版リニューアルを一社で完結します。</p>
+      <ScrollReveal>
+        <ProcessFlow />
+      </ScrollReveal>
+    </div>
+  </section>
 
   <section class="section section-strength">
     <div class="container">
       <SectionTitle text="サンユウテックが選ばれる理由" />
       <div class="grid-3">
-        <FeatureCard number="01" title="3工法を一社で完結" description="舗装・WJ・コンクリート補修を自社施工で受託します。発注側の協力会社調整工数を削減します。" />
-        <FeatureCard number="02" title="自社保有24台の機材" description="CONJET327 2台、NLB 35305DGF 2台ほか合計24台。緊急対応・夜間施工にも応えます。" />
-        <FeatureCard number="03" title="NIPPO・前田道路と継続取引" description="大手道路ゼネコン各社との協力会社として実績を重ねています。経審・安全書類対応も完備。" />
+        <FeatureCard number="01" title="はつりから復旧まで、一社完結" description="床版はつりから断面修復・床版防水・舗装復旧まで自社一貫。工程を分断しません。" />
+        <FeatureCard number="02" title="指名され続ける、継続の実績" description="舗装は継続・指名が8割超。無事故5年以上、元請からの安全表彰も受賞しています。" />
+        <FeatureCard number="03" title="丸投げしない、自社施工" description="社員50名の約9割が現場・技術。施工管理10名で複数現場を並行対応します。" />
       </div>
     </div>
   </section>
@@ -40,23 +53,40 @@ import Button from '../components/Button.astro';
       <div class="grid-3">
         <FeatureCard
           title="舗装工事"
-          description="大型物流倉庫から高速道路本線まで、最大約30,000m²規模に対応します。"
+          description="インター部・高速本線・景観舗装まで、最大約12,000m²規模に対応します。"
           image={{ src: '/images/service-paving.jpg', alt: '舗装工事の現場' }}
           link={{ href: '/service/#paving', label: '詳しく見る' }}
         />
         <FeatureCard
           title="ウォータージェット工事"
-          description="振動・騒音を抑えたはつり・粗面処理で、供用下補修に対応します。"
+          description="200MPa超の高圧ポンプとCONJETロボットで、床版はつり・目荒らしを精密に施工します。"
           image={{ src: '/images/service-waterjet.jpg', alt: 'ウォータージェット工事の現場' }}
           link={{ href: '/service/#waterjet', label: '詳しく見る' }}
         />
         <FeatureCard
           title="コンクリート補修工事"
-          description="橋梁床版・トンネルの断面修復から表面保護まで一貫して施工します。"
+          description="断面修復・床版防水・繊維シート補強まで、はつりから補修まで一体で施工します。"
           image={{ src: '/images/service-concrete.jpg', alt: 'コンクリート補修工事の現場' }}
           link={{ href: '/service/#concrete', label: '詳しく見る' }}
         />
       </div>
+    </div>
+  </section>
+
+  <section class="section section-stats">
+    <div class="container">
+      <SectionTitle text="保有機械・体制" />
+      <p class="lead">数字で語る、当社の地力。</p>
+      <ScrollReveal>
+        <StatGrid stats={[
+          { value: '732', label: '経営事項審査 舗装 総合評定値', caveat: '客観的な信用力を示す指標' },
+          { value: '5', unit: '年以上', label: '無事故・無災害を継続中', caveat: '元請からの安全表彰も受賞' },
+          { value: '80', unit: '%超', label: '舗装の継続・指名率', caveat: '長期取引が信頼の証' },
+          { value: '50', unit: '名', label: '社員数（うち現場・技術45名）', caveat: '徹底した現場主義' },
+          { value: '10', unit: '社+', label: '取引のある主要道路ゼネコン', caveat: '全国の元請と継続関係' },
+          { value: '2', unit: '台', label: 'CONJET 自動はつりロボット保有', caveat: '床版はつりの中核機材' },
+        ]} />
+      </ScrollReveal>
     </div>
   </section>
 
@@ -65,30 +95,28 @@ import Button from '../components/Button.astro';
       <SectionTitle text="直近の施工実績" />
       <div class="grid-3">
         <WorkCard
-          image={{ src: '/images/work-paving02.jpg', alt: '舗装打替工事' }}
+          image={{ src: '/images/work-paving02.jpg', alt: '高速道路舗装打替工事' }}
           methodChip="舗装"
-          title="九州自動車道管内 舗装打替工事"
-          location="福岡県"
+          title="高速道路本線 舗装打替工事"
+          location="九州管内"
           method="舗装打替"
-          scale="約30,000m²"
-          client="NIPPO"
+          scale="約12,000m²"
         />
         <WorkCard
           image={{ src: '/images/work-waterjet01.jpg', alt: '橋梁床版WJ施工' }}
           methodChip="WJ"
-          title="長崎自動車道管内 橋梁床版WJ"
-          location="長崎県"
-          method="ウォータージェット粗面処理"
-          scale="約1,800m²"
-          client="前田道路"
+          title="高速道路橋梁床版WJ施工"
+          location="九州管内"
+          method="CONJET 床版はつり・目荒らし"
+          scale="200MPa超 / 大規模"
         />
         <WorkCard
           image={{ src: '/images/work-concrete01.jpg', alt: 'コンクリート補修施工' }}
           methodChip="コンクリート補修"
           title="高速道路橋梁コンクリート補修"
           location="九州管内"
-          method="断面修復・表面保護"
-          scale="約500m²"
+          method="断面修復・床版防水・舗装復旧"
+          scale="一気通貫施工"
         />
       </div>
       <div class="more-cta">
@@ -97,14 +125,16 @@ import Button from '../components/Button.astro';
     </div>
   </section>
 
-  <CtaBand heading="短工期・夜間案件、まずご相談ください。" />
+  <CtaBand heading="床版リニューアル案件、まずご相談ください。" />
 </Base>
 
 <style>
   .section { padding: var(--section-py-desktop) 0; }
+  .section-process { background: var(--color-white); }
   .section-strength { background: var(--color-gray-100); }
   .section-service { background: var(--color-white); }
-  .section-works { background: var(--color-gray-100); }
+  .section-stats { background: var(--color-gray-100); }
+  .section-works { background: var(--color-white); }
   .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
   .lead { font-size: var(--fs-xl); color: var(--color-navy-900); font-weight: var(--fw-semibold); margin-bottom: var(--sp-8); }
