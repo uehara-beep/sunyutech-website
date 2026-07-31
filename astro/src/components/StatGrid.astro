@@ -59,17 +59,16 @@ const { stats } = Astro.props;
   .stat {
     position: relative;
     padding: var(--sp-8) var(--sp-6) var(--sp-6);
-    background: var(--color-white);
+    background: var(--surface-card);
     border-top: 3px solid var(--color-orange-600);
-    border-left: 1px solid var(--color-gray-200);
-    border-right: 1px solid var(--color-gray-200);
-    border-bottom: 1px solid var(--color-gray-200);
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-left: 1px solid var(--line-navy);
+    border-right: 1px solid var(--line-navy);
+    border-bottom: 1px solid var(--line-navy);
+    border-radius: var(--radius-none);
+    transition: border-color 0.25s ease;
   }
   .stat:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+    border-color: var(--line-orange);
   }
   .index {
     position: absolute;
