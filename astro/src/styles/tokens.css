@@ -17,6 +17,30 @@
   --color-status-success: #0E8A16;
   --color-status-error: #B91C1C;
 
+  /* 欧文書体 */
+  --font-en: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
+
+  /* 背景レイヤー */
+  --bg-base: #F7F9FC;
+  --bg-mesh-1: oklch(90% 0.075 245 / 0.95);
+  --bg-mesh-2: oklch(92% 0.065 200 / 0.90);
+  --bg-mesh-3: oklch(94% 0.060 70 / 0.95);
+  --bg-dot: rgba(11, 37, 69, 0.10);
+  --bg-dot-size: 22px;
+  --grain-opacity: 0.035;
+
+  /* サーフェス（背景を透過させるカード面） */
+  --surface-card: rgba(255, 255, 255, 0.82);
+
+  /* ヘアライン */
+  --line-navy: rgba(11, 37, 69, 0.13);
+  --line-orange: rgba(230, 126, 34, 0.55);
+
+  /* 字間 */
+  --ls-en-label: 0.26em;
+  --ls-en-wide: 0.30em;
+  --ls-ja: 0.04em;
+
   /* typography */
   --font-base: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -72,9 +96,9 @@
   --gutter-desktop: 32px;
   --gutter-tablet: 24px;
   --gutter-mobile: 16px;
-  --section-py-desktop: 112px;
-  --section-py-tablet: 80px;
-  --section-py-mobile: 56px;
+  --section-py-desktop: 160px;
+  --section-py-tablet: 112px;
+  --section-py-mobile: 72px;
 
   /* z-index */
   --z-base: 0;
