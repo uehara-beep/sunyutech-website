@@ -1,0 +1,232 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import WorkCard from '../components/WorkCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Button from '../components/Button.astro';
+import ProcessFlow from '../components/ProcessFlow.astro';
+import StatGrid from '../components/StatGrid.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+---
+<Base
+  title="株式会社サンユウテック | 高速道路リニューアルの専門会社"
+  description="株式会社サンユウテックは福岡・大野城を拠点に、高速道路の床版を「はつり→断面修復→床版防水→舗装復旧」まで一社で担う、リニューアル工事の専門会社です。"
+  currentPage="index"
+>
+  <Hero
+    heading1="直す技術が、"
+    heading2="道を生かし続ける。"
+    sub="福岡・大野城を拠点に、高速道路の床版をはつりから舗装復旧まで一社で担います。"
+    primaryCta={{ label: '見積依頼・現地調査のご相談', href: '/contact/' }}
+    secondaryCta={{ label: '施工実績を見る', href: '/works/' }}
+    imageSrc="/images/hero-7.jpg"
+    imageAlt="サンユウテックの高速道路リニューアル施工現場"
+  />
+
+  <section class="section section-process">
+    <div class="container">
+      <SectionTitle text="ワンストップ施工 4 工程" eyebrow="01 / RENEWAL PROCESS" />
+      <p class="lead">床版リニューアルを一社で完結します。</p>
+      <ScrollReveal>
+        <ProcessFlow />
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <section class="section section-stats">
+    <div class="container">
+      <SectionTitle text="保有機械・体制" eyebrow="02 / FIGURES & SCALE" />
+      <p class="lead">数字で語る、当社の地力。</p>
+      <ScrollReveal>
+        <StatGrid stats={[
+          { value: '732', label: '経営事項審査 舗装 総合評定値', caveat: '客観的な信用力を示す指標' },
+          { value: '5', unit: '年以上', label: '無事故・無災害を継続中', caveat: '元請からの安全表彰も受賞' },
+          { value: '80', unit: '%超', label: '舗装の継続・指名率', caveat: '長期取引が信頼の証' },
+          { value: '50', unit: '名', label: '社員数（うち現場・技術45名）', caveat: '徹底した現場主義' },
+          { value: '10', unit: '社+', label: '取引のある主要道路ゼネコン', caveat: '全国の元請と継続関係' },
+          { value: '2', unit: '台', label: 'CONJET 自動はつりロボット保有', caveat: '床版はつりの中核機材' },
+        ]} />
+      </ScrollReveal>
+    </div>
+  </section>
+
+  <section class="section section-strength">
+    <div class="container">
+      <SectionTitle text="サンユウテックが選ばれる理由" eyebrow="03 / WHY US" />
+      <ol class="strength-list">
+        <li class="strength-item">
+          <span class="big-num" aria-hidden="true">01</span>
+          <div class="strength-body">
+            <h3>はつりから復旧まで、一社完結</h3>
+            <p>床版はつりから断面修復・床版防水・舗装復旧まで自社一貫。工程を分断しません。</p>
+          </div>
+        </li>
+        <li class="strength-item">
+          <span class="big-num" aria-hidden="true">02</span>
+          <div class="strength-body">
+            <h3>指名され続ける、継続の実績</h3>
+            <p>舗装は継続・指名が8割超。無事故5年以上、元請からの安全表彰も受賞しています。</p>
+          </div>
+        </li>
+        <li class="strength-item">
+          <span class="big-num" aria-hidden="true">03</span>
+          <div class="strength-body">
+            <h3>丸投げしない、自社施工</h3>
+            <p>社員50名の約9割が現場・技術。施工管理10名で複数現場を並行対応します。</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-service">
+    <div class="container">
+      <SectionTitle text="事業内容" eyebrow="04 / SERVICES" />
+      <p class="lead">分業しない、一気通貫の施工力。</p>
+      <div class="grid-3">
+        <FeatureCard
+          title="舗装工事"
+          description="インター部・高速本線・景観舗装まで、最大約12,000m²規模に対応します。"
+          image={{ src: '/images/service-paving.jpg', alt: '舗装工事の現場' }}
+          link={{ href: '/service/#paving', label: '詳しく見る' }}
+        />
+        <FeatureCard
+          title="ウォータージェット工事"
+          description="200MPa超の高圧ポンプとCONJETロボットで、床版はつり・目荒らしを精密に施工します。"
+          image={{ src: '/images/service-waterjet.jpg', alt: 'ウォータージェット工事の現場' }}
+          link={{ href: '/service/#waterjet', label: '詳しく見る' }}
+        />
+        <FeatureCard
+          title="コンクリート補修工事"
+          description="断面修復・床版防水・繊維シート補強まで、はつりから補修まで一体で施工します。"
+          image={{ src: '/images/service-concrete.jpg', alt: 'コンクリート補修工事の現場' }}
+          link={{ href: '/service/#concrete', label: '詳しく見る' }}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-works">
+    <div class="container">
+      <SectionTitle text="直近の施工実績" eyebrow="05 / SELECTED WORKS" />
+      <div class="grid-3">
+        <WorkCard
+          image={{ src: '/images/work-paving02.jpg', alt: '高速道路舗装打替工事' }}
+          methodChip="舗装"
+          title="高速道路本線 舗装打替工事"
+          location="九州管内"
+          method="舗装打替"
+          scale="約12,000m²"
+        />
+        <WorkCard
+          image={{ src: '/images/work-waterjet01.jpg', alt: '橋梁床版WJ施工' }}
+          methodChip="WJ"
+          title="高速道路橋梁床版WJ施工"
+          location="九州管内"
+          method="CONJET 床版はつり・目荒らし"
+          scale="200MPa超 / 大規模"
+        />
+        <WorkCard
+          image={{ src: '/images/work-concrete01.jpg', alt: 'コンクリート補修施工' }}
+          methodChip="コンクリート補修"
+          title="高速道路橋梁コンクリート補修"
+          location="九州管内"
+          method="断面修復・床版防水・舗装復旧"
+          scale="一気通貫施工"
+        />
+      </div>
+      <div class="more-cta">
+        <Button variant="tertiary" href="/works/" label="すべての施工実績を見る" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="床版リニューアル案件、まずご相談ください。" />
+</Base>
+
+<style>
+  .section { padding: var(--section-py-desktop) 0; }
+  .section-process { background: var(--color-white); }
+  .section-stats { background: var(--color-gray-100); }
+  .section-strength { background: var(--color-white); position: relative; }
+  .section-service { background: var(--color-gray-100); }
+  .section-works { background: var(--color-white); }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
+  .lead { font-size: var(--fs-xl); color: var(--color-navy-900); font-weight: var(--fw-semibold); margin-bottom: var(--sp-8); }
+  .more-cta { margin-top: var(--sp-8); text-align: center; }
+
+  /* 強み3カード: ナンバー強調レイアウト */
+  .strength-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-gray-200);
+  }
+  .strength-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--sp-12);
+    align-items: center;
+    padding: var(--sp-12) 0;
+    border-bottom: 1px solid var(--color-gray-200);
+    position: relative;
+  }
+  .strength-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 0;
+    height: 2px;
+    background: var(--color-orange-600);
+    transition: width 0.6s ease;
+  }
+  .strength-item:hover::after { width: 100%; }
+  .big-num {
+    font-family: var(--font-base);
+    font-size: 7rem;
+    font-weight: var(--fw-extrabold);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-navy-900);
+    letter-spacing: -0.03em;
+    font-feature-settings: 'tnum' 1;
+    display: block;
+  }
+  .strength-body h3 {
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-navy-900);
+    margin: 0 0 var(--sp-3);
+    letter-spacing: -0.01em;
+  }
+  .strength-body p {
+    font-size: var(--fs-base);
+    color: var(--color-gray-700);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: var(--section-py-tablet) 0; }
+    .strength-item { grid-template-columns: 120px 1fr; gap: var(--sp-8); padding: var(--sp-8) 0; }
+    .big-num { font-size: 5rem; }
+    .strength-body h3 { font-size: var(--fs-2xl); }
+  }
+  @media (max-width: 768px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .section { padding: var(--section-py-mobile) 0; }
+    .strength-item { grid-template-columns: 1fr; gap: var(--sp-3); padding: var(--sp-6) 0; }
+    .big-num { font-size: 4rem; -webkit-text-stroke-width: 1px; }
+  }
+</style>

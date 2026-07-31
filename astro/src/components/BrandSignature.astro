@@ -1,0 +1,33 @@
+---
+interface Props {
+  variant?: 'eyebrow' | 'footer';
+}
+const { variant = 'eyebrow' } = Astro.props;
+---
+<p class={`brand-sig brand-sig-${variant}`}>RENEW, NOT REBUILD.</p>
+<style>
+  .brand-sig {
+    font-family: var(--font-base);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    font-weight: var(--fw-bold);
+    margin: 0;
+  }
+  .brand-sig-eyebrow {
+    font-size: var(--fs-sm);
+    padding-bottom: var(--sp-3);
+    border-bottom: 1px solid var(--color-gray-200);
+    margin-bottom: var(--sp-4);
+    width: max-content;
+    max-width: 100%;
+  }
+  .brand-sig-footer {
+    font-size: var(--fs-base);
+    color: var(--color-white);
+    letter-spacing: 0.22em;
+  }
+  @media (max-width: 480px) {
+    .brand-sig-eyebrow { font-size: var(--fs-xs); }
+  }
+</style>

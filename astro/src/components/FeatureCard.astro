@@ -1,0 +1,76 @@
+---
+interface Props {
+  number?: string;
+  title: string;
+  description: string;
+  image?: { src: string; alt: string };
+  link?: { href: string; label: string };
+}
+const { number, title, description, image, link } = Astro.props;
+---
+<article class="feature-card">
+  {image && (
+    <div class="image">
+      <img src={image.src} alt={image.alt} width="400" height="300" loading="lazy" />
+    </div>
+  )}
+  {number && (
+    <div class="number" aria-hidden="true">{number}</div>
+  )}
+  <h3>{title}</h3>
+  <p>{description}</p>
+  {link && (
+    <a href={link.href} class="more">{link.label} <span aria-hidden="true">→</span></a>
+  )}
+</article>
+<style>
+  .feature-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    padding: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-300);
+  }
+  .image { margin: calc(-1 * var(--sp-6)) calc(-1 * var(--sp-6)) var(--sp-4); }
+  .image img { width: 100%; height: auto; border-radius: var(--radius-md) var(--radius-md) 0 0; aspect-ratio: 4/3; object-fit: cover; }
+  .number {
+    width: 48px; height: 48px;
+    background: var(--color-navy-900);
+    color: var(--color-white);
+    font-weight: var(--fw-bold);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--sp-4);
+  }
+  .feature-card h3 {
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy-900);
+    margin-bottom: var(--sp-3);
+  }
+  .feature-card p {
+    font-size: var(--fs-sm);
+    color: var(--color-gray-700);
+    line-height: var(--lh-relaxed);
+    flex-grow: 1;
+  }
+  .more {
+    margin-top: var(--sp-4);
+    color: var(--color-navy-900);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    transition: gap 0.2s ease;
+  }
+  .feature-card:hover .more { gap: var(--sp-3); }
+  .more span { color: var(--color-orange-600); }
+</style>

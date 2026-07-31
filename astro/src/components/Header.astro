@@ -1,0 +1,96 @@
+---
+import MobileNav from './MobileNav.astro';
+
+interface Props {
+  currentPage: 'index' | 'service' | 'works' | 'company' | 'contact' | 'recruit';
+}
+
+const { currentPage } = Astro.props;
+
+const navItems = [
+  { href: '/service/', label: '事業内容', key: 'service' },
+  { href: '/recruit/', label: '採用情報', key: 'recruit' as const },
+  { href: '/works/', label: '施工実績', key: 'works' },
+  { href: '/company/', label: '会社概要', key: 'company' },
+  { href: '/contact/', label: 'お問い合わせ', key: 'contact' },
+] as const;
+---
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="株式会社サンユウテック トップ">
+      <img src="/images/logo.png" alt="株式会社サンユウテック" width="1118" height="339" />
+    </a>
+    <nav class="nav-desktop" aria-label="グローバルナビゲーション">
+      <ul>
+        {navItems.map(item => (
+          <li>
+            <a href={item.href} aria-current={currentPage === item.key ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a href="tel:0925559211" class="tel-block" aria-label="電話番号 092-555-9211 平日 9時から17時">
+      <span class="tel-num">TEL 092-555-9211</span>
+      <span class="tel-hours">平日 9:00〜17:00</span>
+    </a>
+    <MobileNav currentPage={currentPage} />
+  </div>
+</header>
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+  .header-inner {
+    max-width: var(--wrapper-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter-desktop);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-6);
+    overflow: visible;
+  }
+  .logo {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    line-height: 0;
+  }
+  .logo img { display: block; height: 56px; width: auto; }
+  .nav-desktop { flex: 1; }
+  .nav-desktop ul { display: flex; gap: var(--sp-6); justify-content: flex-end; }
+  .nav-desktop a {
+    color: var(--color-navy-900);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    padding: var(--sp-2) 0;
+  }
+  .nav-desktop a[aria-current="page"] {
+    border-bottom: 2px solid var(--color-orange-600);
+  }
+  .tel-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: var(--color-navy-900);
+    text-decoration: none;
+  }
+  .tel-num { font-weight: var(--fw-bold); font-size: var(--fs-base); }
+  .tel-hours { font-size: var(--fs-xs); color: var(--color-gray-700); }
+
+  @media (max-width: 1023px) {
+    .header-inner { padding: 0 var(--gutter-tablet); height: 72px; }
+    .nav-desktop, .tel-block { display: none; }
+    .logo img { height: 48px; }
+  }
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 var(--gutter-mobile); height: 56px; }
+    .logo img { height: 36px; }
+  }
+</style>

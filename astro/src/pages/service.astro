@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="事業内容 | 株式会社サンユウテック"
+  description="舗装・ウォータージェット・コンクリート補修の3工法を一社で。高速道路リニューアル工事の中核を担う、株式会社サンユウテックの事業内容。"
+  currentPage="service"
+  ogImage="/images/service-paving.jpg"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
+      <h1>分業しない、一気通貫の施工力。</h1>
+      <p class="lead">高速道路リニューアル工事の中核を、舗装・WJ・コンクリート補修の3工法で支えます。</p>
+    </div>
+  </section>
+
+  <section id="paving" class="method-section">
+    <div class="container">
+      <SectionTitle text="舗装工事" eyebrow="01 / PAVING" />
+      <div class="grid-2">
+        <div class="text">
+          <p>大型物流倉庫の構内舗装から、高速道路本線の補修・打替まで、最大約30,000m²規模に対応します。アスファルト・コンクリート両工法、新設・打替・補修の全フェーズを自社で完結します。</p>
+          <h3>対応規模・特徴</h3>
+          <ul>
+            <li>最大規模: 約30,000m²</li>
+            <li>対応工法: アスファルト・コンクリート舗装、打替・補修</li>
+            <li>体制: 一級土木1名・二級6名の有資格者が現場を指揮</li>
+          </ul>
+        </div>
+        <div class="images">
+          <img src="/images/service-paving.jpg" alt="舗装工事の現場" width="600" height="400" loading="lazy" />
+          <img src="/images/work-paving02.jpg" alt="高速道路舗装打替工事" width="600" height="400" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="waterjet" class="method-section alt">
+    <div class="container">
+      <SectionTitle text="ウォータージェット工事" eyebrow="02 / WATER JET" />
+      <div class="grid-2">
+        <div class="text">
+          <p>超高圧水によるはつり・粗面処理・斫り工事。振動・騒音を抑え、橋梁床版や供用下のコンクリート構造物の補修前処理を行います。CONJET327 2台、NLB 35305DGF 2台ほか合計24台の機材を保有します。</p>
+          <h3>対応規模・特徴</h3>
+          <ul>
+            <li>主要機材: CONJET327 ×2、NLB 35305DGF（2,400bar 46L/min）×2、SB機械 ×4 ほか合計24台</li>
+            <li>対応工法: 床版WJ粗面処理、構造物斫り、防食工前処理</li>
+            <li>強み: 振動・騒音抑制で供用下・近隣配慮現場に対応</li>
+          </ul>
+        </div>
+        <div class="images">
+          <img src="/images/service-waterjet.jpg" alt="ウォータージェット工事の現場" width="600" height="400" loading="lazy" />
+          <img src="/images/work-waterjet01.jpg" alt="橋梁床版WJ施工" width="600" height="400" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="concrete" class="method-section">
+    <div class="container">
+      <SectionTitle text="コンクリート補修工事" eyebrow="03 / CONCRETE REPAIR" />
+      <div class="grid-2">
+        <div class="text">
+          <p>橋梁床版・トンネル覆工・床補修まで、断面修復から表面保護まで一貫して施工します。WJ前処理と組み合わせた一気通貫の工程提案が可能です。</p>
+          <h3>対応規模・特徴</h3>
+          <ul>
+            <li>対応工法: 断面修復、表面保護、ひび割れ注入、防食工</li>
+            <li>連携: WJ工事との一気通貫工程で工期短縮</li>
+            <li>実績: 高速道路橋梁・トンネル覆工の補修案件多数</li>
+          </ul>
+        </div>
+        <div class="images">
+          <img src="/images/service-concrete.jpg" alt="コンクリート補修工事の現場" width="600" height="400" loading="lazy" />
+          <img src="/images/work-concrete01.jpg" alt="コンクリート補修施工" width="600" height="400" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="工法の選定からご相談いただけます。" />
+</Base>
+
+<style>
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--sp-16) 0 var(--sp-12); }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
+  .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+  .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+    text-transform: uppercase;
+  }
+
+  .method-section { padding: var(--section-py-desktop) 0; background: var(--color-white); }
+  .method-section.alt { background: var(--color-gray-100); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-12); align-items: start; }
+  .text p { font-size: var(--fs-base); line-height: var(--lh-relaxed); margin-bottom: var(--sp-6); color: var(--color-gray-900); }
+  .text h3 { font-size: var(--fs-xl); font-weight: var(--fw-bold); color: var(--color-navy-900); margin-bottom: var(--sp-3); }
+  .text ul { padding-left: var(--sp-6); list-style: disc; }
+  .text li { font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-gray-700); margin-bottom: var(--sp-2); }
+  .images { display: flex; flex-direction: column; gap: var(--sp-4); }
+  .images img { width: 100%; height: auto; border-radius: var(--radius-md); aspect-ratio: 3/2; object-fit: cover; }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .grid-2 { grid-template-columns: 1fr; gap: var(--sp-8); }
+    .method-section, .page-hero { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .page-hero h1 { font-size: var(--fs-3xl); }
+    .method-section { padding: var(--section-py-mobile) 0; }
+  }
+</style>

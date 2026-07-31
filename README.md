@@ -4,9 +4,15 @@
 
 **URL**: https://sunyutech.jp/
 
+> ⚠ **現在2構成が並存中**（Issue #8 リニューアル進行中）
+> - **現行**: ルート直下の `index.html` ほか 5ページ（フレームワーク不使用の静的HTML）。本番 sunyutech.jp として稼働中、本Issueでは温存。
+> - **リニューアル中**: `astro/` 配下に Astro 4.x〜6.x 系 + バニラCSS + design tokens で実装中。本番置換は別Issueで対応予定。
+
 ---
 
-## 技術スタック
+## 現行サイト（ルート直下）
+
+### 技術スタック
 
 | 技術       | 用途             |
 | ---------- | ---------------- |
@@ -19,9 +25,7 @@
 - CSS変数によるテーマカラー管理
 - バニラJSによるアニメーション・フォームバリデーション
 
----
-
-## ディレクトリ構成
+### ディレクトリ構成
 
 ```
 sunyutech-website/
@@ -30,33 +34,14 @@ sunyutech-website/
 ├── service.html        # 事業内容
 ├── works.html          # 施工実績
 ├── contact.html        # お問い合わせ
-├── css/
-│   └── style.css       # メインスタイルシート
-├── js/
-│   └── main.js         # メインJavaScript
-├── images/
-│   ├── logo.png        # 会社ロゴ
-│   ├── hero-*.jpg      # ヒーロースライダー画像
-│   ├── service-*.jpg   # 事業内容画像
-│   ├── work-*.jpg      # 施工実績画像
-│   └── about-image.jpg # 会社概要画像
-├── CONTRIBUTING.md     # 開発ガイド
-└── README.md           # このファイル
+├── css/style.css
+├── js/main.js
+├── images/             # 既存写真資産（astro/public/images/ にもコピー済）
+├── CONTRIBUTING.md
+└── README.md
 ```
 
----
-
-## ローカル開発
-
-静的HTMLサイトのため、ビルドツールは不要です。
-
-### ブラウザで直接開く
-
-```bash
-open index.html
-```
-
-### ローカルサーバーで確認（推奨）
+### ローカル開発
 
 ```bash
 # Python
@@ -68,30 +53,7 @@ npx serve .
 
 `http://localhost:8000` でアクセスできます。
 
----
-
-## デザイン仕様
-
-### カラーパレット
-
-| 変数名                 | 色コード   | 用途             |
-| ---------------------- | ---------- | ---------------- |
-| `--primary-orange`     | `#E67E22`  | メインカラー     |
-| `--primary-orange-dark`| `#D35400`  | ホバー・アクセント |
-| `--primary-orange-light`| `#F39C12` | ハイライト       |
-| `--white`              | `#FFFFFF`  | 背景             |
-| `--text-color`         | `#333333`  | 本文テキスト     |
-
-### レスポンシブブレークポイント
-
-| ブレークポイント | 対象デバイス |
-| ---------------- | ------------ |
-| `768px`          | タブレット   |
-| `480px`          | スマートフォン |
-
----
-
-## ページ構成
+### ページ構成
 
 | ページ         | ファイル       | 内容                       |
 | -------------- | -------------- | -------------------------- |
@@ -103,10 +65,76 @@ npx serve .
 
 ---
 
-## 開発ガイド
+## リニューアル中サイト（`astro/` 配下）
 
-開発規約・Issue作成・コミット規約・PRフローについては [CONTRIBUTING.md](./CONTRIBUTING.md) を参照してください。
+### 技術スタック
+
+| 技術             | 用途                       |
+| ---------------- | -------------------------- |
+| Astro 4.x〜6.x   | 静的サイト生成             |
+| TypeScript strict | 型安全                    |
+| バニラCSS + design tokens | スタイリング      |
+| Noto Sans JP     | フォント                   |
+| @astrojs/sitemap | sitemap自動生成            |
+
+- フレームワーク: Astro（Tailwind不使用）
+- design tokens は `astro/src/styles/tokens.css` に CSS 変数として展開
+- ホスティング想定: お名前.com 共用レンタルサーバー（FTPアップロード型）
+- ビルド出力: `astro/dist/` 配下の静的HTML/CSS/JSのみ
+
+### ローカル開発
+
+```bash
+cd astro
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # dist/ に静的ファイル生成
+npm run preview  # ビルド出力をプレビュー
+```
+
+### ディレクトリ構成
+
+```
+astro/
+├── astro.config.mjs
+├── package.json
+├── tsconfig.json
+├── public/
+│   ├── images/             # ルート images/ をコピー
+│   ├── favicon.ico
+│   ├── apple-touch-icon.png
+│   └── robots.txt
+└── src/
+    ├── pages/(index|service|works|company|contact).astro
+    ├── layouts/Base.astro
+    ├── components/(Header|Footer|Hero|...).astro
+    ├── content/works/*.json   # 施工実績 Content Collection
+    ├── content.config.ts
+    └── styles/(tokens.css|global.css)
+```
+
+### デザイン仕様
+
+| 変数              | 値        | 用途                   |
+| ----------------- | --------- | ---------------------- |
+| `--color-navy-900`| `#0B2545` | 主色（信頼・専門性）   |
+| `--color-orange-600`| `#E67E22` | 差し色（CTAのみ、5%以下） |
+| `--color-gray-100`| `#F4F6F9` | セクション背景         |
+| `--color-gray-900`| `#1F2937` | 本文文字色             |
+| `--wrapper-max`   | `1200px`  | ページ全体幅           |
+| `--content-max`   | `880px`   | 内側コンテンツ幅       |
 
 ---
 
-**Last Updated**: 2026-03-02
+## 関連ドキュメント
+
+- [CONTRIBUTING.md](./CONTRIBUTING.md) — 開発規約・Issue/Git/コミットフロー
+- [CLAUDE.md](./CLAUDE.md) — Claude Code 向けクイックリファレンス
+- `docs/superpowers/specs/2026-05-28-sunyutech-website-renewal-design.md` — リニューアル設計書
+- `docs/superpowers/plans/2026-05-28-sunyutech-renewal-phase-0-to-3.md` — Phase 0-3 実装計画
+- `docs/superpowers/plans/2026-05-29-sunyutech-renewal-phase-4-5-claude-only.md` — Phase 4-5 実装計画
+- `projects/sunyutech-renewal/` — ワークフロー成果物（BRIEF / research / design / handoff）
+
+---
+
+**Last Updated**: 2026-05-29

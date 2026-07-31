@@ -1,0 +1,119 @@
+---
+interface Stat {
+  value: string;
+  unit?: string;
+  label: string;
+  caveat?: string;
+}
+interface Props {
+  stats: Stat[];
+}
+const { stats } = Astro.props;
+---
+<div class="stat-grid" role="list">
+  {stats.map((s, i) => (
+    <article class="stat" role="listitem">
+      <span class="index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <div class="value-row">
+        <span class="value" data-counter={/^\d+$/.test(s.value) ? s.value : undefined}>{s.value}</span>
+        {s.unit && <span class="unit">{s.unit}</span>}
+      </div>
+      <p class="label">{s.label}</p>
+      {s.caveat && <p class="caveat">{s.caveat}</p>}
+    </article>
+  ))}
+</div>
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const counters = document.querySelectorAll<HTMLElement>('.stat .value[data-counter]');
+  if (!reduceMotion && counters.length && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        const target = Number(el.dataset.counter);
+        if (Number.isNaN(target)) { obs.unobserve(el); return; }
+        const duration = 1400;
+        const start = performance.now();
+        const initial = 0;
+        const step = (now: number) => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = String(Math.round(initial + (target - initial) * eased));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        el.textContent = '0';
+        requestAnimationFrame(step);
+        obs.unobserve(el);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    counters.forEach(c => obs.observe(c));
+  }
+</script>
+<style>
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+  }
+  .stat {
+    position: relative;
+    padding: var(--sp-8) var(--sp-6) var(--sp-6);
+    background: var(--color-white);
+    border-top: 3px solid var(--color-orange-600);
+    border-left: 1px solid var(--color-gray-200);
+    border-right: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--color-gray-200);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+  .index {
+    position: absolute;
+    top: var(--sp-3);
+    right: var(--sp-4);
+    font-family: var(--font-base);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.18em;
+    color: var(--color-gray-500);
+    font-weight: var(--fw-semibold);
+  }
+  .value-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-3);
+  }
+  .value {
+    font-size: var(--fs-6xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-navy-900);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-feature-settings: 'tnum' 1;
+  }
+  .unit {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy-800);
+  }
+  .label {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-gray-900);
+    margin: 0 0 var(--sp-1);
+  }
+  .caveat {
+    font-size: var(--fs-xs);
+    color: var(--color-gray-500);
+    margin: 0;
+  }
+  @media (max-width: 1023px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .value { font-size: var(--fs-5xl); }
+  }
+</style>

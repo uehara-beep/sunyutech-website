@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
+const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
+---
+<Base
+  title="施工実績 | 株式会社サンユウテック"
+  description="高速道路リニューアル工事を中心に、舗装・ウォータージェット・コンクリート補修の3工法で全国の案件を担ってきた、株式会社サンユウテックの施工実績。"
+  currentPage="works"
+  ogImage="/images/work-paving02.jpg"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
+      <h1>全国の高速道路リニューアルを、九州から支える。</h1>
+      <p class="lead">舗装・ウォータージェット・コンクリート補修の3工法で、高速道路の補修施工を担ってきました。</p>
+    </div>
+  </section>
+
+  <section class="works-list">
+    <div class="container">
+      <div class="filter" role="group" aria-label="工法で絞り込み">
+        {methods.map(m => (
+          <button type="button" data-method={m}>{m}</button>
+        ))}
+      </div>
+      <div class="grid-3" id="works-grid">
+        {works.map(w => (
+          <div data-method={w.data.method}>
+            <WorkCard
+              image={{ src: w.data.image, alt: w.data.imageAlt }}
+              methodChip={w.data.method}
+              title={w.data.title}
+              location={w.data.location}
+              method={w.data.methodDetail}
+              scale={w.data.scale}
+              client={w.data.client}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="類似案件のご相談はお気軽にどうぞ。" />
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter button');
+  const items = document.querySelectorAll<HTMLElement>('#works-grid > div');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.method;
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      items.forEach(item => {
+        const show = target === '全て' || item.dataset.method === target;
+        item.style.display = show ? '' : 'none';
+      });
+    });
+  });
+  buttons[0]?.classList.add('active');
+</script>
+
+<style>
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--sp-16) 0 var(--sp-12); }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
+  .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+  .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+    text-transform: uppercase;
+  }
+
+  .works-list { padding: var(--section-py-desktop) 0; background: var(--color-white); }
+  .filter { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-bottom: var(--sp-8); }
+  .filter button {
+    padding: var(--sp-2) var(--sp-6);
+    border: 1.5px solid var(--color-navy-900);
+    background: var(--color-white);
+    color: var(--color-navy-900);
+    font-weight: var(--fw-semibold);
+    border-radius: var(--radius-full);
+    font-size: var(--fs-sm);
+  }
+  .filter button.active { background: var(--color-navy-900); color: var(--color-white); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .works-list, .page-hero { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .page-hero h1 { font-size: var(--fs-3xl); }
+    .works-list { padding: var(--section-py-mobile) 0; }
+  }
+</style>

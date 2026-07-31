@@ -1,0 +1,51 @@
+---
+import Button from './Button.astro';
+interface Props {
+  heading: string;
+  sub?: string;
+}
+const { heading, sub } = Astro.props;
+---
+<section class="cta-band">
+  <div class="cta-inner">
+    <div class="text">
+      <h2>{heading}</h2>
+      {sub && <p>{sub}</p>}
+    </div>
+    <div class="actions">
+      <Button variant="primary" href="/contact/" label="見積依頼・現地調査のご相談" />
+      <a href="tel:0925559211" class="tel">
+        <span class="tel-num">TEL 092-555-9211</span>
+        <span class="tel-hours">平日 9:00〜17:00</span>
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta-band { background: var(--color-navy-800); padding: var(--section-py-tablet) 0; }
+  .cta-inner {
+    max-width: var(--wrapper-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter-desktop);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--sp-8);
+    align-items: center;
+  }
+  .cta-band h2 {
+    color: var(--color-white);
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-extrabold);
+    margin-bottom: var(--sp-3);
+  }
+  .cta-band p { color: var(--color-gray-200); }
+  .actions { display: flex; flex-direction: column; gap: var(--sp-4); align-items: flex-end; }
+  .tel { color: var(--color-white); text-decoration: none; display: flex; flex-direction: column; align-items: flex-end; }
+  .tel-num { font-weight: var(--fw-bold); font-size: var(--fs-xl); }
+  .tel-hours { font-size: var(--fs-sm); color: var(--color-gray-200); }
+  @media (max-width: 768px) {
+    .cta-inner { grid-template-columns: 1fr; padding: 0 var(--gutter-mobile); }
+    .actions { align-items: flex-start; }
+    .tel { align-items: flex-start; }
+  }
+</style>

@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="会社案内 | 株式会社サンユウテック"
+  description="株式会社サンユウテックの会社案内。福岡県大野城市御笠川を拠点に、業歴13年・社員50名で高速道路リニューアル工事を専門に施工しています。"
+  currentPage="company"
+  ogImage="/images/about-image.jpg"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
+      <h1>高速道路リニューアルを、九州から。</h1>
+    </div>
+  </section>
+
+  <section class="message">
+    <div class="container narrow">
+      <SectionTitle text="当社について" eyebrow="01 / ABOUT" />
+      <p>株式会社サンユウテックは、2012年に福岡県大野城市で設立された、高速道路リニューアル工事の専門会社です。床版はつり・断面修復・床版防水・舗装復旧の4工程を自社一貫で施工できる希少な体制を持ち、全国の主要道路ゼネコン10社以上と継続的な取引関係にあります。</p>
+      <p>業歴13年（第14期）、社員50名のうち45名が現場・技術。施工管理10名による複数現場の並行運営、無事故・無災害5年以上の継続、元請からの安全表彰受賞など、検証可能な事実で品質と信頼を裏付けています。</p>
+    </div>
+  </section>
+
+  <section class="info">
+    <div class="container narrow">
+      <SectionTitle text="会社概要" eyebrow="02 / CORPORATE PROFILE" />
+      <dl class="info-table">
+        <div><dt>社名</dt><dd>株式会社サンユウテック</dd></div>
+        <div><dt>設立</dt><dd>2012年（業歴13年・現在第14期）</dd></div>
+        <div><dt>資本金</dt><dd>1,000万円</dd></div>
+        <div><dt>所在地</dt><dd>福岡県大野城市御笠川6-2-5</dd></div>
+        <div><dt>事業内容</dt><dd>舗装工事、ウォータージェット工事、コンクリート補修工事</dd></div>
+        <div><dt>建設業許可</dt><dd>一般建設業許可（とび・土工／建築／土木／舗装）</dd></div>
+        <div><dt>経営事項審査 P 点</dt><dd>舗装 732 ／ とび・土工 568 ／ 土木一式 553</dd></div>
+        <div><dt>社員数</dt><dd>50名（現場・技術 45名／間接 5名）</dd></div>
+        <div><dt>有資格者</dt><dd>1級土木施工管理技士 1名、2級土木施工管理技士 3名 ほか</dd></div>
+        <div><dt>保有機材</dt><dd>CONJET 自動はつりロボット 2台、200MPa超 高圧ポンプ 2台、アスファルトフィニッシャー 1台 ほか</dd></div>
+        <div><dt>安全実績</dt><dd>無事故・無災害 5年以上継続、元請からの安全表彰受賞</dd></div>
+        <div><dt>その他</dt><dd>インボイス登録、社会保険・労災 完備</dd></div>
+        <div><dt>連絡先</dt><dd>TEL 092-555-9211（平日 9:00〜17:00）／FAX 092-555-9217</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="access">
+    <div class="container narrow">
+      <SectionTitle text="アクセス" eyebrow="03 / ACCESS" />
+      <p class="access-address">福岡県大野城市御笠川6-2-5</p>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=%E7%A6%8F%E5%B2%A1%E7%9C%8C%E5%A4%A7%E9%87%8E%E5%9F%8E%E5%B8%82%E5%BE%A1%E7%AC%A0%E5%B7%9D6-2-5&output=embed"
+          width="100%"
+          height="420"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="株式会社サンユウテック 所在地マップ"
+          aria-label="株式会社サンユウテックの所在地を示すGoogleマップ"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="partners">
+    <div class="container narrow">
+      <SectionTitle text="主要取引先" eyebrow="04 / CLIENTS" />
+      <p class="partners-note">全国の主要道路ゼネコン 10 社以上と継続的に取引しています。掲載可能な先のみ五十音順で列記します。</p>
+      <ul class="partners-list">
+        <li>大手道路ゼネコン各社</li>
+        <li>地場ゼネコン各社</li>
+        <li>公的発注機関</li>
+        <li>ほか</li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand heading="協力会社のご検討・ご相談はお気軽にどうぞ。" />
+</Base>
+
+<style>
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--sp-16) 0 var(--sp-12); }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .container.narrow { max-width: var(--content-max); }
+  .page-hero .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+  }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-3xl); font-weight: var(--fw-extrabold); }
+
+  .message, .info, .partners, .access { padding: var(--section-py-desktop) 0; }
+  .message { background: var(--color-white); }
+  .info { background: var(--color-gray-100); }
+  .partners { background: var(--color-white); }
+  .access { background: var(--color-gray-100); }
+  .access-address { font-size: var(--fs-lg); font-weight: var(--fw-semibold); color: var(--color-navy-900); margin-bottom: var(--sp-6); }
+  .map-wrap { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-gray-200); line-height: 0; }
+  .map-wrap iframe { display: block; border: 0; width: 100%; }
+  .message p { font-size: var(--fs-base); line-height: var(--lh-relaxed); color: var(--color-gray-900); margin-bottom: var(--sp-4); }
+
+  .info-table { display: flex; flex-direction: column; gap: 0; }
+  .info-table > div {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--sp-4);
+    padding: var(--sp-4) 0;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+  .info-table dt { color: var(--color-gray-500); font-weight: var(--fw-semibold); }
+  .info-table dd { margin: 0; color: var(--color-gray-900); }
+
+  .partners-note { font-size: var(--fs-sm); color: var(--color-gray-700); margin-bottom: var(--sp-6); }
+  .partners-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-4); }
+  .partners-list li {
+    background: var(--color-gray-100);
+    padding: var(--sp-4);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: var(--fw-semibold);
+    color: var(--color-navy-900);
+  }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .info-table > div { grid-template-columns: 140px 1fr; }
+    .message, .info, .partners, .access { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .info-table > div { grid-template-columns: 1fr; gap: var(--sp-1); }
+    .partners-list { grid-template-columns: 1fr; }
+    .message, .info, .partners, .access { padding: var(--section-py-mobile) 0; }
+    .map-wrap iframe { height: 320px; }
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="採用情報 | 株式会社サンユウテック"
+  description="株式会社サンユウテックの採用情報。高速道路リニューアル工事の専門会社で、現場・技術職を中心に募集しています。"
+  currentPage="recruit"
+  ogImage="/images/about-image.jpg"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="brand-sig">RENEW, NOT REBUILD.</p>
+      <h1>現場で、技術で、長く続ける。</h1>
+      <p class="lead">高速道路リニューアル工事の専門会社で、一緒に働く仲間を募集しています。</p>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="container narrow">
+      <SectionTitle text="当社で働く理由" eyebrow="01 / WHY JOIN" />
+      <ul class="reasons">
+        <li><strong>技術が積み上がる。</strong>床版はつりから舗装復旧まで、現場で工程を通しで経験できる希少な環境です。</li>
+        <li><strong>続けられる体制。</strong>無事故・無災害5年以上、社員50名のうち現場・技術45名。継続して長く働ける現場主義の体制です。</li>
+        <li><strong>九州から全国へ。</strong>主戦場は九州、全国の高速道路リニューアル案件にも出張で携われます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="positions">
+    <div class="container narrow">
+      <SectionTitle text="募集職種" eyebrow="02 / POSITIONS" />
+      <p class="note">具体的な募集要項は、お問い合わせいただいた方に個別にご案内します。</p>
+      <ul class="job-list">
+        <li>
+          <h3>現場作業員（舗装／ウォータージェット／コンクリート補修）</h3>
+          <p>未経験から始めて、3工法の現場経験を積めます。</p>
+        </li>
+        <li>
+          <h3>施工管理</h3>
+          <p>1級・2級土木施工管理技士の有資格者、または資格取得意欲のある方。複数現場を任せられる体制を一緒に作ります。</p>
+        </li>
+        <li>
+          <h3>技術系総合職</h3>
+          <p>大学・専門学校で土木・建築系を学ばれた方。現場経験を経て、施工管理・技術提案まで広く担っていただきます。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand heading="採用に関するお問い合わせはこちら。" />
+</Base>
+
+<style>
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--sp-16) 0 var(--sp-12); }
+  .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
+  .container.narrow { max-width: var(--content-max); }
+  .brand-sig {
+    font-size: var(--fs-sm);
+    letter-spacing: 0.18em;
+    color: var(--color-orange-600);
+    font-weight: var(--fw-bold);
+    margin: 0 0 var(--sp-3);
+  }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
+  .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
+
+  .why, .positions { padding: var(--section-py-desktop) 0; }
+  .why { background: var(--color-white); }
+  .positions { background: var(--color-gray-100); }
+
+  .reasons { display: flex; flex-direction: column; gap: var(--sp-4); }
+  .reasons li {
+    background: var(--color-gray-100);
+    border-left: 4px solid var(--color-orange-600);
+    padding: var(--sp-4) var(--sp-6);
+    font-size: var(--fs-base);
+    line-height: var(--lh-relaxed);
+    color: var(--color-gray-900);
+  }
+  .reasons strong { color: var(--color-navy-900); }
+
+  .note { font-size: var(--fs-sm); color: var(--color-gray-700); margin-bottom: var(--sp-6); }
+  .job-list { display: flex; flex-direction: column; gap: var(--sp-4); }
+  .job-list li {
+    background: var(--color-white);
+    padding: var(--sp-6);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+  }
+  .job-list h3 { font-size: var(--fs-lg); color: var(--color-navy-900); margin-bottom: var(--sp-2); }
+  .job-list p { font-size: var(--fs-sm); color: var(--color-gray-700); }
+
+  @media (max-width: 1023px) {
+    .container { padding: 0 var(--gutter-tablet); }
+    .page-hero, .why, .positions { padding: var(--section-py-tablet) 0; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 0 var(--gutter-mobile); }
+    .page-hero h1 { font-size: var(--fs-3xl); }
+    .why, .positions { padding: var(--section-py-mobile) 0; }
+  }
+</style>
