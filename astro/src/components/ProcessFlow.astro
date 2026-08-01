@@ -71,11 +71,11 @@ const steps = [
   }
   @media (max-width: 1023px) {
     .process-flow { grid-template-columns: repeat(2, 1fr); row-gap: var(--sp-8); }
-  }
-  @media (max-width: 480px) {
-    .process-flow { grid-template-columns: 1fr; row-gap: var(--sp-6); }
     .process-flow::before { display: none; }
     .step { padding-left: var(--sp-6); border-left: 1px solid var(--line-navy); }
     .node { left: 0; top: var(--sp-8); }
+  }
+  @media (max-width: 480px) {
+    .process-flow { grid-template-columns: 1fr; row-gap: var(--sp-6); }
   }
 </style>
