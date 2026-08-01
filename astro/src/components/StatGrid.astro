@@ -54,29 +54,24 @@ const { stats } = Astro.props;
   .stat-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--sp-6);
+    gap: 0;
+    border-left: 1px solid var(--line-navy);
+    border-top: 1px solid var(--line-navy);
   }
   .stat {
     position: relative;
-    padding: var(--sp-8) var(--sp-6) var(--sp-6);
-    background: var(--surface-card);
-    border-top: 3px solid var(--color-orange-600);
-    border-left: 1px solid var(--line-navy);
+    padding: var(--sp-8) var(--sp-6);
     border-right: 1px solid var(--line-navy);
     border-bottom: 1px solid var(--line-navy);
-    border-radius: var(--radius-none);
-    transition: border-color 0.25s ease;
-  }
-  .stat:hover {
-    border-color: var(--line-orange);
+    background: transparent;
   }
   .index {
     position: absolute;
-    top: var(--sp-3);
+    top: var(--sp-4);
     right: var(--sp-4);
-    font-family: var(--font-base);
+    font-family: var(--font-en);
     font-size: var(--fs-xs);
-    letter-spacing: 0.18em;
+    letter-spacing: var(--ls-en-label);
     color: var(--color-gray-500);
     font-weight: var(--fw-semibold);
   }
@@ -84,25 +79,28 @@ const { stats } = Astro.props;
     display: flex;
     align-items: baseline;
     gap: var(--sp-2);
-    margin-bottom: var(--sp-3);
+    margin-bottom: var(--sp-4);
   }
   .value {
+    font-family: var(--font-en);
     font-size: var(--fs-6xl);
-    font-weight: var(--fw-extrabold);
+    font-weight: var(--fw-semibold);
     color: var(--color-navy-900);
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: 0.01em;
     font-feature-settings: 'tnum' 1;
   }
   .unit {
-    font-size: var(--fs-lg);
+    font-family: var(--font-base);
+    font-size: var(--fs-base);
     font-weight: var(--fw-bold);
-    color: var(--color-navy-800);
+    color: var(--color-orange-600);
   }
   .label {
     font-size: var(--fs-sm);
     font-weight: var(--fw-semibold);
     color: var(--color-gray-900);
+    letter-spacing: var(--ls-ja);
     margin: 0 0 var(--sp-1);
   }
   .caveat {
