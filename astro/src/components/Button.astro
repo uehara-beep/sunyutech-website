@@ -13,19 +13,25 @@ const { variant, href, label } = Astro.props;
 <style>
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: var(--sp-4) var(--sp-8);
+    padding: var(--sp-6) var(--sp-8);
     border-radius: var(--radius-none);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     font-size: var(--fs-base);
+    letter-spacing: 0.16em;
     text-decoration: none;
-    transition: background-color 0.15s, color 0.15s;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
   }
   .btn:focus-visible { outline: 2px solid var(--color-orange-600); outline-offset: 2px; }
   .btn-primary { background: var(--color-orange-600); color: var(--color-white); }
   .btn-primary:hover { background: var(--color-orange-700); text-decoration: none; }
-  .btn-secondary { background: var(--color-white); color: var(--color-navy-900); border: 1.5px solid var(--color-navy-900); font-weight: var(--fw-semibold); }
+  .btn-secondary {
+    background: var(--surface-card);
+    color: var(--color-navy-900);
+    border: 1px solid var(--color-navy-900);
+  }
   .btn-secondary:hover { background: var(--color-navy-900); color: var(--color-white); text-decoration: none; }
-  .btn-tertiary { padding: 0; color: var(--color-navy-900); font-weight: var(--fw-semibold); }
+  .btn-tertiary { padding: 0; color: var(--color-navy-900); font-weight: var(--fw-semibold); letter-spacing: var(--ls-ja); }
   .btn-tertiary:hover { text-decoration: underline; }
-  .btn-tertiary .arrow { margin-left: var(--sp-2); color: var(--color-orange-600); }
+  .btn-tertiary .arrow { margin-left: var(--sp-4); color: var(--color-orange-600); transition: margin-left 0.2s ease; }
+  .btn-tertiary:hover .arrow { margin-left: var(--sp-6); }
 </style>
