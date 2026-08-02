@@ -12,141 +12,137 @@ interface Props {
   showSignature?: boolean;
 }
 const { heading1, heading2, sub, primaryCta, secondaryCta, imageSrc, imageAlt, showSignature = true } = Astro.props;
+const steps = [
+  { num: '1', label: '床版はつり' },
+  { num: '2', label: '断面修復' },
+  { num: '3', label: '床版防水' },
+  { num: '4', label: '舗装復旧' },
+];
 ---
 <section class="hero" aria-label="ヒーロー">
-  <div class="hero-bg" role="img" aria-label={imageAlt}>
-    <img src={imageSrc} alt="" width="2400" height="1400" loading="eager" fetchpriority="high" />
-    <div class="hero-overlay" aria-hidden="true"></div>
-  </div>
   <div class="hero-inner">
-    <div class="hero-text">
-      {showSignature && <BrandSignature variant="eyebrow" />}
-      <h1>
-        <span>{heading1}</span>
-        <span>{heading2}</span>
-      </h1>
-      <p class="hero-sub">{sub}</p>
-      <div class="hero-ctas">
-        <Button variant="primary" href={primaryCta.href} label={primaryCta.label} />
-        {secondaryCta && <Button variant="secondary" href={secondaryCta.href} label={secondaryCta.label} />}
+    <ol class="hero-steps" aria-label="ワンストップ4工程へ移動">
+      {steps.map(s => (
+        <li>
+          <a href="#process">
+            <span aria-hidden="true">{s.num}</span>
+            <span class="visually-hidden">{s.label}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <div class="hero-grid">
+      <div class="hero-text">
+        {showSignature && <BrandSignature variant="eyebrow" />}
+        <h1>
+          <span>{heading1}</span>
+          <span>{heading2}</span>
+        </h1>
+        <div class="hero-lower">
+          <p class="hero-ghost" aria-hidden="true">
+            <span>ONE STOP</span>
+            <span>ON SITE</span>
+            <span>NATIONWIDE</span>
+          </p>
+          <div class="hero-copy">
+            <p class="hero-sub">{sub}</p>
+            <div class="hero-ctas">
+              <Button variant="primary" href={primaryCta.href} label={primaryCta.label} />
+              {secondaryCta && <Button variant="secondary" href={secondaryCta.href} label={secondaryCta.label} />}
+            </div>
+          </div>
+        </div>
       </div>
+
+      <figure class="hero-figure">
+        <img src={imageSrc} alt={imageAlt} width="1200" height="900" loading="eager" fetchpriority="high" />
+      </figure>
     </div>
-  </div>
-  <div class="hero-scroll" aria-hidden="true">
-    <span class="scroll-label">SCROLL</span>
-    <span class="scroll-line"></span>
   </div>
 </section>
 <style>
-  .hero {
-    position: relative;
-    min-height: 86vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    color: var(--color-white);
-    isolation: isolate;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-  }
-  .hero-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 40%;
-  }
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      linear-gradient(115deg, rgba(6, 15, 28, 0.92) 0%, rgba(6, 15, 28, 0.78) 38%, rgba(11, 37, 69, 0.55) 70%, rgba(11, 37, 69, 0.30) 100%),
-      linear-gradient(180deg, rgba(6, 15, 28, 0.55) 0%, rgba(6, 15, 28, 0.20) 50%, rgba(6, 15, 28, 0.70) 100%);
-  }
+  .hero { padding: var(--sp-16) 0 var(--section-py-desktop); }
   .hero-inner {
-    width: 100%;
     max-width: var(--wrapper-max);
     margin: 0 auto;
     padding: 0 var(--gutter-desktop);
   }
-  .hero-text {
-    max-width: 760px;
-    color: var(--color-white);
+
+  .hero-steps {
+    display: flex;
+    gap: var(--sp-4);
+    margin: 0 0 var(--sp-8);
+    font-family: var(--font-en);
+    font-size: var(--fs-sm);
+    letter-spacing: var(--ls-en-wide);
   }
-  :global(.hero) :global(.brand-sig-eyebrow) {
-    color: var(--color-white);
-    border-bottom-color: rgba(255, 255, 255, 0.35);
+  .hero-steps a {
+    color: var(--color-gray-500);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    padding: var(--sp-1) var(--sp-2);
   }
+  .hero-steps a:hover { color: var(--color-orange-600); text-decoration: none; }
+  .hero-steps a:focus-visible { outline: 2px solid var(--color-orange-600); outline-offset: 2px; }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: var(--sp-12);
+    align-items: start;
+  }
+
   .hero h1 {
-    font-size: var(--fs-7xl);
-    font-weight: var(--fw-extrabold);
-    color: var(--color-white);
-    line-height: var(--lh-tight);
-    letter-spacing: -0.02em;
-    margin-bottom: var(--sp-6);
+    font-size: var(--fs-6xl);
+    font-weight: var(--fw-bold);
+    color: var(--color-navy-900);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-ja);
+    margin-bottom: var(--sp-12);
   }
   .hero h1 span { display: block; }
-  .hero-sub {
+
+  .hero-lower {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--sp-12);
+    align-items: start;
+  }
+  .hero-ghost {
+    margin: 0;
+    font-family: var(--font-en);
     font-size: var(--fs-xl);
-    color: rgba(255, 255, 255, 0.86);
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-en-wide);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(11, 37, 69, 0.26);
+  }
+  .hero-ghost span { display: block; margin-bottom: var(--sp-2); }
+
+  .hero-sub {
+    font-size: var(--fs-base);
+    color: var(--color-gray-700);
     line-height: var(--lh-relaxed);
     margin-bottom: var(--sp-8);
-    max-width: 56ch;
+    max-width: 46ch;
   }
   .hero-ctas { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
 
-  .hero-scroll {
-    position: absolute;
-    bottom: var(--sp-8);
-    right: var(--gutter-desktop);
-    display: flex;
-    align-items: center;
-    gap: var(--sp-3);
-    color: rgba(255, 255, 255, 0.7);
-    font-family: var(--font-base);
-    font-size: var(--fs-xs);
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    font-weight: var(--fw-semibold);
-  }
-  .scroll-line {
-    display: inline-block;
-    width: 60px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.5);
-    position: relative;
-    overflow: hidden;
-  }
-  .scroll-line::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0;
-    width: 30%;
-    height: 100%;
-    background: var(--color-orange-600);
-    animation: scroll-slide 2.4s ease-in-out infinite;
-  }
-  @keyframes scroll-slide {
-    0% { transform: translateX(-30%); }
-    100% { transform: translateX(220%); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-line::before { animation: none; }
-  }
+  .hero-figure { margin: 0; border: 1px solid var(--line-navy); line-height: 0; }
+  .hero-figure img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
 
   @media (max-width: 1023px) {
+    .hero { padding: var(--sp-12) 0 var(--section-py-tablet); }
     .hero-inner { padding: 0 var(--gutter-tablet); }
-    .hero h1 { font-size: var(--fs-6xl); }
-    .hero-scroll { right: var(--gutter-tablet); }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: var(--fs-5xl); }
+    .hero-figure { order: -1; margin-bottom: var(--sp-8); }
   }
   @media (max-width: 768px) {
-    .hero { min-height: 78vh; }
     .hero-inner { padding: 0 var(--gutter-mobile); }
-    .hero h1 { font-size: var(--fs-4xl); }
-    .hero-sub { font-size: var(--fs-lg); }
-    .hero-scroll { display: none; }
+    .hero h1 { font-size: var(--fs-4xl); margin-bottom: var(--sp-8); }
+    .hero-lower { grid-template-columns: 1fr; gap: var(--sp-8); }
+    .hero-ghost { font-size: var(--fs-lg); }
   }
 </style>
