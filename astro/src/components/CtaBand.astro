@@ -22,8 +22,22 @@ const { heading, sub } = Astro.props;
   </div>
 </section>
 <style>
-  .cta-band { background: var(--color-navy-800); padding: var(--section-py-tablet) 0; }
+  .cta-band {
+    position: relative;
+    background: var(--color-navy-900);
+    padding: var(--section-py-tablet) 0;
+    overflow: hidden;
+  }
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 100% at 88% 0%, var(--color-navy-700) 0%, transparent 72%);
+    opacity: 0.85;
+  }
   .cta-inner {
+    position: relative;
+    z-index: 1;
     max-width: var(--wrapper-max);
     margin: 0 auto;
     padding: 0 var(--gutter-desktop);
