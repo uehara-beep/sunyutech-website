@@ -83,10 +83,11 @@ import CtaBand from '../components/CtaBand.astro';
   .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
   .container.narrow { max-width: var(--content-max); }
   .page-hero .brand-sig {
+    font-family: var(--font-en);
     font-size: var(--fs-sm);
-    letter-spacing: 0.18em;
+    letter-spacing: var(--ls-en-wide);
     color: var(--color-orange-600);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     margin: 0 0 var(--sp-3);
   }
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-3xl); font-weight: var(--fw-extrabold); }
