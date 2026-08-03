@@ -232,16 +232,16 @@ spec `2026-05-28-sunyutech-website-renewal-design.md` §3 との差分を明示�
 
 ## 9. 受け入れ基準
 
-- [ ] 全6ページで `astro build` が成功する
-- [ ] 375 / 768 / 1024 / 1440px の全ページで横スクロールが発生しない（`document.documentElement.scrollWidth === innerWidth`）
-- [ ] `tokens.css` 以外に生カラー値（`#[0-9a-fA-F]{3,6}`）が存在しない
-- [ ] `box-shadow` の使用箇所がゼロ（`grep -rn "box-shadow" astro/src` で `--shadow-*` 定義以外にヒットしない）
-- [ ] `--radius-md` / `--radius-lg` の参照がゼロ
-- [ ] 全ページで `--section-py-*` が新しい値で適用されている
-- [ ] 本文テキストと背景のコントラスト比が 4.5:1 以上（`#1F2937` on `#F7F9FC` = 13.9:1。メッシュが最も濃くかかる箇所でも 11:1 以上を維持すること）
-- [ ] Barlow 未読み込み時にレイアウトが崩れない（フォールバック確認）
-- [ ] `oklch()` 非対応環境で `--bg-base` の単色にフォールバックする
-- [ ] すべての `<img>` に alt が付き、hero 以外は `loading="lazy"`
+- [x] 全6ページで `astro build` が成功する
+- [x] 375 / 768 / 1024 / 1440px の全ページで横スクロールが発生しない（`document.documentElement.scrollWidth === innerWidth`）
+- [x] `tokens.css` 以外に生カラー値（`#[0-9a-fA-F]{3,6}`）が存在しない
+- [x] `box-shadow` の使用箇所がゼロ（`grep -rn "box-shadow" astro/src` で `--shadow-*` 定義以外にヒットしない）
+- [x] `--radius-md` / `--radius-lg` の参照がゼロ
+- [x] 全ページで `--section-py-*` が新しい値で適用されている
+- [x] 本文テキストと背景のコントラスト比が 4.5:1 以上（`#1F2937` on `#F7F9FC` = 13.9:1。メッシュが最も濃くかかる箇所でも 11:1 以上を維持すること）
+- [x] Barlow 未読み込み時にレイアウトが崩れない（フォールバック確認）
+- [x] `oklch()` 非対応環境で `--bg-base` の単色にフォールバックする
+- [x] すべての `<img>` に alt が付き、hero 以外は `loading="lazy"`
 
 ---
 
