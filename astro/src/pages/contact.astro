@@ -43,15 +43,16 @@ import Form from '../components/Form.astro';
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
   .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
   .brand-sig {
+    font-family: var(--font-en);
     font-size: var(--fs-sm);
-    letter-spacing: 0.18em;
+    letter-spacing: var(--ls-en-wide);
     color: var(--color-orange-600);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     margin: 0 0 var(--sp-3);
     text-transform: uppercase;
   }
 
-  .contact-block { padding: var(--section-py-desktop) 0; background: var(--color-white); }
+  .contact-block { padding: var(--section-py-desktop) 0; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1.5fr; gap: var(--sp-12); align-items: start; }
 
   .tel-large {

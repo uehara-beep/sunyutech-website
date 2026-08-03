@@ -44,15 +44,15 @@
   label span { color: var(--color-status-error); margin-left: var(--sp-1); font-weight: var(--fw-bold); }
   input, select, textarea {
     padding: var(--sp-3);
-    border: 1px solid var(--color-gray-300);
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--line-navy);
+    border-radius: var(--radius-none);
     font-family: var(--font-base);
     font-size: var(--fs-base);
     color: var(--color-gray-900);
     background: var(--color-white);
   }
   input:focus, select:focus, textarea:focus {
-    outline: 2px solid var(--color-orange-600);
+    outline: 2px solid var(--color-navy-900);
     outline-offset: 1px;
     border-color: var(--color-navy-900);
   }
@@ -62,7 +62,7 @@
     font-weight: var(--fw-bold);
     border: none;
     padding: var(--sp-4) var(--sp-8);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-none);
     align-self: flex-start;
   }
   .submit:hover { background: var(--color-orange-700); }

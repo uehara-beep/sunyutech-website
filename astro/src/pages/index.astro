@@ -25,7 +25,7 @@ import ScrollReveal from '../components/ScrollReveal.astro';
     imageAlt="サンユウテックの高速道路リニューアル施工現場"
   />
 
-  <section class="section section-process">
+  <section class="section section-process" id="process">
     <div class="container">
       <SectionTitle text="ワンストップ施工 4 工程" eyebrow="01 / RENEWAL PROCESS" />
       <p class="lead">床版リニューアルを一社で完結します。</p>
@@ -148,11 +148,7 @@ import ScrollReveal from '../components/ScrollReveal.astro';
 
 <style>
   .section { padding: var(--section-py-desktop) 0; }
-  .section-process { background: var(--color-white); }
-  .section-stats { background: var(--color-gray-100); }
-  .section-strength { background: var(--color-white); position: relative; }
-  .section-service { background: var(--color-gray-100); }
-  .section-works { background: var(--color-white); }
+  .section-strength { position: relative; }
   .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
   .lead { font-size: var(--fs-xl); color: var(--color-navy-900); font-weight: var(--fw-semibold); margin-bottom: var(--sp-8); }
@@ -189,7 +185,7 @@ import ScrollReveal from '../components/ScrollReveal.astro';
   }
   .strength-item:hover::after { width: 100%; }
   .big-num {
-    font-family: var(--font-base);
+    font-family: var(--font-en);
     font-size: 7rem;
     font-weight: var(--fw-extrabold);
     line-height: 1;
