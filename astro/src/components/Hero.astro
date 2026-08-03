@@ -109,6 +109,9 @@ const steps = [
   }
   .hero-steps a:hover { color: var(--color-orange-600); text-decoration: none; }
   .hero-steps a:focus-visible { outline: 2px solid var(--color-white); outline-offset: 2px; }
+  /* Hero は暗い写真オーバーレイのため、Button.astro 既定のネイビー系フォーカスリングでは
+     非文字コントラスト 3:1 を満たせない。白で上書きする。 */
+  .hero :global(.btn:focus-visible) { outline-color: var(--color-white); }
 
   :global(.hero) :global(.brand-sig-eyebrow) {
     color: var(--color-white);
