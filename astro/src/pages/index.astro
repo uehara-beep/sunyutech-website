@@ -15,10 +15,14 @@ import ScrollReveal from '../components/ScrollReveal.astro';
   description="株式会社サンユウテックは福岡・大野城を拠点に、高速道路の床版を「はつり→断面修復→床版防水→舗装復旧」まで一社で担う、リニューアル工事の専門会社です。"
   currentPage="index"
 >
-  {/* ヒーロー画像パス（差し替え時はここを変更） */}
+  {/* ヒーロースライド（追加・削除・並び替えはこの配列を編集するだけ） */}
   <HeroV2
-    imageSrc="/images/hero-repair-work.jpg"
-    imageAlt="高速道路上で床版の断面修復作業を行う現場写真"
+    images={[
+      { src: '/images/hero-repair-work.jpg', alt: '高速道路上で床版の断面修復作業を行う現場写真' },
+      { src: '/images/hero-scraping.jpg', alt: 'ボブキャットによる既設防水層・舗装の撤去作業', position: 'center 25%' },
+      { src: '/images/hero-wj-work.jpg', alt: 'ウォータージェットはつり施工時の養生設備', position: 'center 35%' },
+      { src: '/images/hero-finishing.jpg', alt: '床版断面修復のコテ仕上げ作業' },
+    ]}
     primaryCta={{ label: '見積依頼・現地調査のご相談', href: '/contact/' }}
     secondaryCta={{ label: '施工実績を見る', href: '/works/' }}
   />
