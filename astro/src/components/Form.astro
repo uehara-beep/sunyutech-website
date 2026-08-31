@@ -1,21 +1,28 @@
 ---
+// Turnstile のサイトキーはビルド時に埋め込まない。contact.php が設定ファイルから
+// 読んで ?action=token で返す。こうしておくと、サーバーしか触れない担当者でも
+// 再ビルド・再デプロイなしで Turnstile を有効化できる。
 ---
-<form class="contact-form" action="mailto:contact@sunyutech.jp" method="post" enctype="text/plain">
+<form class="contact-form" action="/contact.php" method="post">
   <div class="field">
     <label for="company">会社名 <span aria-label="必須">*</span></label>
     <input type="text" id="company" name="company" required />
+    <p class="field-error" data-error-for="company" hidden></p>
   </div>
   <div class="field">
     <label for="name">ご担当者名 <span aria-label="必須">*</span></label>
     <input type="text" id="name" name="name" required />
+    <p class="field-error" data-error-for="name" hidden></p>
   </div>
   <div class="field">
     <label for="tel">電話番号 <span aria-label="必須">*</span></label>
     <input type="tel" id="tel" name="tel" required />
+    <p class="field-error" data-error-for="tel" hidden></p>
   </div>
   <div class="field">
     <label for="email">メールアドレス <span aria-label="必須">*</span></label>
     <input type="email" id="email" name="email" required />
+    <p class="field-error" data-error-for="email" hidden></p>
   </div>
   <div class="field">
     <label for="method">工事種別</label>
@@ -26,17 +33,42 @@
       <option value="コンクリート補修">コンクリート補修</option>
       <option value="その他">その他</option>
     </select>
+    <p class="field-error" data-error-for="method" hidden></p>
   </div>
   <div class="field">
     <label for="detail">工事規模・場所・希望時期</label>
     <textarea id="detail" name="detail" rows="4"></textarea>
+    <p class="field-error" data-error-for="detail" hidden></p>
   </div>
   <div class="field">
     <label for="message">お問い合わせ内容</label>
     <textarea id="message" name="message" rows="6"></textarea>
+    <p class="field-error" data-error-for="message" hidden></p>
   </div>
+
+  {/* ハニーポット: 人間には見えない。ボットが埋めるとサーバー側で破棄される */}
+  <div class="gotcha" aria-hidden="true">
+    <label for="_gotcha">このフィールドは空のままにしてください</label>
+    <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+  </div>
+
+  {/* サーバーが発行する署名付きトークン。読み込み時にJSが入れる */}
+  <input type="hidden" name="_token" value="" />
+
+  {/* Turnstile のウィジェットはサーバー設定に応じて JS が差し込む */}
+  <div class="turnstile-slot"></div>
+
+  <noscript>
+    <p class="noscript-note">
+      このフォームのご利用には JavaScript が必要です。
+      お手数ですが、お電話（<a href="tel:0925559211">092-555-9211</a> 平日 9:00〜17:00）でご連絡ください。
+    </p>
+  </noscript>
+
   <button type="submit" class="submit">送信する</button>
+  <p class="form-status" role="status" aria-live="polite" hidden></p>
 </form>
+
 <style>
   .contact-form { display: flex; flex-direction: column; gap: var(--sp-6); max-width: 680px; }
   .field { display: flex; flex-direction: column; gap: var(--sp-2); }
@@ -56,6 +88,14 @@
     outline-offset: 1px;
     border-color: var(--color-navy-900);
   }
+  /* 画面外に飛ばす。display:none だと埋めないボットがいるため位置で隠す */
+  .gotcha {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
   .submit {
     background: var(--color-orange-600);
     color: var(--color-white);
@@ -66,4 +106,174 @@
     align-self: flex-start;
   }
   .submit:hover { background: var(--color-orange-700); }
+  .submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .form-status { font-size: var(--fs-base); font-weight: var(--fw-semibold); }
+  .form-status.is-success { color: var(--color-navy-900); }
+  .form-status.is-error { color: var(--color-status-error); }
+  .field-error {
+    color: var(--color-status-error);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+  }
+  input[aria-invalid='true'], textarea[aria-invalid='true'], select[aria-invalid='true'] {
+    border-color: var(--color-status-error);
+  }
+  .noscript-note {
+    padding: var(--sp-4);
+    border: 1px solid var(--color-status-error);
+    border-radius: var(--radius-sm);
+    font-weight: var(--fw-semibold);
+  }
 </style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact-form');
+  const status = form?.querySelector<HTMLParagraphElement>('.form-status');
+  const submit = form?.querySelector<HTMLButtonElement>('.submit');
+  const tokenField = form?.querySelector<HTMLInputElement>('input[name="_token"]');
+
+  const ERROR_MSG = '送信に失敗しました。お手数ですが、お電話（092-555-9211）でご連絡ください。';
+  const SUCCESS_MSG = '送信しました。担当者よりご連絡いたします。';
+
+  // Turnstile のトークンは一度検証されると再利用できない。送信が失敗した後に
+  // 同じトークンで送り直すと Cloudflare が duplicate として拒否し、ページを
+  // 再読み込みするまで二度と送信できなくなる。失敗時は必ずリセットする。
+  function resetTurnstile() {
+    (window as any).turnstile?.reset?.();
+  }
+
+  function showStatus(message: string, type: 'success' | 'error') {
+    if (!status) return;
+    status.classList.remove('is-success', 'is-error');
+    status.classList.add(type === 'success' ? 'is-success' : 'is-error');
+    // aria-live の領域は hidden の間アクセシビリティツリーに存在しない。
+    // テキストを入れてから表示すると、スクリーンリーダーは変化を検知できず
+    // 送信結果が読み上げられない。先に表示し、次のフレームで文字を入れる。
+    status.textContent = '';
+    status.hidden = false;
+    requestAnimationFrame(() => { status.textContent = message; });
+  }
+
+  /** サーバーが返した項目別エラーを各入力の下に出す。 */
+  function showFieldErrors(errors: Record<string, string> | undefined) {
+    form?.querySelectorAll<HTMLParagraphElement>('.field-error').forEach((el) => {
+      const key = el.dataset.errorFor ?? '';
+      const message = errors?.[key];
+      el.textContent = message ?? '';
+      el.hidden = !message;
+      const input = form?.querySelector<HTMLElement>(`[name="${key}"]`);
+      input?.setAttribute('aria-invalid', message ? 'true' : 'false');
+    });
+  }
+
+  // Turnstile のウィジェットを差し込む。サイトキーはサーバー設定から来るので、
+  // 有効化にフロントの再ビルドが要らない。
+  function mountTurnstile(siteKey: string) {
+    const slot = form?.querySelector<HTMLDivElement>('.turnstile-slot');
+    if (!slot || !siteKey) return;
+
+    // ウィジェットが用意できるまで送信させない。先に送れてしまうと
+    // トークンが空のままサーバーに届き、初回の正直な送信が
+    // 「認証に失敗しました」で弾かれて利用者が理由を掴めない。
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = '確認中…';
+    }
+
+    slot.classList.add('cf-turnstile');
+    slot.dataset.sitekey = siteKey;
+    slot.dataset.callback = 'onTurnstileReady';
+    (window as any).onTurnstileReady = () => {
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = '送信する';
+      }
+    };
+
+    const tag = document.createElement('script');
+    tag.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    tag.async = true;
+    tag.defer = true;
+    tag.onerror = () => {
+      showStatus(
+        'ボット対策の読み込みに失敗しました。お手数ですが、お電話（092-555-9211）でご連絡ください。',
+        'error',
+      );
+    };
+    document.head.appendChild(tag);
+  }
+
+  /** サーバー定義の上限を maxlength に反映する（上限の二重管理を避ける）。 */
+  function applyFieldLimits(limits: Record<string, number> | undefined) {
+    if (!limits) return;
+    for (const [key, max] of Object.entries(limits)) {
+      form?.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+        `input[name="${key}"], textarea[name="${key}"]`,
+      )?.setAttribute('maxlength', String(max));
+    }
+  }
+
+  // ページを開いた時刻の署名付きトークンをサーバーから受け取る。
+  // 静的HTMLに埋め込むとビルド時刻になってしまい、有効期限切れになるため。
+  //
+  // ここで失敗したまま黙っていると、利用者はフォームを全部書いた後に
+  // 「再読み込みしてください」と言われ、しかも再読み込みしても直らない。
+  // 取得できなかった時点で伝える。
+  if (form && tokenField) {
+    fetch(`${form.action}?action=token`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`token endpoint responded ${r.status}`);
+        return r.json();
+      })
+      .then((d) => {
+        if (!d?.token) throw new Error('token missing');
+        tokenField.value = d.token;
+        applyFieldLimits(d.field_limits);
+        mountTurnstile(d.turnstile_sitekey ?? '');
+      })
+      .catch(() => {
+        showStatus(
+          'ただいまフォームをご利用いただけません。お手数ですが、お電話（092-555-9211）でご連絡ください。',
+          'error',
+        );
+        if (submit) submit.disabled = true;
+      });
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!submit) return;
+
+    showFieldErrors(undefined);
+    submit.disabled = true;
+    const originalLabel = submit.textContent;
+    submit.textContent = '送信中…';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = await response.json().catch(() => null);
+
+      if (response.ok && data?.ok) {
+        form.reset();
+        showStatus(data.message ?? SUCCESS_MSG, 'success');
+        submit.hidden = true;
+        return;
+      }
+
+      showStatus(data?.message ?? ERROR_MSG, 'error');
+      showFieldErrors(data?.errors);
+      resetTurnstile();
+      submit.disabled = false;
+      submit.textContent = originalLabel;
+    } catch {
+      showStatus(ERROR_MSG, 'error');
+      resetTurnstile();
+      submit.disabled = false;
+      submit.textContent = originalLabel;
+    }
+  });
+</script>

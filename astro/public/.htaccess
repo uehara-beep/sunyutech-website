@@ -1,0 +1,16 @@
+# フォームの設定ファイルにはシークレットキーが入っている。
+# PHP ハンドラの設定が壊れた場合に平文で配信されるのを防ぐため、
+# Web からの直接アクセスを拒否する。
+#
+# Require は Apache 2.4 の mod_authz_core の構文。モジュールが無い環境で
+# 素通しに書くと、未知のディレクティブとして公開ディレクトリ全体が500になる。
+# バージョンごとに切り分けて、どちらでも安全側に倒す。
+<FilesMatch "^contact-config(\.example)?\.php$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
