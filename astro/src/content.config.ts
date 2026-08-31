@@ -5,7 +5,7 @@ const works = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/works' }),
   schema: z.object({
     title: z.string(),
-    method: z.enum(['舗装', 'WJ', 'コンクリート補修']),
+    method: z.enum(['舗装', 'WJ', 'SB', '床版補修']),
     location: z.string(),
     methodDetail: z.string(),
     scale: z.string(),

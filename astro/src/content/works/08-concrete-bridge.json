@@ -1,10 +1,10 @@
 {
-  "title": "橋梁コンクリート補修",
-  "method": "コンクリート補修",
+  "title": "橋梁床版補修",
+  "method": "床版補修",
   "location": "九州管内",
   "methodDetail": "断面修復・表面保護",
   "scale": "約500m²",
   "image": "/images/work-concrete01.jpg",
-  "imageAlt": "橋梁のコンクリート補修",
+  "imageAlt": "橋梁の床版補修",
   "order": 8
 }

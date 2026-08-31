@@ -5,11 +5,11 @@ import WorkCard from '../components/WorkCard.astro';
 import CtaBand from '../components/CtaBand.astro';
 
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
-const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
+const methods = ['全て', '舗装', 'WJ', 'SB', '床版補修'] as const;
 ---
 <Base
   title="施工実績 | 株式会社サンユウテック"
-  description="高速道路リニューアル工事を中心に、舗装・ウォータージェット・コンクリート補修の3工法で全国の案件を担ってきた、株式会社サンユウテックの施工実績。"
+  description="高速道路リニューアル工事を中心に、舗装・ウォータージェット・床版補修の工法で全国の案件を担ってきた、株式会社サンユウテックの施工実績。"
   currentPage="works"
   ogImage="/images/work-paving02.jpg"
 >
@@ -17,7 +17,7 @@ const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
     <div class="container">
       <p class="brand-sig">RENEW, NOT REBUILD.</p>
       <h1>全国の高速道路リニューアルを、九州から支える。</h1>
-      <p class="lead">舗装・ウォータージェット・コンクリート補修の3工法で、高速道路の補修施工を担ってきました。</p>
+      <p class="lead">舗装・ウォータージェット・床版補修の工法で、高速道路の補修施工を担ってきました。</p>
     </div>
   </section>
 
