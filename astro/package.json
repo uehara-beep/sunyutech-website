@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "php ../astro/tests/contact-lib.test.php"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

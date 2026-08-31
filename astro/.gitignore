@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# お問い合わせフォームの設定（シークレットキーを含むためコミットしない）
+public/contact-config.php

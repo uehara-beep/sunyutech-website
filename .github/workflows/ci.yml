@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  php-tests:
+    name: PHP テスト（お問い合わせフォーム）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: PHP をセットアップ
+        uses: shivammathur/setup-php@v2
+        with:
+          # contact.php が要求する最低バージョン。ここを上げるときは
+          # docs/contact-form-deploy.md の記載も合わせること。
+          php-version: '8.0'
+          extensions: mbstring, curl
+
+      - name: 構文チェック
+        run: |
+          php -l astro/public/contact.php
+          php -l astro/public/contact-lib.php
+
+      - name: テスト実行
+        run: php astro/tests/contact-lib.test.php
+
+  build:
+    name: Astro ビルド
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: astro/package-lock.json
+      - run: npm ci
+        working-directory: astro
+      - run: npm run build
+        working-directory: astro
