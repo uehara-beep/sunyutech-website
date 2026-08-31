@@ -12,12 +12,6 @@ interface Props {
   showSignature?: boolean;
 }
 const { heading1, heading2, sub, primaryCta, secondaryCta, imageSrc, imageAlt, showSignature = true } = Astro.props;
-const steps = [
-  { num: '1', label: '床版はつり' },
-  { num: '2', label: '断面修復' },
-  { num: '3', label: '床版防水' },
-  { num: '4', label: '舗装復旧' },
-];
 ---
 <section class="hero" aria-label="ヒーロー">
   <div class="hero-bg" role="img" aria-label={imageAlt}>
@@ -26,16 +20,6 @@ const steps = [
   </div>
   <div class="hero-inner">
     <div class="hero-text">
-      <ol class="hero-steps" aria-label="ワンストップ4工程へ移動">
-        {steps.map(s => (
-          <li>
-            <a href="#process">
-              <span aria-hidden="true">{s.num}</span>
-              <span class="visually-hidden">{s.label}</span>
-            </a>
-          </li>
-        ))}
-      </ol>
       {showSignature && <BrandSignature variant="eyebrow" />}
       <h1>
         <span>{heading1}</span>
@@ -92,27 +76,6 @@ const steps = [
     max-width: 760px;
     color: var(--color-white);
   }
-
-  .hero-steps {
-    display: flex;
-    gap: var(--sp-4);
-    margin: 0 0 var(--sp-6);
-    font-family: var(--font-en);
-    font-size: var(--fs-sm);
-    letter-spacing: var(--ls-en-wide);
-  }
-  .hero-steps a {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: var(--fw-semibold);
-    text-decoration: none;
-    padding: var(--sp-1) var(--sp-2);
-  }
-  .hero-steps a:hover { color: var(--color-orange-600); text-decoration: none; }
-  .hero-steps a:focus-visible { outline: 2px solid var(--color-white); outline-offset: 2px; }
-  /* Hero は暗い写真オーバーレイのため、Button.astro 既定のネイビー系フォーカスリングでは
-     非文字コントラスト 3:1 を満たせない。白で上書きする。 */
-  .hero :global(.btn:focus-visible) { outline-color: var(--color-white); }
-
   :global(.hero) :global(.brand-sig-eyebrow) {
     color: var(--color-white);
     border-bottom-color: rgba(255, 255, 255, 0.35);
@@ -143,7 +106,7 @@ const steps = [
     align-items: center;
     gap: var(--sp-3);
     color: rgba(255, 255, 255, 0.7);
-    font-family: var(--font-en);
+    font-family: var(--font-base);
     font-size: var(--fs-xs);
     letter-spacing: 0.32em;
     text-transform: uppercase;

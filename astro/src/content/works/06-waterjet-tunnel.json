@@ -1,10 +1,10 @@
 {
-  "title": "トンネル覆工WJ斫り",
-  "method": "WJ",
-  "location": "大分県",
-  "methodDetail": "WJ斫り・前処理",
+  "title": "トンネル粗面処理",
+  "method": "SB",
+  "location": "南九州道",
+  "methodDetail": "SB",
   "scale": "約900m²",
   "image": "/images/work-waterjet02.jpg",
-  "imageAlt": "トンネル覆工のWJ斫り工事",
+  "imageAlt": "トンネルの粗面処理（ショットブラスト）",
   "order": 6
 }

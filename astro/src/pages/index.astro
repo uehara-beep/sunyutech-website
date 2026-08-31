@@ -1,12 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
+import HeroV2 from '../components/HeroV2.astro';
+import ProcessSection from '../components/ProcessSection.astro';
 import SectionTitle from '../components/SectionTitle.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import WorkCard from '../components/WorkCard.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Button from '../components/Button.astro';
-import ProcessFlow from '../components/ProcessFlow.astro';
 import StatGrid from '../components/StatGrid.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 ---
@@ -15,25 +15,16 @@ import ScrollReveal from '../components/ScrollReveal.astro';
   description="株式会社サンユウテックは福岡・大野城を拠点に、高速道路の床版を「はつり→断面修復→床版防水→舗装復旧」まで一社で担う、リニューアル工事の専門会社です。"
   currentPage="index"
 >
-  <Hero
-    heading1="直す技術が、"
-    heading2="道を生かし続ける。"
-    sub="福岡・大野城を拠点に、高速道路の床版をはつりから舗装復旧まで一社で担います。"
+  {/* ヒーロー画像パス（差し替え時はここを変更） */}
+  <HeroV2
+    imageSrc="/images/hero-repair-work.jpg"
+    imageAlt="高速道路上で床版の断面修復作業を行う現場写真"
     primaryCta={{ label: '見積依頼・現地調査のご相談', href: '/contact/' }}
     secondaryCta={{ label: '施工実績を見る', href: '/works/' }}
-    imageSrc="/images/hero-7.jpg"
-    imageAlt="サンユウテックの高速道路リニューアル施工現場"
   />
 
-  <section class="section section-process" id="process">
-    <div class="container">
-      <SectionTitle text="ワンストップ施工 4 工程" eyebrow="01 / RENEWAL PROCESS" />
-      <p class="lead">床版リニューアルを一社で完結します。</p>
-      <ScrollReveal>
-        <ProcessFlow />
-      </ScrollReveal>
-    </div>
-  </section>
+  {/* 03 一社完結＝6工程 */}
+  <ProcessSection />
 
   <section class="section section-stats">
     <div class="container">
@@ -41,7 +32,6 @@ import ScrollReveal from '../components/ScrollReveal.astro';
       <p class="lead">数字で語る、当社の地力。</p>
       <ScrollReveal>
         <StatGrid stats={[
-          { value: '732', label: '経営事項審査 舗装 総合評定値', caveat: '客観的な信用力を示す指標' },
           { value: '5', unit: '年以上', label: '無事故・無災害を継続中', caveat: '元請からの安全表彰も受賞' },
           { value: '80', unit: '%超', label: '舗装の継続・指名率', caveat: '長期取引が信頼の証' },
           { value: '50', unit: '名', label: '社員数（うち現場・技術45名）', caveat: '徹底した現場主義' },
@@ -143,12 +133,15 @@ import ScrollReveal from '../components/ScrollReveal.astro';
     </div>
   </section>
 
-  <CtaBand heading="床版リニューアル案件、まずご相談ください。" />
+  <CtaBand heading="まずご相談ください。" />
 </Base>
 
 <style>
   .section { padding: var(--section-py-desktop) 0; }
-  .section-strength { position: relative; }
+  .section-stats { background: var(--color-gray-100); }
+  .section-strength { background: var(--color-white); position: relative; }
+  .section-service { background: var(--color-gray-100); }
+  .section-works { background: var(--color-white); }
   .container { max-width: var(--wrapper-max); margin: 0 auto; padding: 0 var(--gutter-desktop); }
   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); }
   .lead { font-size: var(--fs-xl); color: var(--color-navy-900); font-weight: var(--fw-semibold); margin-bottom: var(--sp-8); }
@@ -185,7 +178,7 @@ import ScrollReveal from '../components/ScrollReveal.astro';
   }
   .strength-item:hover::after { width: 100%; }
   .big-num {
-    font-family: var(--font-en);
+    font-family: var(--font-base);
     font-size: 7rem;
     font-weight: var(--fw-extrabold);
     line-height: 1;

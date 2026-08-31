@@ -27,14 +27,16 @@ const { image, methodChip, title, location, method, scale, client } = Astro.prop
 </article>
 <style>
   .work-card {
-    background: var(--surface-card);
-    border: 1px solid var(--line-navy);
-    border-radius: var(--radius-none);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    transition: border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
   .work-card:hover {
-    border-color: var(--line-orange);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-300);
   }
   .image { overflow: hidden; }
   .image img {

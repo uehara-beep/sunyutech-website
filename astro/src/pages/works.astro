@@ -5,11 +5,11 @@ import WorkCard from '../components/WorkCard.astro';
 import CtaBand from '../components/CtaBand.astro';
 
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
-const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
+const methods = ['全て', '舗装', 'WJ', 'SB', '床版補修'] as const;
 ---
 <Base
   title="施工実績 | 株式会社サンユウテック"
-  description="高速道路リニューアル工事を中心に、舗装・ウォータージェット・コンクリート補修の3工法で全国の案件を担ってきた、株式会社サンユウテックの施工実績。"
+  description="高速道路リニューアル工事を中心に、舗装・ウォータージェット・床版補修の工法で全国の案件を担ってきた、株式会社サンユウテックの施工実績。"
   currentPage="works"
   ogImage="/images/work-paving02.jpg"
 >
@@ -17,7 +17,7 @@ const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
     <div class="container">
       <p class="brand-sig">RENEW, NOT REBUILD.</p>
       <h1>全国の高速道路リニューアルを、九州から支える。</h1>
-      <p class="lead">舗装・ウォータージェット・コンクリート補修の3工法で、高速道路の補修施工を担ってきました。</p>
+      <p class="lead">舗装・ウォータージェット・床版補修の工法で、高速道路の補修施工を担ってきました。</p>
     </div>
   </section>
 
@@ -72,21 +72,20 @@ const methods = ['全て', '舗装', 'WJ', 'コンクリート補修'] as const;
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
   .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
   .brand-sig {
-    font-family: var(--font-en);
     font-size: var(--fs-sm);
-    letter-spacing: var(--ls-en-wide);
+    letter-spacing: 0.18em;
     color: var(--color-orange-600);
-    font-weight: var(--fw-semibold);
+    font-weight: var(--fw-bold);
     margin: 0 0 var(--sp-3);
     text-transform: uppercase;
   }
 
-  .works-list { padding: var(--section-py-desktop) 0; }
+  .works-list { padding: var(--section-py-desktop) 0; background: var(--color-white); }
   .filter { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-bottom: var(--sp-8); }
   .filter button {
     padding: var(--sp-2) var(--sp-6);
     border: 1.5px solid var(--color-navy-900);
-    background: transparent;
+    background: var(--color-white);
     color: var(--color-navy-900);
     font-weight: var(--fw-semibold);
     border-radius: var(--radius-full);

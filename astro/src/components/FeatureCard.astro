@@ -25,19 +25,21 @@ const { number, title, description, image, link } = Astro.props;
 </article>
 <style>
   .feature-card {
-    background: var(--surface-card);
-    border: 1px solid var(--line-navy);
-    border-radius: var(--radius-none);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
     padding: var(--sp-6);
     display: flex;
     flex-direction: column;
-    transition: border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
   .feature-card:hover {
-    border-color: var(--line-orange);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-300);
   }
   .image { margin: calc(-1 * var(--sp-6)) calc(-1 * var(--sp-6)) var(--sp-4); }
-  .image img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
+  .image img { width: 100%; height: auto; border-radius: var(--radius-md) var(--radius-md) 0 0; aspect-ratio: 4/3; object-fit: cover; }
   .number {
     width: 48px; height: 48px;
     background: var(--color-navy-900);

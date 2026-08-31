@@ -7,11 +7,11 @@ const { variant = 'eyebrow' } = Astro.props;
 <p class={`brand-sig brand-sig-${variant}`}>RENEW, NOT REBUILD.</p>
 <style>
   .brand-sig {
-    font-family: var(--font-en);
-    letter-spacing: var(--ls-en-wide);
+    font-family: var(--font-base);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-navy-900);
-    font-weight: var(--fw-semibold);
+    font-weight: var(--fw-bold);
     margin: 0;
   }
   .brand-sig-eyebrow {

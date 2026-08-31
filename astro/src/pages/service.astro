@@ -38,7 +38,7 @@ import CtaBand from '../components/CtaBand.astro';
     </div>
   </section>
 
-  <section id="waterjet" class="method-section">
+  <section id="waterjet" class="method-section alt">
     <div class="container">
       <SectionTitle text="ウォータージェット工事" eyebrow="02 / WATER JET" />
       <div class="grid-2">
@@ -89,23 +89,23 @@ import CtaBand from '../components/CtaBand.astro';
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); margin-bottom: var(--sp-4); }
   .page-hero .lead { font-size: var(--fs-lg); color: var(--color-gray-200); }
   .brand-sig {
-    font-family: var(--font-en);
     font-size: var(--fs-sm);
-    letter-spacing: var(--ls-en-wide);
+    letter-spacing: 0.18em;
     color: var(--color-orange-600);
-    font-weight: var(--fw-semibold);
+    font-weight: var(--fw-bold);
     margin: 0 0 var(--sp-3);
     text-transform: uppercase;
   }
 
-  .method-section { padding: var(--section-py-desktop) 0; }
+  .method-section { padding: var(--section-py-desktop) 0; background: var(--color-white); }
+  .method-section.alt { background: var(--color-gray-100); }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-12); align-items: start; }
   .text p { font-size: var(--fs-base); line-height: var(--lh-relaxed); margin-bottom: var(--sp-6); color: var(--color-gray-900); }
   .text h3 { font-size: var(--fs-xl); font-weight: var(--fw-bold); color: var(--color-navy-900); margin-bottom: var(--sp-3); }
   .text ul { padding-left: var(--sp-6); list-style: disc; }
   .text li { font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-gray-700); margin-bottom: var(--sp-2); }
   .images { display: flex; flex-direction: column; gap: var(--sp-4); }
-  .images img { width: 100%; height: auto; border-radius: var(--radius-none); aspect-ratio: 3/2; object-fit: cover; }
+  .images img { width: 100%; height: auto; border-radius: var(--radius-md); aspect-ratio: 3/2; object-fit: cover; }
 
   @media (max-width: 1023px) {
     .container { padding: 0 var(--gutter-tablet); }

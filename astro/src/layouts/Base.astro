@@ -7,7 +7,7 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description: string;
-  currentPage: 'index' | 'service' | 'works' | 'company' | 'contact' | 'recruit';
+  currentPage: 'index' | 'service' | 'works' | 'company' | 'contact';
   ogImage?: string;
 }
 
@@ -38,16 +38,15 @@ const ogImageUrl = new URL(ogImage, siteUrl).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Google Fonts: Archivo for hero typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@900&family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@900&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div class="bg-mesh" aria-hidden="true"></div>
-    <div class="bg-dots" aria-hidden="true"></div>
-    <div class="bg-grain" aria-hidden="true"></div>
     <Header currentPage={currentPage} />
     <main>
       <slot />
@@ -55,37 +54,3 @@ const ogImageUrl = new URL(ogImage, siteUrl).toString();
     <Footer />
   </body>
 </html>
-
-<style>
-  .bg-mesh,
-  .bg-dots,
-  .bg-grain {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-  }
-  /* oklch 非対応環境向けフォールバック */
-  .bg-mesh {
-    z-index: -3;
-    background: var(--bg-base);
-  }
-  @supports (color: oklch(90% 0.075 245)) {
-    .bg-mesh {
-      background:
-        radial-gradient(ellipse 62% 88% at 6% -6%, var(--bg-mesh-1) 0%, transparent 66%),
-        radial-gradient(ellipse 56% 78% at 96% 12%, var(--bg-mesh-2) 0%, transparent 70%),
-        radial-gradient(ellipse 66% 82% at 70% 108%, var(--bg-mesh-3) 0%, transparent 68%),
-        var(--bg-base);
-    }
-  }
-  .bg-dots {
-    z-index: -2;
-    background-image: radial-gradient(circle, var(--bg-dot) 1.3px, transparent 1.4px);
-    background-size: var(--bg-dot-size) var(--bg-dot-size);
-  }
-  .bg-grain {
-    z-index: -1;
-    opacity: var(--grain-opacity);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-</style>
