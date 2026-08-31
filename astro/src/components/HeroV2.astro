@@ -2,19 +2,36 @@
 /**
  * HeroV2 - 01 ヒーロー
  * 設計書準拠: 呼吸する体験のヒーローセクション
+ * 背景はクロスフェード+ケンバーンズのスライドショー（images 配列の順に自動切替）
  */
+interface HeroImage {
+  src: string;
+  alt: string;
+  /** object-position（例 'center 30%'）。省略時 'center 40%' */
+  position?: string;
+}
 interface Props {
-  imageSrc: string;
-  imageAlt: string;
+  images: HeroImage[];
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
 }
-const { imageSrc, imageAlt, primaryCta, secondaryCta } = Astro.props;
+const { images, primaryCta, secondaryCta } = Astro.props;
 ---
 <section class="hero" aria-label="ヒーロー">
-  <!-- Background image with blur → sharp reveal -->
-  <div class="hero-bg" role="img" aria-label={imageAlt}>
-    <img src={imageSrc} alt="" width="2400" height="1400" loading="eager" fetchpriority="high" />
+  <!-- Background slideshow: 1枚目のみ blur → sharp reveal、以降はクロスフェード -->
+  <div class="hero-bg" role="img" aria-label={images[0].alt}>
+    {images.map((image, i) => (
+      <img
+        class:list={['slide', i === 0 && 'active', i === 0 && 'first']}
+        src={image.src}
+        alt=""
+        width="2400"
+        height="1400"
+        loading={i === 0 ? 'eager' : 'lazy'}
+        fetchpriority={i === 0 ? 'high' : 'auto'}
+        style={`--slide-pos: ${image.position ?? 'center 40%'}`}
+      />
+    ))}
     <div class="hero-overlay" aria-hidden="true"></div>
   </div>
 
@@ -90,27 +107,44 @@ const { imageSrc, imageAlt, primaryCta, secondaryCta } = Astro.props;
     isolation: isolate;
   }
 
-  /* === Background with blur → sharp === */
+  /* === Background slideshow (crossfade + Ken Burns) === */
   .hero-bg {
     position: absolute;
     inset: 0;
     z-index: -3;
   }
-  .hero-bg img {
+  .hero-bg .slide {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 40%;
-    filter: blur(8px);
-    transform: scale(1.06);
-    animation: hero-reveal 2.2s var(--ease-out-expo) forwards;
-    will-change: filter, transform;
+    object-position: var(--slide-pos, center 40%);
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    will-change: opacity, transform;
   }
-  @keyframes hero-reveal {
-    to {
-      filter: blur(0);
-      transform: scale(1);
-    }
+  .hero-bg .slide.active {
+    opacity: 1;
+    animation: kenburns 9s var(--ease-out-expo) forwards;
+  }
+  /* 初回表示のみ blur → sharp を重ねる */
+  .hero-bg .slide.first.active {
+    filter: blur(8px);
+    animation:
+      hero-blur 2.2s var(--ease-out-expo) forwards,
+      kenburns 9s var(--ease-out-expo) forwards;
+  }
+  /* フェードアウト中はズーム終端の倍率を維持して段差を防ぐ */
+  .hero-bg .slide.prev {
+    transform: scale(1.04);
+  }
+  @keyframes kenburns {
+    from { transform: scale(1); }
+    to { transform: scale(1.04); }
+  }
+  @keyframes hero-blur {
+    to { filter: blur(0); }
   }
 
   /* === Gradient overlay === */
@@ -324,7 +358,7 @@ const { imageSrc, imageAlt, primaryCta, secondaryCta } = Astro.props;
 
   /* === Reduced motion === */
   @media (prefers-reduced-motion: reduce) {
-    .hero-bg img { animation: none; filter: none; transform: none; }
+    .hero-bg .slide { animation: none; filter: none; transform: none; transition: none; }
     .scroll-line::before { animation: none; opacity: 1; top: 25%; }
     .reveal-item { opacity: 1; transform: none; }
     .reveal-item.in { animation: none; }
@@ -406,5 +440,24 @@ const { imageSrc, imageAlt, primaryCta, secondaryCta } = Astro.props;
         item.classList.add('in');
       }, staggerDelay);
     });
+
+    // Background slideshow (crossfade + Ken Burns)
+    const SLIDE_INTERVAL_MS = 7000;
+    const slides = document.querySelectorAll('.hero-bg .slide');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (slides.length > 1 && !reducedMotion) {
+      let current = 0;
+
+      setInterval(() => {
+        const prev = slides[current];
+        current = (current + 1) % slides.length;
+
+        slides.forEach((slide) => slide.classList.remove('prev'));
+        prev.classList.remove('active', 'first');
+        prev.classList.add('prev');
+        slides[current].classList.add('active');
+      }, SLIDE_INTERVAL_MS);
+    }
   });
 </script>
