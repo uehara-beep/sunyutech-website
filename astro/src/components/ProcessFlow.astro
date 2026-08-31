@@ -1,12 +1,14 @@
 ---
 const steps = [
-  { num: '01', label: '床版はつり', sub: 'CONJET ロボット' },
-  { num: '02', label: '断面修復', sub: '欠損部の再生' },
-  { num: '03', label: '床版防水', sub: '層の新設' },
-  { num: '04', label: '舗装復旧', sub: '一気に再生' },
+  { num: '01', label: '残As撤去', sub: '既存舗装の除去' },
+  { num: '02', label: '床版はつり', sub: 'CONJET ロボット' },
+  { num: '03', label: '断面補修', sub: '欠損部の再生' },
+  { num: '04', label: '研掃', sub: '表面処理' },
+  { num: '05', label: '床版防水', sub: '層の新設' },
+  { num: '06', label: '舗装復旧', sub: '一気に再生' },
 ] as const;
 ---
-<div class="process-flow" role="list" aria-label="高速道路リニューアル ワンストップ4工程">
+<div class="process-flow" role="list" aria-label="高速道路リニューアル ワンストップ6工程">
   {steps.map((s, i) => (
     <>
       <div class="step" role="listitem">
@@ -23,7 +25,7 @@ const steps = [
 <style>
   .process-flow {
     display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
     gap: var(--sp-3);
     align-items: stretch;
     padding: var(--sp-8) 0;
