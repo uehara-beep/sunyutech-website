@@ -36,12 +36,13 @@ import SectionTitle from '../components/SectionTitle.astro';
       <p>
         また、フォームの連続送信を防ぐ目的で、送信元の IP アドレスを
         変換した値をサーバー上に一時的に記録します。この記録は一定時間の
-        経過後に自動的に削除されます。あわせて、不具合の調査のために
-        サーバーのログに IP アドレスが記録されることがあります。
+        経過後、次にフォームが利用された際に削除されます。あわせて、
+        不具合の調査のためにサーバーのログに IP アドレスが記録されることがあります。
       </p>
       <p>
-        当ウェブサイトでは、アクセス解析ツールおよび広告目的の Cookie を使用していません。
-        ただし、ページの表示にあたり後述の外部サービスへ通信が発生します。
+        当社は、アクセス解析ツールや広告目的の Cookie を設置していません。
+        ただし、書体や地図など外部サービスの利用に伴い、後述のとおり
+        各社への通信および Cookie の設定が発生します。
       </p>
 
       <SectionTitle text="利用目的" eyebrow="02 / PURPOSE" />
@@ -70,6 +71,11 @@ import SectionTitle from '../components/SectionTitle.astro';
           取り扱いは
           <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">同社のプライバシーポリシー</a>
           によります。
+        </li>
+        <li>
+          <strong>Google LLC（Google マップ）</strong> —
+          会社案内ページに所在地の地図を埋め込んでいます。同ページを表示した時点で
+          通信が発生し、同社の Cookie が設定されます。
         </li>
         <li>
           <strong>Cloudflare, Inc.</strong> —

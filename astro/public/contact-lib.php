@@ -26,7 +26,11 @@ const CF_FIELDS = [
 /** 定義外の項目（extras）の上限。未検証の入力が通る経路なので必ず抑える。 */
 const CF_EXTRA_MAX_COUNT = 10;
 const CF_EXTRA_MAX_KEY = 64;
-const CF_EXTRA_MAX_VALUE = 200;
+// 1項目あたりは旧 detail の上限(2000)に合わせる。ここを小さくすると、
+// extras が救おうとしている「旧HTMLから届いた本文」そのものを削ってしまう。
+// 代わりに合計で歯止めをかけ、巨大な入力の送りつけを防ぐ。
+const CF_EXTRA_MAX_VALUE = 2000;
+const CF_EXTRA_MAX_TOTAL = 4000;
 
 /** 項目ごとの最大文字数。フォーム側の maxlength に配って表示崩れと無駄な往復を防ぐ。 */
 function cf_field_limits(): array {
@@ -205,8 +209,9 @@ function cf_build_mail(array $input, string $to, string $from): array {
     // 別のキー名で送るだけで回避され、受信箱にメガバイト級の本文が届く。
     $internal = ['_token', '_gotcha', 'cf-turnstile-response'];
     $extras = [];
+    $budget = CF_EXTRA_MAX_TOTAL;
     foreach ($input as $key => $_) {
-        if (count($extras) >= CF_EXTRA_MAX_COUNT) {
+        if (count($extras) >= CF_EXTRA_MAX_COUNT || $budget <= 0) {
             break;
         }
         if (!is_string($key) || isset(CF_FIELDS[$key]) || in_array($key, $internal, true)) {
@@ -219,9 +224,11 @@ function cf_build_mail(array $input, string $to, string $from): array {
         if ($value === '') {
             continue;
         }
-        if (mb_strlen($value) > CF_EXTRA_MAX_VALUE) {
-            $value = mb_substr($value, 0, CF_EXTRA_MAX_VALUE) . '…（以下省略）';
+        $cap = min(CF_EXTRA_MAX_VALUE, $budget);
+        if (mb_strlen($value) > $cap) {
+            $value = mb_substr($value, 0, $cap) . '…（以下省略）';
         }
+        $budget -= mb_strlen($value);
         $extras[] = cf_sanitize_header($key) . ': ' . $value;
     }
     if ($extras) {
@@ -301,8 +308,14 @@ function cf_rate_limit_sweep(string $dir, int $windowSeconds): void {
     if (!is_dir($dir)) {
         return;
     }
+    // rate_limit_dir は設定で任意のパスを指定できる。他の用途と共用の
+    // ディレクトリを指された場合に無関係なファイルを消さないよう、
+    // cf_rate_file が作る名前（sha1の40桁 + .json）だけを対象にする。
     $now = time();
     foreach (glob(rtrim($dir, '/') . '/*.json') ?: [] as $file) {
+        if (!preg_match('/^[0-9a-f]{40}\.json$/', basename($file))) {
+            continue;
+        }
         $mtime = @filemtime($file);
         if ($mtime !== false && $now - $mtime > $windowSeconds) {
             @unlink($file);

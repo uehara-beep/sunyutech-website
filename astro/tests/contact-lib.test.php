@@ -370,8 +370,28 @@ test('定義外の項目にも長さ制限がかかる', function () {
     // 上限を掛けないと、message の5000文字制限を別のキー名で送るだけで
     // 回避でき、受信箱にメガバイト級の本文が届く。
     $mail = cf_build_mail(valid_input(['spam' => str_repeat('A', 200000)]), 'inbox@example.jp', 'no-reply@sunyutech.jp');
-    assert_true(strlen($mail['body']) < 3000, '本文が ' . strlen($mail['body']) . ' バイトある');
+    assert_true(mb_strlen($mail['body']) < 5000, '本文が ' . mb_strlen($mail['body']) . ' 文字ある');
     assert_contains('（以下省略）', $mail['body']);
+});
+
+test('旧detail相当の長文は切られずに届く', function () {
+    // extras は「デプロイ中に旧HTMLから届いた入力を救う」ための仕組み。
+    // 旧 detail は2000文字まで許容していたので、そこを切ると
+    // 救うはずの内容そのものを失う。
+    $body = str_repeat('あ', 800);
+    $mail = cf_build_mail(valid_input(['detail' => $body]), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_contains($body, $mail['body']);
+    assert_not_contains('（以下省略）', $mail['body']);
+});
+
+test('合計の上限を超えたら以降は載せない', function () {
+    // 1項目あたりを緩めた分、合計で歯止めをかける。
+    $input = valid_input();
+    for ($i = 0; $i < 10; $i++) {
+        $input["extra{$i}"] = str_repeat('X', 1500);
+    }
+    $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_true(mb_strlen($mail['body']) < 6000, '本文が ' . mb_strlen($mail['body']) . ' 文字ある');
 });
 
 test('定義外の項目は個数にも上限がある', function () {
@@ -557,6 +577,27 @@ test('時間枠を過ぎた記録は削除される', function () {
 test('保存先が無くても落ちない', function () {
     cf_rate_limit_sweep('/nonexistent-dir-for-sweep', 3600);
     assert_true(true);
+});
+
+test('自分が作った記録以外は消さない', function () {
+    // rate_limit_dir は設定で任意のパスを指定できる。他の用途と共用の
+    // ディレクトリを指されたとき、無関係なファイルを消してはいけない。
+    $dir = sys_get_temp_dir() . '/cf-sweep-safe-' . getmypid();
+    @mkdir($dir, 0700, true);
+    $mine = $dir . '/' . sha1('someip') . '.json';
+    $other = $dir . '/important-backup.json';
+    file_put_contents($mine, '{}');
+    file_put_contents($other, '{}');
+    touch($mine, time() - 7200);
+    touch($other, time() - 7200);
+
+    cf_rate_limit_sweep($dir, 3600);
+
+    assert_false(file_exists($mine), '自分の記録が残っている');
+    assert_true(file_exists($other), '無関係なファイルを消している');
+
+    array_map('unlink', glob($dir . '/*') ?: []);
+    @rmdir($dir);
 });
 
 // ---- Cloudflare からのリクエストか判定 --------------------------------------

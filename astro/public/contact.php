@@ -232,14 +232,20 @@ if (!$sent) {
 
 // 送信できたときだけレート制限を消費する。入力ミスで弾かれた分まで数えると、
 // 正当な利用者が自分の打ち間違いで1時間締め出されてしまう。
-if ($rateLimitUsable) {
-    cf_rate_limit_hit($ip, $rateDir, CF_RATE_WINDOW, time());
+// ここから先は「メールは既に送れている」状態。以降で例外を投げると、
+// 届いているのに利用者にはエラーが見え、再送信されて重複する。
+// 後片付けの失敗で送信結果を覆さないよう、まとめて握りつぶしてログに残す。
+try {
+    if ($rateLimitUsable) {
+        cf_rate_limit_hit($ip, $rateDir, CF_RATE_WINDOW, time());
 
-    // 役目を終えた記録を掃除する。毎回全走査すると無駄なので、
-    // ときどきだけ実行する。件数が少ないサイトなので、これで十分追いつく。
-    if (random_int(1, 20) === 1) {
+        // 役目を終えた記録を毎回掃除する。対象は tiny なディレクトリなので
+        // 走査は軽い。確率的に間引くと、送信が少ないサイトでは記録が
+        // 長期間残り、プライバシーポリシーの「一定時間で削除」に反する。
         cf_rate_limit_sweep($rateDir, CF_RATE_WINDOW);
     }
+} catch (Throwable $e) {
+    error_log('contact.php: 送信後の後片付けに失敗しました: ' . $e->getMessage());
 }
 
 cf_respond(200, ['ok' => true, 'message' => '送信しました。担当者よりご連絡いたします。']);
