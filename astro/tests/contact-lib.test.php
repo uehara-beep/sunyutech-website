@@ -366,6 +366,28 @@ test('定義外の項目が送られても本文から消えない', function ()
     assert_contains('舗装', $mail['body']);
 });
 
+test('定義外の項目にも長さ制限がかかる', function () {
+    // 上限を掛けないと、message の5000文字制限を別のキー名で送るだけで
+    // 回避でき、受信箱にメガバイト級の本文が届く。
+    $mail = cf_build_mail(valid_input(['spam' => str_repeat('A', 200000)]), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_true(strlen($mail['body']) < 3000, '本文が ' . strlen($mail['body']) . ' バイトある');
+    assert_contains('（以下省略）', $mail['body']);
+});
+
+test('定義外の項目は個数にも上限がある', function () {
+    $input = valid_input();
+    for ($i = 0; $i < 100; $i++) {
+        $input["extra{$i}"] = "値{$i}";
+    }
+    $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_true(substr_count($mail['body'], 'extra') <= 10, '項目が多すぎる');
+});
+
+test('異常に長いキー名は本文に出さない', function () {
+    $mail = cf_build_mail(valid_input([str_repeat('k', 500) => '値']), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_not_contains('kkkkkkkkkk', $mail['body']);
+});
+
 test('定義外でも空の項目は本文に出さない', function () {
     $input = valid_input(['company' => '']);
     $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
@@ -506,6 +528,36 @@ test('保存先が使えないときは制限をかけずに通す（fail-open�
 // 後片付け
 array_map('unlink', glob($rate_dir . '/*') ?: []);
 @rmdir($rate_dir);
+
+// ---- レート制限ファイルの掃除 ----------------------------------------------
+//
+// IP のハッシュ1件につき1ファイルを作るため、掃除しないと際限なく溜まる。
+// 溜まった分は個人情報（IPの痕跡）を保持し続けることにもなる。
+
+echo "\ncf_rate_limit_sweep\n";
+
+test('時間枠を過ぎた記録は削除される', function () {
+    $dir = sys_get_temp_dir() . '/cf-sweep-' . getmypid();
+    @mkdir($dir, 0700, true);
+    $old = $dir . '/' . sha1('old') . '.json';
+    $new = $dir . '/' . sha1('new') . '.json';
+    file_put_contents($old, '{}');
+    file_put_contents($new, '{}');
+    touch($old, time() - 7200);
+
+    cf_rate_limit_sweep($dir, 3600);
+
+    assert_false(file_exists($old), '古い記録が残っている');
+    assert_true(file_exists($new), '新しい記録が消えている');
+
+    array_map('unlink', glob($dir . '/*') ?: []);
+    @rmdir($dir);
+});
+
+test('保存先が無くても落ちない', function () {
+    cf_rate_limit_sweep('/nonexistent-dir-for-sweep', 3600);
+    assert_true(true);
+});
 
 // ---- Cloudflare からのリクエストか判定 --------------------------------------
 //

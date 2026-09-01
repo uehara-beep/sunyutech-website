@@ -47,7 +47,8 @@ button { font-family: inherit; cursor: pointer; }
 
 /* 定義リスト形式の情報テーブル。company.astro のスコープド定義しか無く、
    他ページで使うと素のdl表示になっていた。.container と同じ理由でここに置く。
-   既存ページ側の同名定義は値が同じため表示は変わらない。 */
+   ブレークポイントも company.astro の定義に揃えてあるため、
+   将来スコープド側の重複を削除しても company の表示は変わらない。 */
 .info-table { display: flex; flex-direction: column; gap: 0; }
 .info-table > div {
   display: grid;
@@ -59,6 +60,9 @@ button { font-family: inherit; cursor: pointer; }
 .info-table dt { color: var(--color-gray-500); font-weight: var(--fw-semibold); }
 .info-table dd { margin: 0; color: var(--color-gray-900); }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
+  .info-table > div { grid-template-columns: 140px 1fr; }
+}
+@media (max-width: 480px) {
   .info-table > div { grid-template-columns: 1fr; gap: var(--sp-1); }
 }

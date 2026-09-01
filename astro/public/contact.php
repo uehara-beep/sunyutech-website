@@ -234,6 +234,12 @@ if (!$sent) {
 // 正当な利用者が自分の打ち間違いで1時間締め出されてしまう。
 if ($rateLimitUsable) {
     cf_rate_limit_hit($ip, $rateDir, CF_RATE_WINDOW, time());
+
+    // 役目を終えた記録を掃除する。毎回全走査すると無駄なので、
+    // ときどきだけ実行する。件数が少ないサイトなので、これで十分追いつく。
+    if (random_int(1, 20) === 1) {
+        cf_rate_limit_sweep($rateDir, CF_RATE_WINDOW);
+    }
 }
 
 cf_respond(200, ['ok' => true, 'message' => '送信しました。担当者よりご連絡いたします。']);

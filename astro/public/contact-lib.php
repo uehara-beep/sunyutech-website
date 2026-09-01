@@ -23,6 +23,11 @@ const CF_FIELDS = [
     'message' => ['label' => 'お問い合わせ・ご応募内容', 'required' => true,  'max' => 5000],
 ];
 
+/** 定義外の項目（extras）の上限。未検証の入力が通る経路なので必ず抑える。 */
+const CF_EXTRA_MAX_COUNT = 10;
+const CF_EXTRA_MAX_KEY = 64;
+const CF_EXTRA_MAX_VALUE = 200;
+
 /** 項目ごとの最大文字数。フォーム側の maxlength に配って表示崩れと無駄な往復を防ぐ。 */
 function cf_field_limits(): array {
     $limits = [];
@@ -194,16 +199,30 @@ function cf_build_mail(array $input, string $to, string $from): array {
     // 開いたままの訪問者が旧項目（会社名など）を送ってくることがある。
     // 定義だけを見て組み立てると黙って捨てられ、受け取る側は情報が
     // 欠けたことにすら気づけない。
+    //
+    // ただし cf_validate は CF_FIELDS しか検証しないため、ここは未検証の
+    // 入力が通る唯一の経路になる。上限を掛けないと、message の文字数制限を
+    // 別のキー名で送るだけで回避され、受信箱にメガバイト級の本文が届く。
     $internal = ['_token', '_gotcha', 'cf-turnstile-response'];
     $extras = [];
     foreach ($input as $key => $_) {
+        if (count($extras) >= CF_EXTRA_MAX_COUNT) {
+            break;
+        }
         if (!is_string($key) || isset(CF_FIELDS[$key]) || in_array($key, $internal, true)) {
             continue;
         }
-        $value = trim(cf_str($input, $key));
-        if ($value !== '') {
-            $extras[] = cf_sanitize_header($key) . ': ' . $value;
+        if (mb_strlen($key) > CF_EXTRA_MAX_KEY) {
+            continue;   // 通常の入力ではありえない長さのキーは捨てる
         }
+        $value = trim(cf_str($input, $key));
+        if ($value === '') {
+            continue;
+        }
+        if (mb_strlen($value) > CF_EXTRA_MAX_VALUE) {
+            $value = mb_substr($value, 0, CF_EXTRA_MAX_VALUE) . '…（以下省略）';
+        }
+        $extras[] = cf_sanitize_header($key) . ': ' . $value;
     }
     if ($extras) {
         $lines[] = '';
@@ -269,6 +288,26 @@ function cf_send_mail(array $mail, string $envelopeFrom, callable $sender): bool
  */
 function cf_rate_file(string $ip, string $dir): string {
     return rtrim($dir, '/') . '/' . sha1($ip) . '.json';
+}
+
+/**
+ * 時間枠を過ぎたレート制限の記録を削除する。
+ *
+ * IP のハッシュ1件につき1ファイルを作るため、掃除しないと際限なく溜まる。
+ * 溜まった分は訪問者の痕跡を保持し続けることにもなるので、
+ * 役目を終えた時点で消す。
+ */
+function cf_rate_limit_sweep(string $dir, int $windowSeconds): void {
+    if (!is_dir($dir)) {
+        return;
+    }
+    $now = time();
+    foreach (glob(rtrim($dir, '/') . '/*.json') ?: [] as $file) {
+        $mtime = @filemtime($file);
+        if ($mtime !== false && $now - $mtime > $windowSeconds) {
+            @unlink($file);
+        }
+    }
 }
 
 /** レート制限の記録を保存できる状態か。呼び出し側はこれを見てログを残す。 */
