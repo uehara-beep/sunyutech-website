@@ -216,13 +216,16 @@ if ($errors) {
 
 $mail = cf_build_mail($_POST, $config['mail_to'], $config['mail_from']);
 
-// 第5引数でエンベロープ送信者（Return-Path）を自社ドメインに揃える。
-// これが無いとサーバー既定の apache@svNNN.onamae.ne.jp のままになり、
-// SPF が認証するドメインと From: のドメインが一致しない。
-// 受信側が Google Workspace のため DMARC のアライメント判定で落ち、
-// 本文が正しくても迷惑メールに振り分けられる。
+// エンベロープ送信者の指定は cf_send_mail が担当する。
+// サーバーが -f を拒否した場合は指定なしで再送する（詳細は同関数のコメント）。
 // $config['mail_from'] は cf_validate_config でメールアドレス形式を検証済み。
-if (!mb_send_mail($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], '-f' . $config['mail_from'])) {
+$sent = cf_send_mail($mail, $config['mail_from'], function ($to, $subject, $body, $headers, $params) {
+    return $params === null
+        ? mb_send_mail($to, $subject, $body, $headers)
+        : mb_send_mail($to, $subject, $body, $headers, $params);
+});
+
+if (!$sent) {
     error_log('contact.php: mb_send_mail に失敗しました');
     cf_respond(500, ['ok' => false, 'message' => '送信に失敗しました。お手数ですが、お電話（' . CF_PHONE . '）でご連絡ください。']);
 }

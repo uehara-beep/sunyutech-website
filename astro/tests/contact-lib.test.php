@@ -71,12 +71,9 @@ function assert_not_contains(string $needle, string $haystack, string $msg = '')
 // 有効な入力の雛形。個別テストで必要な項目だけ上書きする。
 function valid_input(array $overrides = []): array {
     return array_merge([
-        'company' => '株式会社サンプル',
         'name'    => '山田 太郎',
-        'tel'     => '092-000-0000',
         'email'   => 'yamada@example.com',
-        'method'  => '舗装',
-        'detail'  => '大野城市の現場、10月希望',
+        'tel'     => '092-000-0000',
         'message' => '見積をお願いします。',
     ], $overrides);
 }
@@ -117,19 +114,26 @@ test('正しい入力ならエラーなし', function () {
     assert_same([], cf_validate(valid_input()));
 });
 
-test('会社名が空ならエラー', function () {
-    $errors = cf_validate(valid_input(['company' => '']));
-    assert_same(['company'], array_keys($errors));
+test('お名前が空ならエラー', function () {
+    $errors = cf_validate(valid_input(['name' => '']));
+    assert_same(['name'], array_keys($errors));
 });
 
-test('担当者名が空ならエラー', function () {
+test('お名前が空白のみならエラー', function () {
     $errors = cf_validate(valid_input(['name' => '   ']));
     assert_same(['name'], array_keys($errors));
 });
 
-test('電話番号が空ならエラー', function () {
-    $errors = cf_validate(valid_input(['tel' => '']));
-    assert_same(['tel'], array_keys($errors));
+test('電話番号は任意なので空でも通る', function () {
+    // 応募者が携帯しか持っていない、日中出られない等で詰まらせない。
+    // 連絡手段はメールで確保されている。
+    assert_same([], cf_validate(valid_input(['tel' => ''])));
+});
+
+test('お問い合わせ内容が空ならエラー', function () {
+    // 以前は任意だったが、これがフォームの本体なので必須にする。
+    $errors = cf_validate(valid_input(['message' => '']));
+    assert_same(['message'], array_keys($errors));
 });
 
 test('メールアドレスが空ならエラー', function () {
@@ -143,24 +147,27 @@ test('メールアドレスの形式が不正ならエラー', function () {
 });
 
 test('必須が複数欠けたら全部返す', function () {
-    $errors = cf_validate(valid_input(['company' => '', 'tel' => '']));
-    assert_same(['company', 'tel'], array_keys($errors));
+    $errors = cf_validate(valid_input(['name' => '', 'message' => '']));
+    assert_same(['name', 'message'], array_keys($errors));
 });
 
-test('工事種別と詳細は任意なので空でも通る', function () {
-    assert_same([], cf_validate(valid_input(['method' => '', 'detail' => ''])));
+test('会社名の項目は存在しない（求職者が送信できなくなるため）', function () {
+    // 会社名を必須にしていたせいで、採用ページのCTAから来た応募者は
+    // フォームを送信できなかった。項目ごと廃止し、必要なら本文に書いてもらう。
+    assert_false(array_key_exists('company', cf_field_limits()));
+    assert_same(['name', 'email', 'tel', 'message'], array_keys(cf_field_limits()));
 });
 
 test('配列を送りつけられても警告を出さずエラーにする', function () {
     // company[]=A のように配列で送ると (string) キャストが
     // "Array to string conversion" 警告を出し、その出力が JSON 応答の
     // 前に混ざってフロント側が解釈できなくなる。
-    $errors = cf_validate(valid_input(['company' => ['A', 'B']]));
-    assert_same(['company'], array_keys($errors));
+    $errors = cf_validate(valid_input(['name' => ['A', 'B']]));
+    assert_same(['name'], array_keys($errors));
 });
 
 test('メール本文の組み立ても配列入力で壊れない', function () {
-    $mail = cf_build_mail(valid_input(['company' => ['A']]), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    $mail = cf_build_mail(valid_input(['name' => ['A']]), 'inbox@example.jp', 'no-reply@sunyutech.jp');
     assert_not_contains('Array', $mail['subject']);
 });
 
@@ -173,9 +180,9 @@ test('お問い合わせ内容が長すぎるとエラー', function () {
     assert_same(['message'], array_keys($errors));
 });
 
-test('会社名が長すぎるとエラー', function () {
-    $errors = cf_validate(valid_input(['company' => str_repeat('あ', 201)]));
-    assert_same(['company'], array_keys($errors));
+test('お名前が長すぎるとエラー', function () {
+    $errors = cf_validate(valid_input(['name' => str_repeat('あ', 101)]));
+    assert_same(['name'], array_keys($errors));
 });
 
 // ---- ハニーポット ----------------------------------------------------------
@@ -318,18 +325,25 @@ test('Reply-To は訪問者のアドレス（返信でそのまま届く）', fu
 
 test('本文に入力項目がすべて含まれる', function () {
     $mail = cf_build_mail(valid_input(), 'inbox@example.jp', 'no-reply@sunyutech.jp');
-    assert_contains('株式会社サンプル', $mail['body']);
     assert_contains('山田 太郎', $mail['body']);
-    assert_contains('092-000-0000', $mail['body']);
     assert_contains('yamada@example.com', $mail['body']);
-    assert_contains('舗装', $mail['body']);
-    assert_contains('大野城市の現場、10月希望', $mail['body']);
+    assert_contains('092-000-0000', $mail['body']);
     assert_contains('見積をお願いします。', $mail['body']);
 });
 
+test('件名にお名前が入る（会社名の項目が無くなったため）', function () {
+    $mail = cf_build_mail(valid_input(), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_contains('山田 太郎', $mail['subject']);
+});
+
+test('お名前が空でも件名が組み立てられる', function () {
+    $mail = cf_build_mail(valid_input(['name' => '']), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_contains('【HP問い合わせ】', $mail['subject']);
+});
+
 test('任意項目が空でも本文は組み立てられる', function () {
-    $mail = cf_build_mail(valid_input(['method' => '', 'detail' => '']), 'inbox@example.jp', 'no-reply@sunyutech.jp');
-    assert_contains('株式会社サンプル', $mail['body']);
+    $mail = cf_build_mail(valid_input(['tel' => '']), 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_contains('山田 太郎', $mail['body']);
 });
 
 test('Content-Type と MIME-Version は自前で付けない', function () {
@@ -348,12 +362,48 @@ test('Reply-To に改行が注入されても無害化される', function () {
 });
 
 test('件名に改行が注入されても新しいヘッダーにならない', function () {
-    $input = valid_input(['company' => "サンプル\r\nBcc: victim@example.com"]);
+    $input = valid_input(['name' => "サンプル\r\nBcc: victim@example.com"]);
     $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
     // 防御の本体は「改行が残らないこと」。改行さえ消えていれば "Bcc: ..." は
     // ヘッダーではなく件名の一部の文字列にしかならず、無害。
     assert_not_contains("\r", $mail['subject']);
     assert_not_contains("\n", $mail['subject']);
+});
+
+// ---- メール送信（エンベロープ送信者のフォールバック）------------------------
+//
+// -f でエンベロープ送信者を指定すると SPF/DMARC のアライメントが取れるが、
+// 共用サーバーによってはこの指定自体が拒否される。そのとき送信を諦めると
+// 問い合わせが1通も届かなくなるため、-f 無しで送り直す。
+
+echo "\ncf_send_mail\n";
+
+test('1回目で成功したら送り直さない', function () {
+    $calls = [];
+    $sender = function ($to, $subj, $body, $headers, $params = null) use (&$calls) {
+        $calls[] = $params;
+        return true;
+    };
+    assert_true(cf_send_mail(['to'=>'a@b.jp','subject'=>'s','body'=>'b','headers'=>'h'], 'no-reply@sunyutech.jp', $sender));
+    assert_same(1, count($calls), '送信回数');
+    assert_same('-fno-reply@sunyutech.jp', $calls[0]);
+});
+
+test('-f が拒否されたら -f 無しで送り直す', function () {
+    $calls = [];
+    $sender = function ($to, $subj, $body, $headers, $params = null) use (&$calls) {
+        $calls[] = $params;
+        return $params === null;   // -f 付きは失敗、無しは成功
+    };
+    assert_true(cf_send_mail(['to'=>'a@b.jp','subject'=>'s','body'=>'b','headers'=>'h'], 'no-reply@sunyutech.jp', $sender));
+    assert_same(2, count($calls), '送信回数');
+    assert_same('-fno-reply@sunyutech.jp', $calls[0]);
+    assert_same(null, $calls[1]);
+});
+
+test('どちらでも送れなければ false', function () {
+    $sender = fn($to, $subj, $body, $headers, $params = null) => false;
+    assert_false(cf_send_mail(['to'=>'a@b.jp','subject'=>'s','body'=>'b','headers'=>'h'], 'no-reply@sunyutech.jp', $sender));
 });
 
 // ---- レート制限 ------------------------------------------------------------

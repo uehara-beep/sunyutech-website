@@ -26,3 +26,21 @@ button { font-family: inherit; cursor: pointer; }
   overflow: hidden; clip: rect(0, 0, 0, 0);
   white-space: nowrap; border: 0;
 }
+
+/* レイアウトの器。
+   これまで各ページのスコープドスタイルで個別に再定義されており、
+   新しいページを追加すると余白が効かない状態だった。本来ここが定義場所。
+   既存ページ側の同名定義は値が同じため、残っていても表示は変わらない。 */
+.container {
+  max-width: var(--wrapper-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter-desktop);
+}
+.container.narrow { max-width: var(--content-max); }
+
+@media (max-width: 1023px) {
+  .container { padding: 0 var(--gutter-tablet); }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 var(--gutter-mobile); }
+}

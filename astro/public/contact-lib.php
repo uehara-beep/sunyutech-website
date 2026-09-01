@@ -8,15 +8,19 @@
  * 依存ライブラリなし（Composer 不要）。レンタルサーバーにそのまま置ける。
  */
 
-/** 入力項目と、その最大文字数・必須かどうか。検証もメール本文もこの定義を使う。 */
+/**
+ * 入力項目と、その最大文字数・必須かどうか。検証もメール本文も maxlength も
+ * この定義を唯一の出典にする。
+ *
+ * このフォームは見積依頼と採用応募の両方を受ける。以前は会社名を必須に
+ * していたため、採用ページのCTAから来た応募者はフォームを送信できなかった。
+ * 会社名・工事種別・工事規模の項目は廃止し、必要なら本文に書いてもらう。
+ */
 const CF_FIELDS = [
-    'company' => ['label' => '会社名',                 'required' => true,  'max' => 200],
-    'name'    => ['label' => 'ご担当者名',             'required' => true,  'max' => 100],
-    'tel'     => ['label' => '電話番号',               'required' => true,  'max' => 50],
-    'email'   => ['label' => 'メールアドレス',         'required' => true,  'max' => 254],
-    'method'  => ['label' => '工事種別',               'required' => false, 'max' => 100],
-    'detail'  => ['label' => '工事規模・場所・希望時期', 'required' => false, 'max' => 2000],
-    'message' => ['label' => 'お問い合わせ内容',       'required' => false, 'max' => 5000],
+    'name'    => ['label' => 'お名前',                   'required' => true,  'max' => 100],
+    'email'   => ['label' => 'メールアドレス',           'required' => true,  'max' => 254],
+    'tel'     => ['label' => '電話番号',                 'required' => false, 'max' => 50],
+    'message' => ['label' => 'お問い合わせ・ご応募内容', 'required' => true,  'max' => 5000],
 ];
 
 /** 項目ごとの最大文字数。フォーム側の maxlength に配って表示崩れと無駄な往復を防ぐ。 */
@@ -173,7 +177,7 @@ function cf_verify_turnstile(string $token, string $secret, string $remoteIp, ca
  * （ここでエンコードすると長い件名が折り返されて改行が混入するため）。
  */
 function cf_build_mail(array $input, string $to, string $from): array {
-    $company = cf_sanitize_header(cf_str($input, 'company'));
+    $name    = cf_sanitize_header(cf_str($input, 'name'));
     $replyTo = cf_sanitize_header(cf_str($input, 'email'));
 
     // Reply-To に不正な値が来たら、ヘッダーに載せずに捨てる
@@ -201,10 +205,33 @@ function cf_build_mail(array $input, string $to, string $from): array {
 
     return [
         'to'      => $to,
-        'subject' => cf_sanitize_header('【HP問い合わせ】' . ($company === '' ? '会社名なし' : $company)),
+        'subject' => cf_sanitize_header('【HP問い合わせ】' . ($name === '' ? 'お名前なし' : $name)),
         'body'    => implode("\n", $lines),
         'headers' => implode("\r\n", $headers),
     ];
+}
+
+/**
+ * メールを送る。$sender は mb_send_mail 互換の callable。
+ *
+ * まず -f でエンベロープ送信者を自社ドメインに指定して送る。これが無いと
+ * サーバー既定の送信者（apache@svNNN...）のままになり、SPF が認証する
+ * ドメインと From: が一致せず、受信側の Gmail で DMARC に落ちる。
+ *
+ * ただし共用サーバーによっては -f の指定自体が拒否される。そこで諦めると
+ * 問い合わせが1通も届かなくなるため、-f 無しで送り直す。
+ * 迷惑メールに入る可能性は残るが、届かないよりはよい。
+ */
+function cf_send_mail(array $mail, string $envelopeFrom, callable $sender): bool {
+    if ($sender($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], '-f' . $envelopeFrom)) {
+        return true;
+    }
+
+    error_log('contact: エンベロープ送信者(-f)付きの送信に失敗したため、指定なしで再試行します。'
+        . 'サーバーが -f を許可していない可能性があります。'
+        . '送信できても迷惑メール判定されやすくなるため、サーバー側の設定確認を推奨します。');
+
+    return (bool)$sender($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], null);
 }
 
 /**

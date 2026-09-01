@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+
+// ⚠️ 公開前に会社の判断で確定が必要な箇所には【要確認】を付けている。
+//    埋めないまま公開すると、守れない約束を掲げることになる。
+//    確定後は【要確認】の表記を消すこと。
+---
+<Base
+  title="プライバシーポリシー | 株式会社サンユウテック"
+  description="株式会社サンユウテックにおける個人情報の取り扱いについて。お問い合わせフォームで取得する情報の利用目的、第三者提供、開示請求の方法を記載しています。"
+  currentPage="privacy"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="brand-sig">PRIVACY POLICY</p>
+      <h1>プライバシーポリシー</h1>
+    </div>
+  </section>
+
+  <section class="policy">
+    <div class="container narrow">
+      <p class="lead">
+        株式会社サンユウテック（以下「当社」）は、お問い合わせいただいた方の個人情報を
+        適切に取り扱うため、次のとおり方針を定めます。
+      </p>
+
+      <SectionTitle text="取得する情報" eyebrow="01 / DATA" />
+      <p>当社は、ウェブサイトのお問い合わせフォームを通じて、次の情報を取得します。</p>
+      <ul>
+        <li>お名前</li>
+        <li>メールアドレス</li>
+        <li>電話番号（任意でご入力いただいた場合）</li>
+        <li>お問い合わせ・ご応募の内容</li>
+      </ul>
+      <p>
+        フォーム以外の方法で、お客様の個人情報を自動的に収集することはありません。
+        当ウェブサイトでは、アクセス解析ツールおよび広告目的の Cookie を使用していません。
+      </p>
+
+      <SectionTitle text="利用目的" eyebrow="02 / PURPOSE" />
+      <p>取得した情報は、次の目的にのみ使用します。</p>
+      <ul>
+        <li>お問い合わせへの回答、お見積りおよび現地調査のご連絡</li>
+        <li>採用に関するご応募への対応および選考</li>
+      </ul>
+      <p>これらの目的以外に使用することはありません。営業目的のメール配信も行いません。</p>
+
+      <SectionTitle text="第三者への提供" eyebrow="03 / DISCLOSURE" />
+      <!-- 【要確認】協力会社への情報共有や、外部の採用支援サービスの利用がある場合は、
+           その旨をここに追記する必要がある。無い場合は下記のままでよい。 -->
+      <p>
+        法令に基づく場合を除き、ご本人の同意なく個人情報を第三者に提供することはありません。
+      </p>
+      <p>
+        なお、フォームの送信時に、迷惑送信を防ぐ目的で Cloudflare, Inc. の提供する
+        ボット判定サービス（Turnstile）を利用する場合があります。この際、
+        送信元の IP アドレスが同社に送信されます。同社における取り扱いは
+        <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer" target="_blank">同社のプライバシーポリシー</a>
+        によります。
+      </p>
+
+      <SectionTitle text="保管と廃棄" eyebrow="04 / RETENTION" />
+      <!-- 【要確認】保管期間は会社として決める必要がある。
+           一般的には「対応完了後◯年」または「採用選考終了後◯年」とする。
+           決められない場合でも「不要となった時点で速やかに廃棄」は最低限記載する。 -->
+      <p>
+        お預かりした情報は、利用目的の達成に必要な期間に限り保管し、
+        不要となった時点で速やかに廃棄します。
+      </p>
+
+      <SectionTitle text="安全管理" eyebrow="05 / SECURITY" />
+      <p>
+        個人情報への不正アクセス、紛失、改ざん、漏えいを防ぐため、
+        必要かつ適切な措置を講じます。当ウェブサイトの通信は暗号化されています。
+      </p>
+
+      <SectionTitle text="開示・訂正・削除のご請求" eyebrow="06 / YOUR RIGHTS" />
+      <p>
+        ご自身の個人情報について、開示、訂正、利用停止、削除をご希望の場合は、
+        下記の窓口までご連絡ください。ご本人であることを確認のうえ、
+        法令に従い対応します。
+      </p>
+      <!-- 【要確認】開示請求の受付窓口を確定する。
+           代表電話でよいか、専用の担当者・部署を置くかを決めること。
+           下記は代表電話を窓口とした場合の記載。 -->
+      <dl class="info-table">
+        <div><dt>窓口</dt><dd>株式会社サンユウテック</dd></div>
+        <div><dt>所在地</dt><dd>福岡県大野城市御笠川6-2-5</dd></div>
+        <div><dt>電話</dt><dd>092-555-9211（平日 9:00〜17:00）</dd></div>
+      </dl>
+
+      <SectionTitle text="本方針の変更" eyebrow="07 / CHANGES" />
+      <p>
+        法令の改正や事業内容の変更に応じて、本方針を見直すことがあります。
+        変更した場合は、本ページに掲載します。
+      </p>
+
+      <p class="revised">制定日: 2026年9月1日</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* .container は global.css に定義済み。ここでは再定義しない。
+     .page-hero は各ページに重複定義されているのが現状の作りなので、
+     それに合わせている（統一は別途）。 */
+  .page-hero { background: var(--color-navy-900); color: var(--color-white); padding: var(--sp-16) 0 var(--sp-12); }
+  .page-hero .brand-sig {
+    color: var(--color-orange-500);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.12em;
+    margin-bottom: var(--sp-3);
+  }
+  .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); }
+
+  .policy { padding: var(--sp-16) 0; }
+  .lead { margin-bottom: var(--sp-10); }
+  .policy p { line-height: 1.9; margin-bottom: var(--sp-4); }
+  .policy ul {
+    margin: 0 0 var(--sp-6) var(--sp-6);
+    line-height: 1.9;
+    list-style: disc;
+  }
+  .policy a { color: var(--color-orange-600); }
+  @media (max-width: 767px) {
+    .page-hero, .policy { padding: var(--section-py-tablet) 0; }
+    .page-hero h1 { font-size: var(--fs-3xl); }
+  }
+  .revised {
+    margin-top: var(--sp-12);
+    font-size: var(--fs-sm);
+    color: var(--color-gray-600, #52525b);
+  }
+</style>
