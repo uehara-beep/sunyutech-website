@@ -8,16 +8,29 @@
  * 依存ライブラリなし（Composer 不要）。レンタルサーバーにそのまま置ける。
  */
 
-/** 入力項目と、その最大文字数・必須かどうか。検証もメール本文もこの定義を使う。 */
+/**
+ * 入力項目と、その最大文字数・必須かどうか。検証もメール本文も maxlength も
+ * この定義を唯一の出典にする。
+ *
+ * このフォームは見積依頼と採用応募の両方を受ける。以前は会社名を必須に
+ * していたため、採用ページのCTAから来た応募者はフォームを送信できなかった。
+ * 会社名・工事種別・工事規模の項目は廃止し、必要なら本文に書いてもらう。
+ */
 const CF_FIELDS = [
-    'company' => ['label' => '会社名',                 'required' => true,  'max' => 200],
-    'name'    => ['label' => 'ご担当者名',             'required' => true,  'max' => 100],
-    'tel'     => ['label' => '電話番号',               'required' => true,  'max' => 50],
-    'email'   => ['label' => 'メールアドレス',         'required' => true,  'max' => 254],
-    'method'  => ['label' => '工事種別',               'required' => false, 'max' => 100],
-    'detail'  => ['label' => '工事規模・場所・希望時期', 'required' => false, 'max' => 2000],
-    'message' => ['label' => 'お問い合わせ内容',       'required' => false, 'max' => 5000],
+    'name'    => ['label' => 'お名前',                   'required' => true,  'max' => 100],
+    'email'   => ['label' => 'メールアドレス',           'required' => true,  'max' => 254],
+    'tel'     => ['label' => '電話番号',                 'required' => false, 'max' => 50],
+    'message' => ['label' => 'お問い合わせ・ご応募内容', 'required' => true,  'max' => 5000],
 ];
+
+/** 定義外の項目（extras）の上限。未検証の入力が通る経路なので必ず抑える。 */
+const CF_EXTRA_MAX_COUNT = 10;
+const CF_EXTRA_MAX_KEY = 64;
+// 1項目あたりは旧 detail の上限(2000)に合わせる。ここを小さくすると、
+// extras が救おうとしている「旧HTMLから届いた本文」そのものを削ってしまう。
+// 代わりに合計で歯止めをかけ、巨大な入力の送りつけを防ぐ。
+const CF_EXTRA_MAX_VALUE = 2000;
+const CF_EXTRA_MAX_TOTAL = 4000;
 
 /** 項目ごとの最大文字数。フォーム側の maxlength に配って表示崩れと無駄な往復を防ぐ。 */
 function cf_field_limits(): array {
@@ -173,7 +186,7 @@ function cf_verify_turnstile(string $token, string $secret, string $remoteIp, ca
  * （ここでエンコードすると長い件名が折り返されて改行が混入するため）。
  */
 function cf_build_mail(array $input, string $to, string $from): array {
-    $company = cf_sanitize_header(cf_str($input, 'company'));
+    $name    = cf_sanitize_header(cf_str($input, 'name'));
     $replyTo = cf_sanitize_header(cf_str($input, 'email'));
 
     // Reply-To に不正な値が来たら、ヘッダーに載せずに捨てる
@@ -186,6 +199,46 @@ function cf_build_mail(array $input, string $to, string $from): array {
         $value = trim(cf_str($input, $key));
         $lines[] = $spec['label'] . ': ' . ($value === '' ? '(未入力)' : $value);
     }
+    // CF_FIELDS に無い項目も拾う。デプロイの入れ替わり中に、古いHTMLを
+    // 開いたままの訪問者が旧項目（会社名など）を送ってくることがある。
+    // 定義だけを見て組み立てると黙って捨てられ、受け取る側は情報が
+    // 欠けたことにすら気づけない。
+    //
+    // ただし cf_validate は CF_FIELDS しか検証しないため、ここは未検証の
+    // 入力が通る唯一の経路になる。上限を掛けないと、message の文字数制限を
+    // 別のキー名で送るだけで回避され、受信箱にメガバイト級の本文が届く。
+    $internal = ['_token', '_gotcha', 'cf-turnstile-response'];
+    $extras = [];
+    $budget = CF_EXTRA_MAX_TOTAL;
+    foreach ($input as $key => $_) {
+        if (count($extras) >= CF_EXTRA_MAX_COUNT || $budget <= 0) {
+            break;
+        }
+        if (!is_string($key) || isset(CF_FIELDS[$key]) || in_array($key, $internal, true)) {
+            continue;
+        }
+        if (mb_strlen($key) > CF_EXTRA_MAX_KEY) {
+            continue;   // 通常の入力ではありえない長さのキーは捨てる
+        }
+        $value = trim(cf_str($input, $key));
+        if ($value === '') {
+            continue;
+        }
+        $cap = min(CF_EXTRA_MAX_VALUE, $budget);
+        if (mb_strlen($value) > $cap) {
+            $value = mb_substr($value, 0, $cap) . '…（以下省略）';
+        }
+        $budget -= mb_strlen($value);
+        $extras[] = cf_sanitize_header($key) . ': ' . $value;
+    }
+    if ($extras) {
+        $lines[] = '';
+        $lines[] = '【その他の入力】';
+        foreach ($extras as $line) {
+            $lines[] = $line;
+        }
+    }
+
     $lines[] = '';
     $lines[] = '---';
     $lines[] = 'このメールは sunyutech.jp のお問い合わせフォームから自動送信されています。';
@@ -201,10 +254,37 @@ function cf_build_mail(array $input, string $to, string $from): array {
 
     return [
         'to'      => $to,
-        'subject' => cf_sanitize_header('【HP問い合わせ】' . ($company === '' ? '会社名なし' : $company)),
+        'subject' => cf_sanitize_header('【HP問い合わせ】' . ($name === '' ? 'お名前なし' : $name)),
         'body'    => implode("\n", $lines),
         'headers' => implode("\r\n", $headers),
     ];
+}
+
+/**
+ * メールを送る。$sender は mb_send_mail 互換の callable。
+ *
+ * まず -f でエンベロープ送信者を自社ドメインに指定して送る。これが無いと
+ * サーバー既定の送信者（apache@svNNN...）のままになり、SPF が認証する
+ * ドメインと From: が一致せず、受信側の Gmail で DMARC に落ちる。
+ *
+ * ただし共用サーバーによっては -f の指定自体が拒否される。そこで諦めると
+ * 問い合わせが1通も届かなくなるため、-f 無しで送り直す。
+ * 迷惑メールに入る可能性は残るが、届かないよりはよい。
+ */
+function cf_send_mail(array $mail, string $envelopeFrom, callable $sender): bool {
+    if ($sender($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], '-f' . $envelopeFrom)) {
+        return true;
+    }
+
+    // 失敗の理由は PHP からは判別できない。-f の拒否とは限らず、MTA 自体の
+    // 不調のこともある。後者の場合、MTA が受理した上で異常終了していると
+    // 同じ問い合わせが2通届く可能性がある。それでも再送するのは、
+    // 「届かない」より「稀に重複する」方が損失が小さいため。
+    error_log('contact: 送信に失敗したため、エンベロープ送信者(-f)の指定なしで再試行します。'
+        . '-f が許可されていないか、メール送信自体に問題がある可能性があります。'
+        . '重複して届いている場合や届かない場合は、サーバー側の設定を確認してください。');
+
+    return (bool)$sender($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], null);
 }
 
 /**
@@ -215,6 +295,32 @@ function cf_build_mail(array $input, string $to, string $from): array {
  */
 function cf_rate_file(string $ip, string $dir): string {
     return rtrim($dir, '/') . '/' . sha1($ip) . '.json';
+}
+
+/**
+ * 時間枠を過ぎたレート制限の記録を削除する。
+ *
+ * IP のハッシュ1件につき1ファイルを作るため、掃除しないと際限なく溜まる。
+ * 溜まった分は訪問者の痕跡を保持し続けることにもなるので、
+ * 役目を終えた時点で消す。
+ */
+function cf_rate_limit_sweep(string $dir, int $windowSeconds): void {
+    if (!is_dir($dir)) {
+        return;
+    }
+    // rate_limit_dir は設定で任意のパスを指定できる。他の用途と共用の
+    // ディレクトリを指された場合に無関係なファイルを消さないよう、
+    // cf_rate_file が作る名前（sha1の40桁 + .json）だけを対象にする。
+    $now = time();
+    foreach (glob(rtrim($dir, '/') . '/*.json') ?: [] as $file) {
+        if (!preg_match('/^[0-9a-f]{40}\.json$/', basename($file))) {
+            continue;
+        }
+        $mtime = @filemtime($file);
+        if ($mtime !== false && $now - $mtime > $windowSeconds) {
+            @unlink($file);
+        }
+    }
 }
 
 /** レート制限の記録を保存できる状態か。呼び出し側はこれを見てログを残す。 */

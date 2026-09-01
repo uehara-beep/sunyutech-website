@@ -216,21 +216,36 @@ if ($errors) {
 
 $mail = cf_build_mail($_POST, $config['mail_to'], $config['mail_from']);
 
-// 第5引数でエンベロープ送信者（Return-Path）を自社ドメインに揃える。
-// これが無いとサーバー既定の apache@svNNN.onamae.ne.jp のままになり、
-// SPF が認証するドメインと From: のドメインが一致しない。
-// 受信側が Google Workspace のため DMARC のアライメント判定で落ち、
-// 本文が正しくても迷惑メールに振り分けられる。
+// エンベロープ送信者の指定は cf_send_mail が担当する。
+// サーバーが -f を拒否した場合は指定なしで再送する（詳細は同関数のコメント）。
 // $config['mail_from'] は cf_validate_config でメールアドレス形式を検証済み。
-if (!mb_send_mail($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], '-f' . $config['mail_from'])) {
+$sent = cf_send_mail($mail, $config['mail_from'], function ($to, $subject, $body, $headers, $params) {
+    return $params === null
+        ? mb_send_mail($to, $subject, $body, $headers)
+        : mb_send_mail($to, $subject, $body, $headers, $params);
+});
+
+if (!$sent) {
     error_log('contact.php: mb_send_mail に失敗しました');
     cf_respond(500, ['ok' => false, 'message' => '送信に失敗しました。お手数ですが、お電話（' . CF_PHONE . '）でご連絡ください。']);
 }
 
 // 送信できたときだけレート制限を消費する。入力ミスで弾かれた分まで数えると、
 // 正当な利用者が自分の打ち間違いで1時間締め出されてしまう。
-if ($rateLimitUsable) {
-    cf_rate_limit_hit($ip, $rateDir, CF_RATE_WINDOW, time());
+// ここから先は「メールは既に送れている」状態。以降で例外を投げると、
+// 届いているのに利用者にはエラーが見え、再送信されて重複する。
+// 後片付けの失敗で送信結果を覆さないよう、まとめて握りつぶしてログに残す。
+try {
+    if ($rateLimitUsable) {
+        cf_rate_limit_hit($ip, $rateDir, CF_RATE_WINDOW, time());
+
+        // 役目を終えた記録を毎回掃除する。対象は tiny なディレクトリなので
+        // 走査は軽い。確率的に間引くと、送信が少ないサイトでは記録が
+        // 長期間残り、プライバシーポリシーの「一定時間で削除」に反する。
+        cf_rate_limit_sweep($rateDir, CF_RATE_WINDOW);
+    }
+} catch (Throwable $e) {
+    error_log('contact.php: 送信後の後片付けに失敗しました: ' . $e->getMessage());
 }
 
 cf_respond(200, ['ok' => true, 'message' => '送信しました。担当者よりご連絡いたします。']);

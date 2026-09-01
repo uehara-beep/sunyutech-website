@@ -4,45 +4,29 @@
 // 再ビルド・再デプロイなしで Turnstile を有効化できる。
 ---
 <form class="contact-form" action="/contact.php" method="post">
+  <p class="form-intro">
+    見積依頼・現地調査のご相談、採用へのご応募、いずれもこちらから承ります。
+    会社名・工事の場所・ご希望時期などは、内容欄にご記入ください。
+  </p>
+
   <div class="field">
-    <label for="company">会社名 <span aria-label="必須">*</span></label>
-    <input type="text" id="company" name="company" required />
-    <p class="field-error" data-error-for="company" hidden></p>
-  </div>
-  <div class="field">
-    <label for="name">ご担当者名 <span aria-label="必須">*</span></label>
-    <input type="text" id="name" name="name" required />
+    <label for="name">お名前 <span aria-label="必須">*</span></label>
+    <input type="text" id="name" name="name" required autocomplete="name" />
     <p class="field-error" data-error-for="name" hidden></p>
   </div>
   <div class="field">
-    <label for="tel">電話番号 <span aria-label="必須">*</span></label>
-    <input type="tel" id="tel" name="tel" required />
-    <p class="field-error" data-error-for="tel" hidden></p>
-  </div>
-  <div class="field">
     <label for="email">メールアドレス <span aria-label="必須">*</span></label>
-    <input type="email" id="email" name="email" required />
+    <input type="email" id="email" name="email" required autocomplete="email" />
     <p class="field-error" data-error-for="email" hidden></p>
   </div>
   <div class="field">
-    <label for="method">工事種別</label>
-    <select id="method" name="method">
-      <option value="">選択してください</option>
-      <option value="舗装">舗装</option>
-      <option value="WJ">ウォータージェット</option>
-      <option value="コンクリート補修">コンクリート補修</option>
-      <option value="その他">その他</option>
-    </select>
-    <p class="field-error" data-error-for="method" hidden></p>
+    <label for="tel">電話番号</label>
+    <input type="tel" id="tel" name="tel" autocomplete="tel" />
+    <p class="field-error" data-error-for="tel" hidden></p>
   </div>
   <div class="field">
-    <label for="detail">工事規模・場所・希望時期</label>
-    <textarea id="detail" name="detail" rows="4"></textarea>
-    <p class="field-error" data-error-for="detail" hidden></p>
-  </div>
-  <div class="field">
-    <label for="message">お問い合わせ内容</label>
-    <textarea id="message" name="message" rows="6"></textarea>
+    <label for="message">お問い合わせ・ご応募内容 <span aria-label="必須">*</span></label>
+    <textarea id="message" name="message" rows="8" required></textarea>
     <p class="field-error" data-error-for="message" hidden></p>
   </div>
 
@@ -64,6 +48,10 @@
       お手数ですが、お電話（<a href="tel:0925559211">092-555-9211</a> 平日 9:00〜17:00）でご連絡ください。
     </p>
   </noscript>
+
+  <p class="privacy-note">
+    送信をもって、<a href="/privacy/">プライバシーポリシー</a>に同意いただいたものとします。
+  </p>
 
   <button type="submit" class="submit">送信する</button>
   <p class="form-status" role="status" aria-live="polite" hidden></p>
@@ -110,6 +98,14 @@
   .form-status { font-size: var(--fs-base); font-weight: var(--fw-semibold); }
   .form-status.is-success { color: var(--color-navy-900); }
   .form-status.is-error { color: var(--color-status-error); }
+  .form-intro {
+    padding: var(--sp-4);
+    background: var(--color-gray-100);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm);
+    line-height: 1.8;
+  }
+  .privacy-note { font-size: var(--fs-sm); }
   .field-error {
     color: var(--color-status-error);
     font-size: var(--fs-sm);
