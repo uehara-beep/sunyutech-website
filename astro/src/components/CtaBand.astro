@@ -3,8 +3,10 @@ import Button from './Button.astro';
 interface Props {
   heading: string;
   sub?: string;
+  /** ボタンの文言。採用ページなど、見積依頼以外の導線では差し替える。 */
+  ctaLabel?: string;
 }
-const { heading, sub } = Astro.props;
+const { heading, sub, ctaLabel = '見積依頼・現地調査のご相談' } = Astro.props;
 ---
 <section class="cta-band">
   <div class="cta-inner">
@@ -13,7 +15,7 @@ const { heading, sub } = Astro.props;
       {sub && <p>{sub}</p>}
     </div>
     <div class="actions">
-      <Button variant="primary" href="/contact/" label="見積依頼・現地調査のご相談" />
+      <Button variant="primary" href="/contact/" label={ctaLabel} />
       <a href="tel:0925559211" class="tel">
         <span class="tel-num">TEL 092-555-9211</span>
         <span class="tel-hours">平日 9:00〜17:00</span>

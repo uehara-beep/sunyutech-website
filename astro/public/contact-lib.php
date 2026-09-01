@@ -190,6 +190,29 @@ function cf_build_mail(array $input, string $to, string $from): array {
         $value = trim(cf_str($input, $key));
         $lines[] = $spec['label'] . ': ' . ($value === '' ? '(未入力)' : $value);
     }
+    // CF_FIELDS に無い項目も拾う。デプロイの入れ替わり中に、古いHTMLを
+    // 開いたままの訪問者が旧項目（会社名など）を送ってくることがある。
+    // 定義だけを見て組み立てると黙って捨てられ、受け取る側は情報が
+    // 欠けたことにすら気づけない。
+    $internal = ['_token', '_gotcha', 'cf-turnstile-response'];
+    $extras = [];
+    foreach ($input as $key => $_) {
+        if (!is_string($key) || isset(CF_FIELDS[$key]) || in_array($key, $internal, true)) {
+            continue;
+        }
+        $value = trim(cf_str($input, $key));
+        if ($value !== '') {
+            $extras[] = cf_sanitize_header($key) . ': ' . $value;
+        }
+    }
+    if ($extras) {
+        $lines[] = '';
+        $lines[] = '【その他の入力】';
+        foreach ($extras as $line) {
+            $lines[] = $line;
+        }
+    }
+
     $lines[] = '';
     $lines[] = '---';
     $lines[] = 'このメールは sunyutech.jp のお問い合わせフォームから自動送信されています。';
@@ -227,9 +250,13 @@ function cf_send_mail(array $mail, string $envelopeFrom, callable $sender): bool
         return true;
     }
 
-    error_log('contact: エンベロープ送信者(-f)付きの送信に失敗したため、指定なしで再試行します。'
-        . 'サーバーが -f を許可していない可能性があります。'
-        . '送信できても迷惑メール判定されやすくなるため、サーバー側の設定確認を推奨します。');
+    // 失敗の理由は PHP からは判別できない。-f の拒否とは限らず、MTA 自体の
+    // 不調のこともある。後者の場合、MTA が受理した上で異常終了していると
+    // 同じ問い合わせが2通届く可能性がある。それでも再送するのは、
+    // 「届かない」より「稀に重複する」方が損失が小さいため。
+    error_log('contact: 送信に失敗したため、エンベロープ送信者(-f)の指定なしで再試行します。'
+        . '-f が許可されていないか、メール送信自体に問題がある可能性があります。'
+        . '重複して届いている場合や届かない場合は、サーバー側の設定を確認してください。');
 
     return (bool)$sender($mail['to'], $mail['subject'], $mail['body'], $mail['headers'], null);
 }

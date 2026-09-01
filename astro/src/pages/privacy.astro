@@ -34,8 +34,8 @@ import SectionTitle from '../components/SectionTitle.astro';
         <li>お問い合わせ・ご応募の内容</li>
       </ul>
       <p>
-        フォーム以外の方法で、お客様の個人情報を自動的に収集することはありません。
         当ウェブサイトでは、アクセス解析ツールおよび広告目的の Cookie を使用していません。
+        ただし、ページの表示にあたり後述の外部サービスへ通信が発生します。
       </p>
 
       <SectionTitle text="利用目的" eyebrow="02 / PURPOSE" />
@@ -53,12 +53,28 @@ import SectionTitle from '../components/SectionTitle.astro';
         法令に基づく場合を除き、ご本人の同意なく個人情報を第三者に提供することはありません。
       </p>
       <p>
-        なお、フォームの送信時に、迷惑送信を防ぐ目的で Cloudflare, Inc. の提供する
-        ボット判定サービス（Turnstile）を利用する場合があります。この際、
-        送信元の IP アドレスが同社に送信されます。同社における取り扱いは
-        <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer" target="_blank">同社のプライバシーポリシー</a>
-        によります。
+        なお、当ウェブサイトの表示にあたり、次の外部サービスへ通信が発生します。
+        いずれの場合も、お客様の IP アドレスおよびブラウザの情報が各社へ送信されます。
+        これらは当社が能動的に提供するものではありませんが、事実として記載します。
       </p>
+      <ul>
+        <li>
+          <strong>Google LLC（Google Fonts）</strong> —
+          全ページで書体の配信に利用しています。ページを表示した時点で通信が発生します。
+          取り扱いは
+          <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">同社のプライバシーポリシー</a>
+          によります。
+        </li>
+        <li>
+          <strong>Cloudflare, Inc.</strong> —
+          当ウェブサイトの配信、および迷惑送信を防ぐボット判定（Turnstile）に利用しています。
+          Turnstile を有効にしている場合、送信時ではなく
+          <strong>お問い合わせページを表示した時点</strong>で通信が発生し、
+          同社の Cookie が設定されます。取り扱いは
+          <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer" target="_blank">同社のプライバシーポリシー</a>
+          によります。
+        </li>
+      </ul>
 
       <SectionTitle text="保管と廃棄" eyebrow="04 / RETENTION" />
       <!-- 【要確認】保管期間は会社として決める必要がある。
@@ -116,7 +132,7 @@ import SectionTitle from '../components/SectionTitle.astro';
   .page-hero h1 { color: var(--color-white); font-size: var(--fs-4xl); font-weight: var(--fw-extrabold); }
 
   .policy { padding: var(--sp-16) 0; }
-  .lead { margin-bottom: var(--sp-10); }
+  .policy .lead { margin-bottom: var(--sp-12); }
   .policy p { line-height: 1.9; margin-bottom: var(--sp-4); }
   .policy ul {
     margin: 0 0 var(--sp-6) var(--sp-6);
@@ -124,13 +140,16 @@ import SectionTitle from '../components/SectionTitle.astro';
     list-style: disc;
   }
   .policy a { color: var(--color-orange-600); }
-  @media (max-width: 767px) {
-    .page-hero, .policy { padding: var(--section-py-tablet) 0; }
+  @media (max-width: 1023px) {
+    .page-hero { padding: var(--sp-12) 0 var(--sp-8); }
+    .policy { padding: var(--sp-12) 0; }
+  }
+  @media (max-width: 480px) {
     .page-hero h1 { font-size: var(--fs-3xl); }
   }
   .revised {
     margin-top: var(--sp-12);
     font-size: var(--fs-sm);
-    color: var(--color-gray-600, #52525b);
+    color: var(--color-gray-500);
   }
 </style>

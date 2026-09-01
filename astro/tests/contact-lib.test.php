@@ -355,6 +355,31 @@ test('Content-Type と MIME-Version は自前で付けない', function () {
     assert_not_contains('MIME-Version', $mail['headers']);
 });
 
+test('定義外の項目が送られても本文から消えない', function () {
+    // デプロイの入れ替わり中に、古いHTMLを開いたままの訪問者が
+    // company / method / detail を送ってくることがある。CF_FIELDS だけを
+    // 見て組み立てると、それらが黙って捨てられ、受け取る側は
+    // 情報が欠けたことにすら気づけない。
+    $input = valid_input(['company' => '株式会社サンプル', 'method' => '舗装']);
+    $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_contains('株式会社サンプル', $mail['body']);
+    assert_contains('舗装', $mail['body']);
+});
+
+test('定義外でも空の項目は本文に出さない', function () {
+    $input = valid_input(['company' => '']);
+    $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_not_contains('company', $mail['body']);
+});
+
+test('内部用の項目は本文に出さない', function () {
+    // _token / _gotcha / Turnstile のトークンは受信者にとって不要
+    $input = valid_input(['_token' => 'abc.def', '_gotcha' => '', 'cf-turnstile-response' => 'xyz']);
+    $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
+    assert_not_contains('abc.def', $mail['body']);
+    assert_not_contains('xyz', $mail['body']);
+});
+
 test('Reply-To に改行が注入されても無害化される', function () {
     $input = valid_input(['email' => "yamada@example.com\r\nBcc: victim@example.com"]);
     $mail = cf_build_mail($input, 'inbox@example.jp', 'no-reply@sunyutech.jp');
