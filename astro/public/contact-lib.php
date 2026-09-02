@@ -323,6 +323,25 @@ function cf_rate_limit_sweep(string $dir, int $windowSeconds): void {
     }
 }
 
+/**
+ * ログに残すためにIPを丸める。
+ *
+ * 生のIPをエラーログに書くと、そのログは提供事業者のローテーション対象外で
+ * 際限なく残り、プライバシーポリシーで示した保管期間と食い違う。
+ * 障害調査には「どのあたりからのアクセスか」が分かれば足りるので、
+ * 個人を特定できない粒度まで落とす。
+ */
+function cf_mask_ip(string $ip): string {
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        return preg_replace('/\.\d+$/', '.x', $ip);
+    }
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+        $head = array_slice(explode(':', $ip), 0, 2);
+        return implode(':', $head) . ':x';
+    }
+    return '(不明)';
+}
+
 /** レート制限の記録を保存できる状態か。呼び出し側はこれを見てログを残す。 */
 function cf_rate_limit_available(string $dir): bool {
     return is_dir($dir) && is_writable($dir);

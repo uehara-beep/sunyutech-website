@@ -161,8 +161,9 @@ $ip = cf_resolve_client_ip($remoteAddr, $forwardedIp, $trustedRanges);
 // Cloudflare の共有エッジIPとして同じレート制限枠を食い合い、
 // 5件で全員が締め出される。気づけるようにログに残す。
 if (cf_proxy_header_unrecognized($remoteAddr, $forwardedIp, $trustedRanges)) {
-    error_log("contact.php: 信頼レンジ外からプロキシヘッダーを受信しました remote={$remoteAddr}。"
-        . 'Cloudflare のIPレンジ表が古い可能性があります（https://www.cloudflare.com/ips/）');
+    error_log('contact.php: 信頼レンジ外からプロキシヘッダーを受信しました remote='
+        . cf_mask_ip($remoteAddr)
+        . '。Cloudflare のIPレンジ表が古い可能性があります（https://www.cloudflare.com/ips/）');
 }
 
 // 1層目: ハニーポット。ボットには「成功」を返して破棄する。
@@ -170,7 +171,7 @@ if (cf_proxy_header_unrecognized($remoteAddr, $forwardedIp, $trustedRanges)) {
 if (cf_is_bot_honeypot($_POST)) {
     // 破棄した事実を残す。パスワードマネージャの自動入力などで人間の
     // 問い合わせを誤って捨てた場合、ログが無いと気づけない。
-    error_log('contact.php: ハニーポットにより破棄しました ip=' . $ip);
+    error_log('contact.php: ハニーポットにより破棄しました ip=' . cf_mask_ip($ip));
     cf_respond(200, ['ok' => true, 'message' => '送信しました。担当者よりご連絡いたします。']);
 }
 
