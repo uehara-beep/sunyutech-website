@@ -81,22 +81,29 @@ SSH を有効にすると、**GitHub 側で変更が承認された時点で、�
 
 ### Mac の場合
 
-「ターミナル」アプリを開いて、次を1行ずつ実行します。
+「ターミナル」アプリを開いて、次を**1行ずつ**実行します。
 
 ```bash
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
 ssh-keygen -t ed25519 -f ~/.ssh/sunyutech_deploy -C "sunyutech-deploy"
 ```
+
+1行目は鍵を置くフォルダを用意するものです。すでにあれば何も起きません。
+これを飛ばすと `No such file or directory` というエラーになります。
 
 途中で `Enter passphrase` と聞かれます。**何も入力せず Enter を2回**押してください。
 （自動化で使うため、パスフレーズ無しにします）
 
 ### Windows の場合
 
-「PowerShell」を開いて、同じコマンドを実行します。
+「PowerShell」を開いて、次を**1行ずつ**実行します。
 
 ```powershell
+New-Item -ItemType Directory -Force -Path $env:USERPROFILE\.ssh
 ssh-keygen -t ed25519 -f $env:USERPROFILE\.ssh\sunyutech_deploy -C "sunyutech-deploy"
 ```
+
+1行目は鍵を置くフォルダを用意するものです。すでにあれば何も起きません。
 
 ### できるもの
 
@@ -155,13 +162,27 @@ ssh -i $env:USERPROFILE\.ssh\sunyutech_deploy -p ポート番号 ユーザー名
 Are you sure you want to continue connecting (yes/no)?
 ```
 
-**接続できたら**、次を実行してファイルが見えることを確認します。
+**接続できたら**、次を実行して現在地とフォルダの中身を確認します。
 
 ```bash
-ls /public_html/sunyutech.jp/
+pwd
+ls
+```
+
+`pwd` はいまどこにいるかを表示します。`ls` で見えるフォルダの中に
+`public_html` があるはずです。あれば次で中身を確認できます。
+
+```bash
+ls public_html/sunyutech.jp/
 ```
 
 `index.html` などが並べば成功です。`exit` と入力すれば抜けられます。
+
+> **パスの書き方に注意してください。** FTPソフトでは `/public_html/sunyutech.jp/`
+> と表示されますが、SSH でログインした直後の位置はその親にあたることが多く、
+> 先頭に `/` を付けると「そんなフォルダは無い」と言われます。
+> **`pwd` と `ls` で実際の場所を確かめてから進めてください。**
+> 見えた内容をそのままお知らせいただければ、こちらで判断します。
 
 ### つながらないとき
 
@@ -176,8 +197,13 @@ ls /public_html/sunyutech.jp/
 自動更新の仕組みがサーバーにログインできるよう、秘密鍵を GitHub に預けます。
 
 > ここで預ける先は **Secrets** という専用の保管場所です。
-> 登録すると中身は二度と表示されず、リポジトリを見られる人にも読めません。
+> 登録すると画面には二度と表示されず、リポジトリを閲覧するだけの人には読めません。
 > 通常のファイルとして置くのとはまったく別の扱いです。
+>
+> ただし万能ではありません。**このリポジトリに書き込み権限を持つ人は、
+> 仕組み上この鍵を取り出せます。** 権限を渡す相手は限ってください。
+> 鍵が漏れたと思われる場合は、コントロールパネルで公開鍵を削除すれば
+> その鍵は使えなくなります（手順2からやり直しになります）。
 
 ### 秘密鍵の中身を表示する
 
