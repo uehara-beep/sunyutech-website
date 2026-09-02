@@ -9,6 +9,13 @@ import SectionTitle from '../components/SectionTitle.astro';
 // 事業のやり方が変われば記載も変わる。協力会社への情報共有や
 // 採用エージェントの利用を始めた場合は、第三者提供の節に追記すること。
 //
+//
+// 2026-09-02 時点で sunyutech.jp は Cloudflare を経由していない
+// （NS は dnsv.jp、配信元は お名前.com のサーバー）。そのため
+// Cloudflare の記載は Turnstile の利用に限っている。
+// 再び Cloudflare 経由の配信に戻した場合は「当ウェブサイトの配信」を
+// 第三者提供の節に書き戻すこと。全ページのアクセスが同社を通るため。
+//
 // 注記は {/* */} 形式で書くこと。HTMLコメントはビルド結果に出力され、
 // 社内向けの内容が公開ページから読めてしまう。
 ---
@@ -83,8 +90,8 @@ import SectionTitle from '../components/SectionTitle.astro';
         </li>
         <li>
           <strong>Cloudflare, Inc.</strong> —
-          当ウェブサイトの配信、および迷惑送信を防ぐボット判定（Turnstile）に利用しています。
-          Turnstile を有効にしている場合、送信時ではなく
+          迷惑送信を防ぐボット判定（Turnstile）に利用しています。
+          これを有効にしている場合、送信時ではなく
           <strong>お問い合わせページを表示した時点</strong>で通信が発生し、
           同社の Cookie が設定されます。取り扱いは
           <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer" target="_blank">同社のプライバシーポリシー</a>
