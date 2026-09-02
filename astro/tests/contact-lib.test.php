@@ -676,8 +676,22 @@ test('IPv4 は末尾を伏せる', function () {
     assert_same('192.168.1.x', cf_mask_ip('192.168.1.1'));
 });
 
-test('IPv6 は先頭ブロックだけ残す', function () {
-    assert_same('2400:cb00:x', cf_mask_ip('2400:cb00::1'));
+test('IPv6 は先頭3ブロック（/48相当）だけ残す', function () {
+    // IPv4 の /24 と同程度の粒度に揃える。細かく残すと世帯が特定できてしまう。
+    assert_same('2400:cb00:0:x', cf_mask_ip('2400:cb00::1'));
+    assert_same('2001:db8:1234:x', cf_mask_ip('2001:0db8:1234:5678::1'));
+});
+
+test('IPv4射影アドレスは IPv4 として扱う', function () {
+    // デュアルスタックのサーバーでは、IPv4 の訪問者の REMOTE_ADDR が
+    // ::ffff:203.0.113.50 の形になる。これを IPv6 として処理すると
+    // ::x になり、情報が丸ごと失われてログが役に立たなくなる。
+    assert_same('203.0.113.x', cf_mask_ip('::ffff:203.0.113.50'));
+    assert_same('192.168.1.x', cf_mask_ip('::ffff:192.168.1.1'));
+});
+
+test('ループバックが潰れないこと', function () {
+    assert_same('0:0:0:x', cf_mask_ip('::1'));
 });
 
 test('元のIPが復元できないこと', function () {

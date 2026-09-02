@@ -332,15 +332,33 @@ function cf_rate_limit_sweep(string $dir, int $windowSeconds): void {
  * 個人を特定できない粒度まで落とす。
  */
 function cf_mask_ip(string $ip): string {
+    // デュアルスタックのサーバーでは、IPv4 の訪問者でも REMOTE_ADDR が
+    // ::ffff:203.0.113.50 の形で来る。IPv6 として処理すると ::x になり
+    // 情報が丸ごと失われるため、先に IPv4 に戻す。
+    if (preg_match('/^::ffff:(\d+\.\d+\.\d+\.\d+)$/i', $ip, $m)) {
+        $ip = $m[1];
+    }
+
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
         return preg_replace('/\.\d+$/', '.x', $ip);
     }
+
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-        $head = array_slice(explode(':', $ip), 0, 2);
-        return implode(':', $head) . ':x';
+        // 省略記法（::）を展開してから先頭3ブロックを取る。
+        // explode だけだと :: の位置で空要素が入り、値がずれる。
+        $bin = inet_pton($ip);
+        if ($bin === false) {
+            return '(不明)';
+        }
+        $groups = unpack('n*', $bin);            // 8個の16bitブロック
+        $head = array_slice(array_values($groups), 0, 3);
+        // IPv4 の /24 と同程度の粒度（/48）に揃える
+        return implode(':', array_map(fn($g) => dechex($g), $head)) . ':x';
     }
+
     return '(不明)';
 }
+
 
 /** レート制限の記録を保存できる状態か。呼び出し側はこれを見てログを残す。 */
 function cf_rate_limit_available(string $dir): bool {

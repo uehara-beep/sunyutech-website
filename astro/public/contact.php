@@ -161,9 +161,24 @@ $ip = cf_resolve_client_ip($remoteAddr, $forwardedIp, $trustedRanges);
 // Cloudflare の共有エッジIPとして同じレート制限枠を食い合い、
 // 5件で全員が締め出される。気づけるようにログに残す。
 if (cf_proxy_header_unrecognized($remoteAddr, $forwardedIp, $trustedRanges)) {
+    // IPは丸めて記録する。この警告の用途は「レンジ表が古い」ことへの気づきで、
+    // /24 の粒度があれば足りる。詐称元を個体識別して遮断する用途には使えないが、
+    // そこまでの追跡は個人情報を長期保持する対価に見合わないと判断した。
     error_log('contact.php: 信頼レンジ外からプロキシヘッダーを受信しました remote='
         . cf_mask_ip($remoteAddr)
         . '。Cloudflare のIPレンジ表が古い可能性があります（https://www.cloudflare.com/ips/）');
+}
+
+// 役目を終えたレート制限の記録を掃除する。
+// 送信が成立した後ではなく、ここで実行する。成立まで待つと、
+// 送信が失敗し続ける間や問い合わせが途絶えた間に記録が残り続け、
+// プライバシーポリシーの「次に利用された際に削除」と食い違うため。
+if ($rateLimitUsable) {
+    try {
+        cf_rate_limit_sweep($rateDir, CF_RATE_WINDOW);
+    } catch (Throwable $e) {
+        error_log('contact.php: レート制限の記録の掃除に失敗しました: ' . $e->getMessage());
+    }
 }
 
 // 1層目: ハニーポット。ボットには「成功」を返して破棄する。
@@ -239,11 +254,6 @@ if (!$sent) {
 try {
     if ($rateLimitUsable) {
         cf_rate_limit_hit($ip, $rateDir, CF_RATE_WINDOW, time());
-
-        // 役目を終えた記録を毎回掃除する。対象は tiny なディレクトリなので
-        // 走査は軽い。確率的に間引くと、送信が少ないサイトでは記録が
-        // 長期間残り、プライバシーポリシーの「一定時間で削除」に反する。
-        cf_rate_limit_sweep($rateDir, CF_RATE_WINDOW);
     }
 } catch (Throwable $e) {
     error_log('contact.php: 送信後の後片付けに失敗しました: ' . $e->getMessage());
